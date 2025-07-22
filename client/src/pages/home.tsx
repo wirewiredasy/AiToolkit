@@ -1,4 +1,3 @@
-
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import ToolCard from '@/components/ui/tool-card';
@@ -12,6 +11,45 @@ export default function Home() {
     document.getElementById('tools')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const toolkits = [
+    {
+      id: 'pdf',
+      name: 'PDF Toolkit',
+      description: 'Complete PDF solution with 20+ tools for merge, split, convert, compress, and advanced editing capabilities.',
+      icon: 'fas fa-file-pdf',
+      route: '/toolkit/pdf',
+      color: 'blue',
+      toolCount: 20,
+    },
+    {
+      id: 'image',
+      name: 'Image Toolkit',
+      description: 'Advanced image processing with 20 tools for resize, compress, convert, enhance, and AI-powered features.',
+      icon: 'fas fa-image',
+      route: '/toolkit/image',
+      color: 'purple',
+      toolCount: 20,
+    },
+    {
+      id: 'media',
+      name: 'Media Toolkit',
+      description: 'Professional audio and video tools with 20 converters, editors, and AI-enhanced processing capabilities.',
+      icon: 'fas fa-play-circle',
+      route: '/toolkit/media',
+      color: 'green',
+      toolCount: 20,
+    },
+    {
+      id: 'government',
+      name: 'Govt Documents',
+      description: 'Indian government document tools with 15 utilities for PAN, Aadhaar, certificates, and official forms.',
+      icon: 'fas fa-landmark',
+      route: '/toolkit/government',
+      color: 'orange',
+      toolCount: 15,
+    },
+  ];
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -20,14 +58,14 @@ export default function Home() {
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:32px_32px]"></div>
         </div>
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
           <div className="animate-fade-in">
             {/* Logo */}
             <div className="flex justify-center mb-12">
               <SuntynLogo size="xl" animated={true} showText={false} />
             </div>
-            
+
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-8">
               <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                 Suntyn AI
@@ -37,7 +75,7 @@ export default function Home() {
               Professional AI-powered tools for document processing, image editing, 
               audio/video conversion, and government documents. Fast, secure, and reliable.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
               <Button 
                 size="lg" 
@@ -57,7 +95,7 @@ export default function Home() {
                 </Link>
               </Button>
             </div>
-            
+
             {/* Statistics */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-xl">
@@ -93,24 +131,22 @@ export default function Home() {
               specialized tools for your specific needs.
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {toolkits.map((toolkit) => (
-              <div key={toolkit.id} className="group">
-                <Link href={toolkit.route}>
-                  <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-200">
-                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 ${toolkit.color} shadow-lg`}>
-                      <i className={`${toolkit.icon} text-2xl text-white`}></i>
-                    </div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-3">{toolkit.name}</h3>
-                    <p className="text-slate-600 mb-4">{toolkit.description}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-slate-500">{toolkit.toolCount} tools</span>
-                      <i className="fas fa-arrow-right text-slate-400 group-hover:text-slate-600 transition-colors"></i>
-                    </div>
+            {toolkits.map((toolkit, index) => (
+              <Link key={toolkit.id} href={toolkit.route}>
+                <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-200">
+                  <div className="w-16 h-16 mb-6 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <i className={`${toolkit.icon} text-white text-2xl`}></i>
                   </div>
-                </Link>
-              </div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-3">{toolkit.name}</h3>
+                  <p className="text-slate-600 mb-4">{toolkit.description}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-slate-500">{toolkit.toolCount} tools</span>
+                    <i className="fas fa-arrow-right text-slate-400 group-hover:text-slate-600 transition-colors"></i>
+                  </div>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -127,7 +163,7 @@ export default function Home() {
               Most used tools across all categories
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredTools.slice(0, 6).map((tool) => (
               <Link key={tool.id} href={tool.route}>
@@ -163,7 +199,7 @@ export default function Home() {
               Built for modern workflows with cutting-edge AI technology
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="text-center group">
               <div className="w-20 h-20 bg-green-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:shadow-2xl transition-all duration-300">
@@ -175,7 +211,7 @@ export default function Home() {
                 Zero data retention policy.
               </p>
             </div>
-            
+
             <div className="text-center group">
               <div className="w-20 h-20 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:shadow-2xl transition-all duration-300">
                 <i className="fas fa-robot text-3xl text-white"></i>
@@ -186,7 +222,7 @@ export default function Home() {
                 results and accuracy in all operations.
               </p>
             </div>
-            
+
             <div className="text-center group">
               <div className="w-20 h-20 bg-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:shadow-2xl transition-all duration-300">
                 <i className="fas fa-bolt text-3xl text-white"></i>
@@ -197,7 +233,7 @@ export default function Home() {
                 caching for instant results.
               </p>
             </div>
-            
+
             <div className="text-center group">
               <div className="w-20 h-20 bg-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:shadow-2xl transition-all duration-300">
                 <i className="fas fa-mobile-alt text-3xl text-white"></i>
@@ -208,7 +244,7 @@ export default function Home() {
                 and screen sizes.
               </p>
             </div>
-            
+
             <div className="text-center group">
               <div className="w-20 h-20 bg-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:shadow-2xl transition-all duration-300">
                 <i className="fas fa-infinity text-3xl text-white"></i>
@@ -219,7 +255,7 @@ export default function Home() {
                 Completely free forever.
               </p>
             </div>
-            
+
             <div className="text-center group">
               <div className="w-20 h-20 bg-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:shadow-2xl transition-all duration-300">
                 <i className="fas fa-code text-3xl text-white"></i>

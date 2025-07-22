@@ -69,18 +69,24 @@ export default function Footer() {
             {/* Social Media Icons */}
             <div className="flex items-center gap-3 mb-8">
               <a href="#" className="group">
-                <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-500 transition-all duration-300 group-hover:scale-110">
-                  <svg className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
-                  </svg>
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center hover:from-blue-600 hover:to-blue-700 transition-all duration-300 group-hover:scale-110 shadow-lg">
+                  <i className="fab fa-twitter text-white text-lg"></i>
                 </div>
               </a>
               <a href="#" className="group">
-                <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-700 transition-all duration-300 group-hover:scale-110">
-                  <svg className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
-                    <circle cx="4" cy="4" r="2"/>
-                  </svg>
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center hover:from-blue-700 hover:to-blue-900 transition-all duration-300 group-hover:scale-110 shadow-lg">
+                  <i className="fab fa-linkedin text-white text-lg"></i>
+                </div>
+              </a>
+              <a href="#" className="group">
+                <div className="w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-900 rounded-xl flex items-center justify-center hover:from-gray-800 hover:to-black transition-all duration-300 group-hover:scale-110 shadow-lg">
+                  <i className="fab fa-github text-white text-lg"></i>
+                </div>
+              </a>
+              <a href="#" className="group">
+                <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center hover:from-red-600 hover:to-red-700 transition-all duration-300 group-hover:scale-110 shadow-lg">
+                  <i className="fab fa-youtube text-white text-lg"></i>
+                </div>
                 </div>
               </a>
               <a href="#" className="group">
