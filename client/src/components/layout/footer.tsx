@@ -168,12 +168,14 @@ export default function Footer() {
             <ul className="space-y-3">
               {supportLinks.map((link) => (
                 <li key={link.name}>
-                  <a href={link.href} className="text-gray-300 hover:text-white transition-colors flex items-center group">
-                    <svg className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                    {link.name}
-                  </a>
+                  <Link href={link.href}>
+                    <span className="text-gray-300 hover:text-white transition-colors flex items-center group cursor-pointer">
+                      <svg className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                      {link.name}
+                    </span>
+                  </Link>
                 </li>
               ))}
               <li>
@@ -193,12 +195,14 @@ export default function Footer() {
             <ul className="space-y-3">
               {legalLinks.map((link) => (
                 <li key={link.name}>
-                  <a href={link.href} className="text-gray-300 hover:text-white transition-colors flex items-center group">
-                    <svg className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                    {link.name}
-                  </a>
+                  <Link href={link.href}>
+                    <span className="text-gray-300 hover:text-white transition-colors flex items-center group cursor-pointer">
+                      <svg className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                      {link.name}
+                    </span>
+                  </Link>
                 </li>
               ))}
             </ul>
