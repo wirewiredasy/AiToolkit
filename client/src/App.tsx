@@ -37,7 +37,7 @@ import PANValidator from "@/pages/tool/pan-validator";
 import GSTValidator from "@/pages/tool/gst-validator";
 import AadhaarValidator from "@/pages/tool/aadhaar-validator";
 import NotFound from "@/pages/not-found";
-import HelpCenter from "@/pages/help-center";
+import HelpCenter from "@/pages/help";
 import Contact from "@/pages/contact";
 import About from "@/pages/about";
 import Privacy from "@/pages/privacy";
