@@ -16,9 +16,23 @@ import GovernmentToolkit from "@/pages/toolkit/government";
 import PDFMerger from "@/pages/tool/pdf-merger";
 import PDFToWord from "@/pages/tool/pdf-to-word";
 import PDFSplitter from "@/pages/tool/pdf-splitter";
+import PDFCompressor from "@/pages/tool/pdf-compressor";
+import WordToPDF from "@/pages/tool/word-to-pdf";
+import ExcelToPDF from "@/pages/tool/excel-to-pdf";
+import PPTToPDF from "@/pages/tool/ppt-to-pdf";
 import ImageResizer from "@/pages/tool/image-resizer";
+import BackgroundRemover from "@/pages/tool/bg-remover";
+import ImageCompressor from "@/pages/tool/image-compressor";
+import ImageFormatConverter from "@/pages/tool/image-format-converter";
 import AudioConverter from "@/pages/tool/audio-converter";
+import AudioTrimmer from "@/pages/tool/audio-trimmer";
 import VideoConverter from "@/pages/tool/video-converter";
+import VideoToAudio from "@/pages/tool/video-to-audio";
+import WatermarkRemover from "@/pages/tool/watermark-remover";
+import PhotoEnhancer from "@/pages/tool/photo-enhancer";
+import PDFToExcel from "@/pages/tool/pdf-to-excel";
+import QRGenerator from "@/pages/tool/qr-generator";
+import BarcodeGenerator from "@/pages/tool/barcode-generator";
 import PANValidator from "@/pages/tool/pan-validator";
 import GSTValidator from "@/pages/tool/gst-validator";
 import AadhaarValidator from "@/pages/tool/aadhaar-validator";
@@ -39,12 +53,35 @@ function Router() {
       <Route path="/toolkit/government" component={GovernmentToolkit} />
       
       {/* Individual tool pages */}
+      {/* PDF Tools */}
       <Route path="/tool/pdf-merger" component={PDFMerger} />
       <Route path="/tool/pdf-to-word" component={PDFToWord} />
       <Route path="/tool/pdf-splitter" component={PDFSplitter} />
+      <Route path="/tool/pdf-compressor" component={PDFCompressor} />
+      <Route path="/tool/word-to-pdf" component={WordToPDF} />
+      <Route path="/tool/excel-to-pdf" component={ExcelToPDF} />
+      <Route path="/tool/ppt-to-pdf" component={PPTToPDF} />
+      <Route path="/tool/pdf-to-excel" component={PDFToExcel} />
+      
+      {/* Image Tools */}
       <Route path="/tool/image-resizer" component={ImageResizer} />
+      <Route path="/tool/bg-remover" component={BackgroundRemover} />
+      <Route path="/tool/image-compressor" component={ImageCompressor} />
+      <Route path="/tool/image-format-converter" component={ImageFormatConverter} />
+      <Route path="/tool/watermark-remover" component={WatermarkRemover} />
+      <Route path="/tool/photo-enhancer" component={PhotoEnhancer} />
+      
+      {/* Audio/Video Tools */}
       <Route path="/tool/audio-converter" component={AudioConverter} />
+      <Route path="/tool/audio-trimmer" component={AudioTrimmer} />
       <Route path="/tool/video-converter" component={VideoConverter} />
+      <Route path="/tool/video-to-audio" component={VideoToAudio} />
+      
+      {/* Utilities */}
+      <Route path="/tool/qr-generator" component={QRGenerator} />
+      <Route path="/tool/barcode-generator" component={BarcodeGenerator} />
+      
+      {/* Government Validators */}
       <Route path="/tool/pan-validator" component={PANValidator} />
       <Route path="/tool/gst-validator" component={GSTValidator} />
       <Route path="/tool/aadhaar-validator" component={AadhaarValidator} />
