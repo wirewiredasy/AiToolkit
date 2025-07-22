@@ -227,31 +227,6 @@
   }
 }
 
-/* 3D Icon Effects */
-.icon-3d {
-  @apply bg-gradient-to-br shadow-lg transform transition-all duration-300;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.icon-3d:hover {
-  @apply scale-110;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-/* Professional Icon Container */
-.icon-container {
-  @apply relative overflow-hidden;
-}
-
-.icon-container::before {
-  content: '';
-  @apply absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 transition-opacity duration-300;
-}
-
-.icon-container:hover::before {
-  @apply opacity-100;
-}
-
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
