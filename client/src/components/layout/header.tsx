@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/use-auth';
+import SuntynLogo from '@/components/ui/suntyn-logo';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,29 +15,26 @@ export default function Header() {
   const { user, isAuthenticated, logout } = useAuth();
 
   return (
-    <header className="bg-white shadow-sm border-b border-neutral-200 sticky top-0 z-50">
+    <header className="bg-white/95 backdrop-blur-sm shadow-sm border-b border-neutral-200 sticky top-0 z-50">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
-              <i className="fas fa-robot text-white text-sm"></i>
-            </div>
-            <span className="text-xl font-bold text-neutral-800">Suntyn AI</span>
+          <Link href="/" className="hover:scale-105 transition-transform duration-200">
+            <SuntynLogo size="sm" animated={true} showText={true} />
           </Link>
         </div>
         
         <div className="hidden md:flex items-center space-x-8">
-          <Link href="/#tools" className="text-neutral-600 hover:text-primary font-medium">
-            Tools
+          <Link href="/#tools" className="text-neutral-600 hover:text-transparent hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 hover:bg-clip-text font-medium transition-all duration-200">
+            🔧 Tools
           </Link>
-          <Link href="/api" className="text-neutral-600 hover:text-primary font-medium">
-            API
+          <Link href="/dashboard" className="text-neutral-600 hover:text-transparent hover:bg-gradient-to-r hover:from-purple-600 hover:to-cyan-600 hover:bg-clip-text font-medium transition-all duration-200">
+            📊 Dashboard
           </Link>
-          <Link href="/pricing" className="text-neutral-600 hover:text-primary font-medium">
-            Pricing
+          <Link href="/api" className="text-neutral-600 hover:text-transparent hover:bg-gradient-to-r hover:from-cyan-600 hover:to-blue-600 hover:bg-clip-text font-medium transition-all duration-200">
+            🤖 API
           </Link>
-          <Link href="/about" className="text-neutral-600 hover:text-primary font-medium">
-            About
+          <Link href="/about" className="text-neutral-600 hover:text-transparent hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 hover:bg-clip-text font-medium transition-all duration-200">
+            ℹ️ About
           </Link>
         </div>
         

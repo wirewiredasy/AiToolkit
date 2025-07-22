@@ -204,6 +204,50 @@
   @apply h-full bg-gradient-to-r from-primary to-secondary transition-all duration-300 ease-out;
 }
 
+/* Suntyn AI Animations */
+@keyframes suntyn-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes suntyn-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+@keyframes suntyn-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes neural-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes ai-glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); }
+  50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(139, 92, 246, 0.6); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.suntyn-rotate { animation: suntyn-rotate 8s linear infinite; }
+.suntyn-pulse { animation: suntyn-pulse 2s ease-in-out infinite; }
+.suntyn-float { animation: suntyn-float 3s ease-in-out infinite; }
+.neural-pulse { animation: neural-pulse 3s ease-in-out infinite; }
+.ai-glow { animation: ai-glow 4s ease-in-out infinite; }
+.animate-fade-in { animation: fade-in 1s ease-out; }
+.animate-slide-up { animation: slide-up 0.8s ease-out 0.2s both; }
+
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .hero-text {
