@@ -43,6 +43,7 @@ import Contact from "@/pages/contact";
 import About from "@/pages/about";
 import Privacy from "@/pages/privacy";
 import Terms from "@/pages/terms";
+import AllTools from "@/pages/all-tools";
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -63,6 +64,7 @@ function Router() {
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/all-tools" component={AllTools} />
 
       {/* Toolkit pages */}
       <Route path="/toolkit/pdf" component={PDFToolkit} />

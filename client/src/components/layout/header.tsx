@@ -19,6 +19,7 @@ export default function Header() {
 
   const navigation = [
     { name: 'Home', href: '/' },
+    { name: 'All Tools', href: '/all-tools' },
     { name: 'PDF Tools', href: '/toolkit/pdf' },
     { name: 'Image Tools', href: '/toolkit/image' },
     { name: 'Audio/Video', href: '/toolkit/media' },

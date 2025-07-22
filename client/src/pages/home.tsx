@@ -149,6 +149,20 @@ export default function Home() {
               </Link>
             ))}
           </div>
+          
+          {/* All Tools Button */}
+          <div className="text-center mt-12">
+            <Button 
+              size="lg" 
+              asChild
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-12 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+            >
+              <Link href="/all-tools">
+                <i className="fas fa-th-large mr-3"></i>
+                View All 80 Tools
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
 
