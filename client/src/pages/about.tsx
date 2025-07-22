@@ -2,26 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function About() {
-  const teamMembers = [
-    {
-      name: "Alex Johnson",
-      role: "CEO & Founder",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
-      bio: "AI enthusiast with 10+ years in machine learning and product development."
-    },
-    {
-      name: "Sarah Chen",
-      role: "CTO",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612c79d?w=300&h=300&fit=crop&crop=face",
-      bio: "Full-stack developer specializing in scalable AI infrastructure."
-    },
-    {
-      name: "David Kumar",
-      role: "Lead AI Engineer",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
-      bio: "Expert in computer vision and natural language processing."
-    }
-  ];
+  
 
   const stats = [
     { number: "1M+", label: "Files Processed", icon: "fas fa-file-alt" },
@@ -129,26 +110,7 @@ export default function About() {
           </div>
         </div>
 
-        {/* Team */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center text-slate-800 mb-8">Meet Our Team</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {teamMembers.map((member, index) => (
-              <Card key={index} className="text-center shadow-lg hover:shadow-xl transition-shadow">
-                <CardContent className="p-6">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
-                  />
-                  <h3 className="text-xl font-bold text-slate-800 mb-1">{member.name}</h3>
-                  <p className="text-purple-600 font-medium mb-3">{member.role}</p>
-                  <p className="text-slate-600 text-sm">{member.bio}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
+        
 
         {/* Vision */}
         <div className="text-center">
