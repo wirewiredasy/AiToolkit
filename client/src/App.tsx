@@ -14,9 +14,14 @@ import ImageToolkit from "@/pages/toolkit/image";
 import MediaToolkit from "@/pages/toolkit/media";
 import GovernmentToolkit from "@/pages/toolkit/government";
 import PDFMerger from "@/pages/tool/pdf-merger";
+import PDFToWord from "@/pages/tool/pdf-to-word";
+import PDFSplitter from "@/pages/tool/pdf-splitter";
 import ImageResizer from "@/pages/tool/image-resizer";
 import AudioConverter from "@/pages/tool/audio-converter";
+import VideoConverter from "@/pages/tool/video-converter";
 import PANValidator from "@/pages/tool/pan-validator";
+import GSTValidator from "@/pages/tool/gst-validator";
+import AadhaarValidator from "@/pages/tool/aadhaar-validator";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -35,9 +40,14 @@ function Router() {
       
       {/* Individual tool pages */}
       <Route path="/tool/pdf-merger" component={PDFMerger} />
+      <Route path="/tool/pdf-to-word" component={PDFToWord} />
+      <Route path="/tool/pdf-splitter" component={PDFSplitter} />
       <Route path="/tool/image-resizer" component={ImageResizer} />
       <Route path="/tool/audio-converter" component={AudioConverter} />
+      <Route path="/tool/video-converter" component={VideoConverter} />
       <Route path="/tool/pan-validator" component={PANValidator} />
+      <Route path="/tool/gst-validator" component={GSTValidator} />
+      <Route path="/tool/aadhaar-validator" component={AadhaarValidator} />
       
       {/* Fallback to 404 */}
       <Route component={NotFound} />
