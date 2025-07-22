@@ -37,6 +37,11 @@ import PANValidator from "@/pages/tool/pan-validator";
 import GSTValidator from "@/pages/tool/gst-validator";
 import AadhaarValidator from "@/pages/tool/aadhaar-validator";
 import NotFound from "@/pages/not-found";
+import HelpCenter from "@/pages/help-center";
+import Contact from "@/pages/contact";
+import About from "@/pages/about";
+import Privacy from "@/pages/privacy";
+import Terms from "@/pages/terms";
 
 function Router() {
   return (
@@ -45,13 +50,13 @@ function Router() {
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <Route path="/dashboard" component={Dashboard} />
-      
+
       {/* Toolkit pages */}
       <Route path="/toolkit/pdf" component={PDFToolkit} />
       <Route path="/toolkit/image" component={ImageToolkit} />
       <Route path="/toolkit/media" component={MediaToolkit} />
       <Route path="/toolkit/government" component={GovernmentToolkit} />
-      
+
       {/* Individual tool pages */}
       {/* PDF Tools */}
       <Route path="/tool/pdf-merger" component={PDFMerger} />
@@ -62,7 +67,7 @@ function Router() {
       <Route path="/tool/excel-to-pdf" component={ExcelToPDF} />
       <Route path="/tool/ppt-to-pdf" component={PPTToPDF} />
       <Route path="/tool/pdf-to-excel" component={PDFToExcel} />
-      
+
       {/* Image Tools */}
       <Route path="/tool/image-resizer" component={ImageResizer} />
       <Route path="/tool/bg-remover" component={BackgroundRemover} />
@@ -70,23 +75,29 @@ function Router() {
       <Route path="/tool/image-format-converter" component={ImageFormatConverter} />
       <Route path="/tool/watermark-remover" component={WatermarkRemover} />
       <Route path="/tool/photo-enhancer" component={PhotoEnhancer} />
-      
+
       {/* Audio/Video Tools */}
       <Route path="/tool/audio-converter" component={AudioConverter} />
       <Route path="/tool/audio-trimmer" component={AudioTrimmer} />
       <Route path="/tool/video-converter" component={VideoConverter} />
       <Route path="/tool/video-to-audio" component={VideoToAudio} />
-      
+
       {/* Utilities */}
       <Route path="/tool/qr-generator" component={QRGenerator} />
       <Route path="/tool/barcode-generator" component={BarcodeGenerator} />
-      
+
       {/* Government Validators */}
       <Route path="/tool/pan-validator" component={PANValidator} />
       <Route path="/tool/gst-validator" component={GSTValidator} />
       <Route path="/tool/aadhaar-validator" component={AadhaarValidator} />
-      
-      {/* Fallback to 404 */}
+
+      {/* Footer Pages */}
+      <Route path="/help" component={HelpCenter} />
+      <Route path="/contact" component={Contact} />
+      <Route path="/about" component={About} />
+      <Route path="/privacy" component={Privacy} />
+      <Route path="/terms" component={Terms} />
+
       <Route component={NotFound} />
     </Switch>
   );
