@@ -67,7 +67,7 @@ async def pdf_merger(request: ProcessRequest):
         processingTime=processing_time,
         metadata={
             "service": "fastapi",
-            "pages_merged": request.metadata.get("pageCount", 5),
+            "pages_merged": request.metadata.get("pageCount", 5) if request.metadata else 5,
             "compression": "optimized"
         }
     )
@@ -89,7 +89,7 @@ async def pdf_splitter(request: ProcessRequest):
         processingTime=processing_time,
         metadata={
             "service": "fastapi",
-            "pages_created": request.metadata.get("pageCount", 10),
+            "pages_created": request.metadata.get("pageCount", 10) if request.metadata else 10,
             "format": "individual_pdfs"
         }
     )

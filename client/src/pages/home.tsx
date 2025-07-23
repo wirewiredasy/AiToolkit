@@ -3,6 +3,23 @@ import { Button } from '@/components/ui/button';
 import ToolCard from '@/components/ui/tool-card';
 import SuntynLogo from '@/components/ui/suntyn-logo';
 import { toolkits, getFeaturedTools } from '@/lib/tools';
+import { 
+  Wrench, 
+  FileText, 
+  ArrowLeftRight, 
+  Shield, 
+  FileIcon, 
+  ImageIcon, 
+  Music, 
+  BookOpen,
+  Bot,
+  Zap,
+  Smartphone,
+  Infinity,
+  Code,
+  ArrowRight,
+  Layers
+} from 'lucide-react';
 
 export default function Home() {
   const featuredTools = getFeaturedTools();
@@ -60,28 +77,28 @@ export default function Home() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-xl">
                 <div className="flex items-center justify-center mb-4">
-                  <i className="fas fa-tools text-3xl text-white"></i>
+                  <Wrench className="w-8 h-8 text-white" />
                 </div>
                 <div className="text-4xl font-bold text-white mb-2">108+</div>
                 <div className="text-slate-300 text-sm">AI Tools</div>
               </div>
               <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-xl">
                 <div className="flex items-center justify-center mb-4">
-                  <i className="fas fa-file-alt text-3xl text-white"></i>
+                  <FileText className="w-8 h-8 text-white" />
                 </div>
                 <div className="text-4xl font-bold text-white mb-2">1M+</div>
                 <div className="text-slate-300 text-sm">Files Processed</div>
               </div>
               <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-xl">
                 <div className="flex items-center justify-center mb-4">
-                  <i className="fas fa-exchange-alt text-3xl text-white"></i>
+                  <ArrowLeftRight className="w-8 h-8 text-white" />
                 </div>
                 <div className="text-4xl font-bold text-white mb-2">50+</div>
                 <div className="text-slate-300 text-sm">File Formats</div>
               </div>
               <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-xl">
                 <div className="flex items-center justify-center mb-4">
-                  <i className="fas fa-shield-alt text-3xl text-white"></i>
+                  <Shield className="w-8 h-8 text-white" />
                 </div>
                 <div className="text-4xl font-bold text-white mb-2">100%</div>
                 <div className="text-slate-300 text-sm">Secure</div>
@@ -124,13 +141,17 @@ export default function Home() {
                         toolkit.color === 'orange' ? 'bg-gradient-to-br from-orange-500 to-orange-600 group-hover:from-orange-400 group-hover:to-orange-700' :
                         'bg-gradient-to-br from-blue-500 to-blue-600 group-hover:from-blue-400 group-hover:to-blue-700'
                       } shadow-lg group-hover:shadow-2xl`}>
-                        <i className={`${toolkit.icon} text-2xl text-white transition-all duration-300 group-hover:scale-125`}></i>
+                        {toolkit.id === 'pdf' && <FileIcon className="w-7 h-7 text-white transition-all duration-300 group-hover:scale-125" />}
+                        {toolkit.id === 'image' && <ImageIcon className="w-7 h-7 text-white transition-all duration-300 group-hover:scale-125" />}
+                        {toolkit.id === 'media' && <Music className="w-7 h-7 text-white transition-all duration-300 group-hover:scale-125" />}
+                        {toolkit.id === 'government' && <BookOpen className="w-7 h-7 text-white transition-all duration-300 group-hover:scale-125" />}
+                        {toolkit.id === 'developer' && <Code className="w-7 h-7 text-white transition-all duration-300 group-hover:scale-125" />}
                       </div>
                       <h3 className="text-xl font-bold text-slate-900 mb-3 transition-all duration-300 group-hover:text-slate-700">{toolkit.name}</h3>
                       <p className="text-slate-600 mb-4 transition-all duration-300 group-hover:text-slate-500">{toolkit.description}</p>
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-slate-500 transition-all duration-300 group-hover:text-slate-400">{toolkit.toolCount} tools</span>
-                        <i className="fas fa-arrow-right text-slate-400 group-hover:text-slate-600 transition-all duration-300 group-hover:translate-x-2"></i>
+                        <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-all duration-300 group-hover:translate-x-2" />
                       </div>
                     </div>
 
@@ -165,7 +186,7 @@ export default function Home() {
                 <div className="bg-slate-50 rounded-2xl p-8 hover:bg-white hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-slate-200">
                   <div className="flex items-center space-x-4 mb-6">
                     <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                      <i className={`${tool.icon} text-blue-600 text-xl`}></i>
+                      <Layers className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
                       <h3 className="font-bold text-slate-900 text-lg">{tool.name}</h3>
@@ -189,8 +210,8 @@ export default function Home() {
               className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-12 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
             >
               <Link href="/all-tools">
-                <i className="fas fa-th-large mr-3"></i>
-                View All 80 Tools
+                <Layers className="w-5 h-5 mr-3" />
+                View All 108 Tools
               </Link>
             </Button>
           </div>
@@ -212,7 +233,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="text-center group">
               <div className="w-20 h-20 bg-green-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:shadow-2xl transition-all duration-300">
-                <i className="fas fa-shield-alt text-3xl text-white"></i>
+                <Shield className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-4">100% Secure</h3>
               <p className="text-slate-300 leading-relaxed">
@@ -223,7 +244,7 @@ export default function Home() {
 
             <div className="text-center group">
               <div className="w-20 h-20 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:shadow-2xl transition-all duration-300">
-                <i className="fas fa-robot text-3xl text-white"></i>
+                <Bot className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-4">AI Powered</h3>
               <p className="text-slate-300 leading-relaxed">
@@ -234,7 +255,7 @@ export default function Home() {
 
             <div className="text-center group">
               <div className="w-20 h-20 bg-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:shadow-2xl transition-all duration-300">
-                <i className="fas fa-bolt text-3xl text-white"></i>
+                <Zap className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-4">Lightning Fast</h3>
               <p className="text-slate-300 leading-relaxed">
@@ -245,7 +266,7 @@ export default function Home() {
 
             <div className="text-center group">
               <div className="w-20 h-20 bg-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:shadow-2xl transition-all duration-300">
-                <i className="fas fa-mobile-alt text-3xl text-white"></i>
+                <Smartphone className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-4">Mobile Ready</h3>
               <p className="text-slate-300 leading-relaxed">
@@ -256,7 +277,7 @@ export default function Home() {
 
             <div className="text-center group">
               <div className="w-20 h-20 bg-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:shadow-2xl transition-all duration-300">
-                <i className="fas fa-infinity text-3xl text-white"></i>
+                <Infinity className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-4">No Limits</h3>
               <p className="text-slate-300 leading-relaxed">
@@ -267,7 +288,7 @@ export default function Home() {
 
             <div className="text-center group">
               <div className="w-20 h-20 bg-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:shadow-2xl transition-all duration-300">
-                <i className="fas fa-code text-3xl text-white"></i>
+                <Code className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-4">Open Source</h3>
               <p className="text-slate-300 leading-relaxed">
