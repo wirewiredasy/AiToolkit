@@ -1,14 +1,14 @@
-import ProfessionalHero from '@/components/ui/professional-hero';
-import ProfessionalToolGrid from '@/components/ui/professional-tool-grid';
+import Hero3D from '@/components/ui/3d-hero';
+import ModernToolGrid from '@/components/ui/modern-tool-grid';
 
 export default function Home() {
   return (
     <div className="min-h-screen">
-      {/* Professional Hero Section */}
-      <ProfessionalHero />
+      {/* 3D Hero Section */}
+      <Hero3D />
 
-      {/* Professional Tool Grid */}
-      <ProfessionalToolGrid />
+      {/* Modern Tool Grid */}
+      <ModernToolGrid />
     </div>
   );
 }
