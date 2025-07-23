@@ -2,13 +2,12 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
-import { Label } from "@/components/ui/label";
 import { FileUp, Download, CheckCircle, Focus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function ImageSharpenPage() {
   const [file, setFile] = useState<File | null>(null);
-  const [sharpenIntensity, setSharpenIntensity] = useState([50]);
+  const [intensity, setIntensity] = useState([50]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const { toast } = useToast();
@@ -34,7 +33,7 @@ export default function ImageSharpenPage() {
     try {
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('intensity', sharpenIntensity[0].toString());
+      formData.append('intensity', intensity[0].toString());
 
       const response = await fetch('/api/tools/image-sharpen', {
         method: 'POST',
@@ -50,7 +49,7 @@ export default function ImageSharpenPage() {
           description: "Image sharpened successfully.",
         });
       } else {
-        throw new Error('Sharpen failed');
+        throw new Error('Sharpening failed');
       }
     } catch (error) {
       toast({
@@ -81,7 +80,7 @@ export default function ImageSharpenPage() {
               Image Sharpener
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-300">
-              Enhance image clarity and detail with precision sharpening
+              Enhance image sharpness and clarity with advanced algorithms
             </p>
           </div>
 
@@ -110,7 +109,7 @@ export default function ImageSharpenPage() {
                     Click to upload image file
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Supports: JPG, PNG, GIF, WEBP
+                    Supports: JPG, PNG, GIF, WEBP, BMP
                   </p>
                 </label>
               </div>
@@ -125,54 +124,51 @@ export default function ImageSharpenPage() {
               )}
 
               <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <Label>Sharpening Intensity</Label>
-                  <span className="text-sm font-medium">{sharpenIntensity[0]}%</span>
-                </div>
-                <Slider
-                  value={sharpenIntensity}
-                  onValueChange={setSharpenIntensity}
-                  max={200}
-                  min={0}
-                  step={5}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-xs text-gray-500">
-                  <span>No Sharpening</span>
-                  <span>Maximum Sharpening</span>
-                </div>
-                <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-lg">
-                  <p className="text-sm text-yellow-700 dark:text-yellow-300">
-                    Recommended: 50-100% for photos, 25-75% for graphics. Higher values may create artifacts.
-                  </p>
-                </div>
-              </div>
-
-              <Button
-                onClick={handleSharpen}
-                disabled={!file || isProcessing}
-                className="w-full bg-gradient-to-r from-slate-500 to-zinc-500 hover:from-slate-600 hover:to-zinc-600"
-                size="lg"
-              >
-                {isProcessing ? "Sharpening..." : `Apply ${sharpenIntensity[0]}% Sharpening`}
-              </Button>
-
-              {result && (
-                <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-500" />
-                      <span className="font-medium">Image sharpened successfully!</span>
-                    </div>
-                    <Button onClick={downloadFile} variant="outline">
-                      <Download className="h-4 w-4 mr-2" />
-                      Download
-                    </Button>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Sharpening Intensity: {intensity[0]}%</label>
+                  <Slider
+                    value={intensity}
+                    onValueChange={setIntensity}
+                    max={100}
+                    min={1}
+                    step={1}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-xs text-gray-500">
+                    <span>Subtle</span>
+                    <span>Intense</span>
                   </div>
                 </div>
-              )}
 
-              <div className="grid md:grid-cols-3 gap-4 mt-8">
+                <Button
+                  onClick={handleSharpen}
+                  disabled={!file || isProcessing}
+                  className="w-full bg-slate-500 hover:bg-slate-600"
+                >
+                  {isProcessing ? "Processing..." : "Sharpen Image"}
+                </Button>
+
+                {result && (
+                  <Button
+                    onClick={downloadFile}
+                    variant="outline"
+                    className="w-full"
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Download Sharpened Image
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Features */}
+          <Card className="mt-8 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm">
+            <CardContent className="p-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                Features
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-gradient-to-r from-slate-500/10 to-zinc-500/10 p-4 rounded-lg">
                   <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
                     Edge Enhancement
@@ -203,81 +199,5 @@ export default function ImageSharpenPage() {
         </div>
       </div>
     </div>
-  );
-}
-import { ToolTemplate } from "@/components/ui/tool-template";
-import { Focus } from "lucide-react";
-
-export default function ImageSharpenPage() {
-  return (
-    <ToolTemplate
-      toolId="image-sharpen"
-      toolName="Image Sharpener"
-      description="Enhance image sharpness and clarity. Apply advanced sharpening algorithms to make your images crisp and detailed."
-      icon={<Focus className="h-8 w-8 text-white" />}
-      acceptedFiles={{ "image/*": [".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp"] }}
-      maxFileSize={50 * 1024 * 1024}
-      allowMultiple={false}
-      settings={[
-        {
-          key: "sharpenMethod",
-          label: "Sharpening Method",
-          type: "select",
-          options: ["Unsharp Mask", "Smart Sharpen", "High Pass", "Clarity", "Structure"],
-          defaultValue: "Unsharp Mask",
-          required: true,
-          description: "Algorithm for sharpening"
-        },
-        {
-          key: "intensity",
-          label: "Sharpening Intensity",
-          type: "select",
-          options: ["Very Light", "Light", "Medium", "Strong", "Very Strong"],
-          defaultValue: "Medium",
-          description: "Strength of sharpening effect"
-        },
-        {
-          key: "radius",
-          label: "Sharpen Radius",
-          type: "select",
-          options: ["0.5", "1.0", "1.5", "2.0", "2.5", "3.0"],
-          defaultValue: "1.0",
-          description: "Radius of sharpening effect"
-        },
-        {
-          key: "threshold",
-          label: "Edge Threshold",
-          type: "select",
-          options: ["0", "5", "10", "15", "20", "25"],
-          defaultValue: "10",
-          description: "Threshold for edge detection"
-        },
-        {
-          key: "preserveDetails",
-          label: "Preserve Fine Details",
-          type: "switch",
-          defaultValue: true,
-          description: "Protect fine textures from over-sharpening"
-        },
-        {
-          key: "noiseReduction",
-          label: "Noise Reduction",
-          type: "switch",
-          defaultValue: false,
-          description: "Reduce noise while sharpening"
-        },
-        {
-          key: "outputFormat",
-          label: "Output Format",
-          type: "select",
-          options: ["JPEG", "PNG", "WEBP"],
-          defaultValue: "JPEG",
-          description: "Output image format"
-        }
-      ]}
-      endpoint="/api/tools/image-sharpen"
-      gradientFrom="from-emerald-500"
-      gradientTo="to-teal-600"
-    />
   );
 }
