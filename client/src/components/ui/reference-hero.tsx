@@ -90,8 +90,8 @@ const ReferenceHero: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.6 }}
             >
               <Link href="/auth/login">
-                <button className="px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-full text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl animate-bounce">
-                  Get Now
+                <button className="px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-full text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl animate-bounce flex items-center space-x-2">
+                  <span>Get Now</span>
                 </button>
               </Link>
             </motion.div>
@@ -239,6 +239,144 @@ const ReferenceHero: React.FC = () => {
           </motion.div>
 
         </div>
+
+        {/* Featured Tools Section */}
+        <motion.div 
+          className="mt-20"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Featured Tools
+            </h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+              Discover our most popular AI-powered tools for productivity and creativity
+            </p>
+          </div>
+
+          {/* Tools Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-6 mb-12">
+            {/* Tool 1 - PDF Merger */}
+            <motion.div 
+              className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6 hover:bg-gray-700/50 transition-all duration-300 group cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              onClick={() => window.location.href = '/tool/pdf-merger'}
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <FileText className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-white font-semibold mb-2">PDF Merger</h3>
+                <p className="text-gray-400 text-sm">Combine multiple PDFs</p>
+              </div>
+            </motion.div>
+
+            {/* Tool 2 - Image Resizer */}
+            <motion.div 
+              className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6 hover:bg-gray-700/50 transition-all duration-300 group cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              onClick={() => window.location.href = '/tool/image-resizer'}
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <ImageIcon className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-white font-semibold mb-2">Image Resizer</h3>
+                <p className="text-gray-400 text-sm">Resize images quickly</p>
+              </div>
+            </motion.div>
+
+            {/* Tool 3 - Audio Converter */}
+            <motion.div 
+              className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6 hover:bg-gray-700/50 transition-all duration-300 group cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              onClick={() => window.location.href = '/tool/audio-converter'}
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Music className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-white font-semibold mb-2">Audio Converter</h3>
+                <p className="text-gray-400 text-sm">Convert audio formats</p>
+              </div>
+            </motion.div>
+
+            {/* Tool 4 - QR Generator */}
+            <motion.div 
+              className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6 hover:bg-gray-700/50 transition-all duration-300 group cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              onClick={() => window.location.href = '/tool/qr-generator'}
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Settings className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-white font-semibold mb-2">QR Generator</h3>
+                <p className="text-gray-400 text-sm">Create QR codes</p>
+              </div>
+            </motion.div>
+
+            {/* Tool 5 - Background Remover */}
+            <motion.div 
+              className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6 hover:bg-gray-700/50 transition-all duration-300 group cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              onClick={() => window.location.href = '/tool/bg-remover'}
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <ImageIcon className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-white font-semibold mb-2">BG Remover</h3>
+                <p className="text-gray-400 text-sm">Remove backgrounds</p>
+              </div>
+            </motion.div>
+
+            {/* Tool 6 - Video Trimmer */}
+            <motion.div 
+              className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6 hover:bg-gray-700/50 transition-all duration-300 group cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              onClick={() => window.location.href = '/tool/video-trimmer'}
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Play className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-white font-semibold mb-2">Video Trimmer</h3>
+                <p className="text-gray-400 text-sm">Trim video clips</p>
+              </div>
+            </motion.div>
+
+            {/* Tool 7 - PAN Validator */}
+            <motion.div 
+              className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6 hover:bg-gray-700/50 transition-all duration-300 group cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              onClick={() => window.location.href = '/tool/pan-validator'}
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <User className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-white font-semibold mb-2">PAN Validator</h3>
+                <p className="text-gray-400 text-sm">Validate PAN cards</p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* All Tools Button */}
+          <div className="text-center">
+            <Link href="/all-tools">
+              <motion.button 
+                className="px-8 py-4 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white font-semibold rounded-full text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                View All 108+ Tools
+              </motion.button>
+            </Link>
+          </div>
+        </motion.div>
 
         {/* Bottom spacing */}
         <div className="pb-20" />

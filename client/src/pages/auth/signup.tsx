@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
-import SIconLogo from '@/components/ui/s-icon-logo';
+import NewSuntynLogo from '@/components/ui/new-suntyn-logo';
 
 export default function Signup() {
   const [, setLocation] = useLocation();
@@ -52,7 +52,7 @@ export default function Signup() {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <div className="flex justify-center mb-4">
-            <SIconLogo size="lg" showText={false} />
+            <NewSuntynLogo size="lg" showText={false} />
           </div>
           <h2 className="text-3xl font-bold text-white">Get started</h2>
           <p className="mt-2 text-gray-400">Create your free account</p>
@@ -61,7 +61,7 @@ export default function Signup() {
         <Card className="bg-gray-800 border-gray-700">
           <CardHeader>
             <div className="flex justify-center mb-6">
-              <SIconLogo size="lg" showText={false} />
+              <NewSuntynLogo size="lg" showText={false} />
             </div>
             <CardTitle className="text-white text-center">Sign Up</CardTitle>
           </CardHeader>
