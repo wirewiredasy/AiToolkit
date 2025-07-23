@@ -1,6 +1,5 @@
-
 # Robots.txt for Suntyn AI - Neural Intelligence Platform
-# Generated automatically
+# Generated automatically on 2025-07-23
 # Visit: https://suntyn-ai.com
 
 User-agent: *
@@ -16,9 +15,123 @@ Disallow: /api/
 Disallow: /auth/
 Disallow: /uploads/
 
+# Allow specific tool endpoints for better SEO
+Allow: /tool/pdf-merger
+Allow: /tool/pdf-splitter
+Allow: /tool/pdf-compressor
+Allow: /tool/pdf-to-word
+Allow: /tool/word-to-pdf
+Allow: /tool/pdf-to-excel
+Allow: /tool/excel-to-pdf
+Allow: /tool/pdf-to-powerpoint
+Allow: /tool/powerpoint-to-pdf
+Allow: /tool/pdf-to-image
+Allow: /tool/image-to-pdf
+Allow: /tool/pdf-unlock
+Allow: /tool/pdf-lock
+Allow: /tool/pdf-rotate
+Allow: /tool/pdf-watermark
+Allow: /tool/pdf-page-extractor
+Allow: /tool/pdf-page-numberer
+Allow: /tool/pdf-text-extract
+Allow: /tool/text-to-pdf
+Allow: /tool/pdf-metadata
+Allow: /tool/pdf-ocr
+Allow: /tool/pdf-sign
+Allow: /tool/pdf-repair
+Allow: /tool/pdf-organize
+Allow: /tool/pdf-bookmark
+Allow: /tool/image-resizer
+Allow: /tool/image-compressor
+Allow: /tool/image-converter
+Allow: /tool/bg-remover
+Allow: /tool/image-cropper
+Allow: /tool/image-rotator
+Allow: /tool/image-flipper
+Allow: /tool/image-filter
+Allow: /tool/image-enhance
+Allow: /tool/image-upscale
+Allow: /tool/watermark-add
+Allow: /tool/watermark-remover
+Allow: /tool/image-blur
+Allow: /tool/image-sharpen
+Allow: /tool/image-border
+Allow: /tool/image-metadata
+Allow: /tool/meme-generator
+Allow: /tool/image-colorizer
+Allow: /tool/image-merge
+Allow: /tool/image-split
+Allow: /tool/audio-converter
+Allow: /tool/video-converter
+Allow: /tool/audio-trimmer
+Allow: /tool/video-trimmer
+Allow: /tool/audio-merger
+Allow: /tool/video-merger
+Allow: /tool/audio-extractor
+Allow: /tool/video-compressor
+Allow: /tool/audio-compressor
+Allow: /tool/volume-changer
+Allow: /tool/speed-changer
+Allow: /tool/audio-normalizer
+Allow: /tool/noise-reducer
+Allow: /tool/vocal-remover
+Allow: /tool/audio-reverser
+Allow: /tool/pitch-changer
+Allow: /tool/video-resizer
+Allow: /tool/video-rotator
+Allow: /tool/video-to-gif
+Allow: /tool/gif-to-video
+Allow: /tool/pan-validator
+Allow: /tool/gst-validator
+Allow: /tool/aadhaar-validator
+Allow: /tool/aadhaar-masker
+Allow: /tool/voter-id-extractor
+Allow: /tool/income-certificate
+Allow: /tool/caste-certificate
+Allow: /tool/birth-certificate
+Allow: /tool/death-certificate
+Allow: /tool/ration-card-status
+Allow: /tool/passport-photo
+Allow: /tool/rent-agreement
+Allow: /tool/affidavit-generator
+Allow: /tool/police-verification
+Allow: /tool/gazette-formatter
+Allow: /tool/json-formatter
+Allow: /tool/xml-formatter
+Allow: /tool/csv-to-json
+Allow: /tool/json-to-csv
+Allow: /tool/base64-encoder
+Allow: /tool/url-encoder
+Allow: /tool/hash-generator
+Allow: /tool/password-generator
+Allow: /tool/qr-generator
+Allow: /tool/barcode-generator
+Allow: /tool/color-picker
+Allow: /tool/lorem-ipsum
+Allow: /tool/regex-tester
+Allow: /tool/timestamp-converter
+Allow: /tool/unit-converter
+Allow: /tool/markdown-to-html
+Allow: /tool/html-to-pdf
+Allow: /tool/css-minifier
+Allow: /tool/js-minifier
+Allow: /tool/image-to-base64
+Allow: /tool/url-shortener
+Allow: /tool/meta-tag-generator
+Allow: /tool/favicon-generator
+Allow: /tool/logo-generator
+Allow: /tool/color-palette-generator
+Allow: /tool/text-to-speech
+Allow: /tool/speech-to-text
+Allow: /tool/unicode-converter
+
 # Sitemaps
 Sitemap: https://suntyn-ai.com/sitemap.xml
 Sitemap: https://suntyn-ai.com/sitemap-tools.xml
 
 # Crawl-delay for respectful crawling
 Crawl-delay: 1
+
+# Contact info
+# Contact: support@suntynai.com
+# For more info: https://suntyn-ai.com/contact
