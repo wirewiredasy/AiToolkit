@@ -167,7 +167,7 @@ export function ToolTemplate({
               onChange={(e) => handleSettingChange(setting.key, e.target.value)}
             />
             {setting.description && (
-              <p className="text-xs text-gray-500">{setting.description}</p>
+              <p className="text-xs text-gray-400">{setting.description}</p>
             )}
           </div>
         );
@@ -190,7 +190,7 @@ export function ToolTemplate({
               onChange={(e) => handleSettingChange(setting.key, parseInt(e.target.value) || "")}
             />
             {setting.description && (
-              <p className="text-xs text-gray-500">{setting.description}</p>
+              <p className="text-xs text-gray-400">{setting.description}</p>
             )}
           </div>
         );
@@ -215,7 +215,7 @@ export function ToolTemplate({
               </SelectContent>
             </Select>
             {setting.description && (
-              <p className="text-xs text-gray-500">{setting.description}</p>
+              <p className="text-xs text-gray-400">{setting.description}</p>
             )}
           </div>
         );
@@ -228,7 +228,7 @@ export function ToolTemplate({
                 {setting.label}
                 {setting.required && <span className="text-red-500 ml-1">*</span>}
               </Label>
-              <span className="text-sm text-gray-600">{value}</span>
+              <span className="text-sm text-gray-300">{value}</span>
             </div>
             <Slider
               id={setting.key}
@@ -240,7 +240,7 @@ export function ToolTemplate({
               className="w-full"
             />
             {setting.description && (
-              <p className="text-xs text-gray-500">{setting.description}</p>
+              <p className="text-xs text-gray-400">{setting.description}</p>
             )}
           </div>
         );
@@ -254,7 +254,7 @@ export function ToolTemplate({
                 {setting.required && <span className="text-red-500 ml-1">*</span>}
               </Label>
               {setting.description && (
-                <p className="text-xs text-gray-500">{setting.description}</p>
+                <p className="text-xs text-gray-400">{setting.description}</p>
               )}
             </div>
             <Switch
@@ -280,7 +280,7 @@ export function ToolTemplate({
               rows={4}
             />
             {setting.description && (
-              <p className="text-xs text-gray-500">{setting.description}</p>
+              <p className="text-xs text-gray-400">{setting.description}</p>
             )}
           </div>
         );
@@ -309,15 +309,15 @@ export function ToolTemplate({
   };
 
   return (
-    <div className={cn("min-h-screen bg-gradient-to-br", gradientFrom, gradientTo, className)}>
+    <div className={cn("min-h-screen bg-gray-900", className)}>
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="bg-white/10 backdrop-blur-sm rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+          <div className="bg-gray-800 border border-gray-700 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
             {icon}
           </div>
           <h1 className="text-4xl font-bold text-white mb-2">{toolName}</h1>
-          <p className="text-white/80 text-lg max-w-2xl mx-auto">{description}</p>
+          <p className="text-gray-300 text-lg max-w-2xl mx-auto">{description}</p>
         </div>
 
         <div className="max-w-4xl mx-auto space-y-6">
@@ -325,9 +325,9 @@ export function ToolTemplate({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* File Upload Section */}
             {resultType === "file" && (
-              <Card className="bg-white/95 backdrop-blur-sm border-0 shadow-xl">
+              <Card className="bg-gray-800 border-gray-700 shadow-xl">
                 <CardHeader>
-                  <CardTitle>Upload Files</CardTitle>
+                  <CardTitle className="text-white">Upload Files</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <EnhancedFileUpload
@@ -346,9 +346,9 @@ export function ToolTemplate({
 
             {/* Settings Section */}
             {settings.length > 0 && (
-              <Card className="bg-white/95 backdrop-blur-sm border-0 shadow-xl">
+              <Card className="bg-gray-800 border-gray-700 shadow-xl">
                 <CardHeader>
-                  <CardTitle>Settings</CardTitle>
+                  <CardTitle className="text-white">Settings</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {settings.map(renderSetting)}
@@ -358,13 +358,13 @@ export function ToolTemplate({
 
             {/* Validation Input for Government Tools */}
             {resultType === "validation" && (
-              <Card className="bg-white/95 backdrop-blur-sm border-0 shadow-xl">
+              <Card className="bg-gray-800 border-gray-700 shadow-xl">
                 <CardHeader>
-                  <CardTitle>Enter Details</CardTitle>
+                  <CardTitle className="text-white">Enter Details</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="inputValue">
+                    <Label htmlFor="inputValue" className="text-gray-300">
                       Enter {toolName.replace(" Validator", "")} Number *
                     </Label>
                     <Input
@@ -372,7 +372,7 @@ export function ToolTemplate({
                       placeholder={`Enter your ${toolName.replace(" Validator", "").toLowerCase()} number`}
                       value={settingsValues.inputValue || ""}
                       onChange={(e) => handleSettingChange("inputValue", e.target.value)}
-                      className="text-lg"
+                      className="text-lg bg-gray-700 border-gray-600 text-white placeholder-gray-400"
                     />
                   </div>
                 </CardContent>
@@ -386,7 +386,7 @@ export function ToolTemplate({
               onClick={handleProcess}
               disabled={!canProcess() || processMutation.isPending}
               size="lg"
-              className="bg-white text-gray-900 hover:bg-white/90 shadow-xl px-8 py-3 text-lg font-semibold"
+              className="bg-blue-600 text-white hover:bg-blue-700 shadow-xl px-8 py-3 text-lg font-semibold"
             >
               {processMutation.isPending ? "Processing..." : `Process with ${toolName}`}
             </Button>

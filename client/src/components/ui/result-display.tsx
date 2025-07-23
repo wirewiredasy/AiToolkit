@@ -65,27 +65,35 @@ export function ResultDisplay({ result, toolName, className }: ResultDisplayProp
     });
   };
 
-  const shareResult = () => {
+  const shareResult = async () => {
     if (navigator.share && result.downloadUrl) {
-      navigator.share({
-        title: `${toolName} Result`,
-        text: `I processed a file using ${toolName}`,
-        url: result.downloadUrl,
-      });
+      try {
+        await navigator.share({
+          title: `${toolName} Result`,
+          text: `I processed a file using ${toolName}`,
+          url: result.downloadUrl,
+        });
+      } catch (error: any) {
+        // User canceled sharing or share failed - fallback to copy
+        if (error.name !== 'AbortError') {
+          console.error('Share failed:', error);
+        }
+        copyToClipboard(result.downloadUrl || '');
+      }
     } else {
       copyToClipboard(result.downloadUrl || '');
     }
   };
 
   return (
-    <Card className={cn("border-green-200 bg-green-50 dark:bg-green-950/20", className)}>
+    <Card className={cn("border-gray-700 bg-gray-800 text-white", className)}>
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center space-x-2">
+          <CardTitle className="flex items-center space-x-2 text-white">
             <CheckCircle className="h-5 w-5 text-green-500" />
             <span>Processing Complete!</span>
           </CardTitle>
-          <Badge variant="secondary" className="bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300">
+          <Badge variant="secondary" className="bg-green-900 text-green-300 border-green-800">
             Success
           </Badge>
         </div>
@@ -94,19 +102,19 @@ export function ResultDisplay({ result, toolName, className }: ResultDisplayProp
       <CardContent className="space-y-6">
         {/* Success Message */}
         <div className="text-center">
-          <p className="text-green-700 dark:text-green-300 font-medium">
+          <p className="text-green-300 font-medium">
             {result.message}
           </p>
         </div>
 
         {/* File Information */}
         {result.filename && (
-          <div className="flex items-center justify-center space-x-3 p-4 bg-white dark:bg-gray-900 rounded-lg border">
+          <div className="flex items-center justify-center space-x-3 p-4 bg-gray-700 rounded-lg border border-gray-600">
             {getFileIcon(result.filename)}
             <div className="text-center">
-              <p className="font-medium">{result.filename}</p>
+              <p className="font-medium text-white">{result.filename}</p>
               {result.fileSize && (
-                <p className="text-sm text-gray-500">{formatFileSize(result.fileSize)}</p>
+                <p className="text-sm text-gray-400">{formatFileSize(result.fileSize)}</p>
               )}
             </div>
           </div>
@@ -115,52 +123,52 @@ export function ResultDisplay({ result, toolName, className }: ResultDisplayProp
         {/* Processing Stats */}
         <div className="grid grid-cols-2 gap-4">
           {result.processingTime && (
-            <div className="text-center p-3 bg-white dark:bg-gray-900 rounded-lg">
-              <Clock className="h-4 w-4 mx-auto mb-1 text-gray-500" />
-              <p className="text-sm font-medium">{formatProcessingTime(result.processingTime)}</p>
-              <p className="text-xs text-gray-500">Processing Time</p>
+            <div className="text-center p-3 bg-gray-700 rounded-lg">
+              <Clock className="h-4 w-4 mx-auto mb-1 text-gray-400" />
+              <p className="text-sm font-medium text-white">{formatProcessingTime(result.processingTime)}</p>
+              <p className="text-xs text-gray-400">Processing Time</p>
             </div>
           )}
 
           {result.compressionRatio && (
-            <div className="text-center p-3 bg-white dark:bg-gray-900 rounded-lg">
-              <p className="text-sm font-medium text-blue-600">{result.compressionRatio}</p>
-              <p className="text-xs text-gray-500">Size Reduced</p>
+            <div className="text-center p-3 bg-gray-700 rounded-lg">
+              <p className="text-sm font-medium text-blue-400">{result.compressionRatio}</p>
+              <p className="text-xs text-gray-400">Size Reduced</p>
             </div>
           )}
 
           {result.newWidth && result.newHeight && (
-            <div className="text-center p-3 bg-white dark:bg-gray-900 rounded-lg col-span-2">
-              <p className="text-sm font-medium">{result.newWidth} × {result.newHeight}</p>
-              <p className="text-xs text-gray-500">New Dimensions</p>
+            <div className="text-center p-3 bg-gray-700 rounded-lg col-span-2">
+              <p className="text-sm font-medium text-white">{result.newWidth} × {result.newHeight}</p>
+              <p className="text-xs text-gray-400">New Dimensions</p>
             </div>
           )}
 
           {result.accuracy && (
-            <div className="text-center p-3 bg-white dark:bg-gray-900 rounded-lg">
-              <p className="text-sm font-medium text-green-600">{result.accuracy}</p>
-              <p className="text-xs text-gray-500">Accuracy</p>
+            <div className="text-center p-3 bg-gray-700 rounded-lg">
+              <p className="text-sm font-medium text-green-400">{result.accuracy}</p>
+              <p className="text-xs text-gray-400">Accuracy</p>
             </div>
           )}
 
           {result.pageCount && (
-            <div className="text-center p-3 bg-white dark:bg-gray-900 rounded-lg">
-              <p className="text-sm font-medium">{result.pageCount}</p>
-              <p className="text-xs text-gray-500">Pages</p>
+            <div className="text-center p-3 bg-gray-700 rounded-lg">
+              <p className="text-sm font-medium text-white">{result.pageCount}</p>
+              <p className="text-xs text-gray-400">Pages</p>
             </div>
           )}
 
           {result.duration && (
-            <div className="text-center p-3 bg-white dark:bg-gray-900 rounded-lg">
-              <p className="text-sm font-medium">{result.duration}</p>
-              <p className="text-xs text-gray-500">Duration</p>
+            <div className="text-center p-3 bg-gray-700 rounded-lg">
+              <p className="text-sm font-medium text-white">{result.duration}</p>
+              <p className="text-xs text-gray-400">Duration</p>
             </div>
           )}
 
           {result.bitrate && (
-            <div className="text-center p-3 bg-white dark:bg-gray-900 rounded-lg">
-              <p className="text-sm font-medium">{result.bitrate}</p>
-              <p className="text-xs text-gray-500">Bitrate</p>
+            <div className="text-center p-3 bg-gray-700 rounded-lg">
+              <p className="text-sm font-medium text-white">{result.bitrate}</p>
+              <p className="text-xs text-gray-400">Bitrate</p>
             </div>
           )}
         </div>
