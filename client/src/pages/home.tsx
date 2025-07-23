@@ -1,4 +1,3 @@
-
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import ToolCard from '@/components/ui/tool-card';
@@ -20,14 +19,14 @@ export default function Home() {
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:32px_32px]"></div>
         </div>
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
           <div className="animate-fade-in">
             {/* Logo */}
             <div className="flex justify-center mb-12">
               <SuntynLogo size="xl" animated={true} showText={false} />
             </div>
-            
+
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-8">
               <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                 Suntyn AI
@@ -37,7 +36,7 @@ export default function Home() {
               Professional AI-powered tools for document processing, image editing, 
               audio/video conversion, and government documents. Fast, secure, and reliable.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
               <Button 
                 size="lg" 
@@ -56,7 +55,7 @@ export default function Home() {
                 </Link>
               </Button>
             </div>
-            
+
             {/* Statistics */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-xl">
@@ -104,7 +103,7 @@ export default function Home() {
               specialized tools for your specific needs.
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {toolkits.map((toolkit) => (
               <div key={toolkit.id} className="group perspective-1000">
@@ -116,7 +115,7 @@ export default function Home() {
                       <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-slate-300/50 to-transparent transform translate-x-[-50%] scale-y-0 group-hover:scale-y-100 transition-transform duration-500 delay-100"></div>
                       <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-300/50 to-transparent transform translate-y-[-50%] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-200"></div>
                     </div>
-                    
+
                     <div className="relative z-10">
                       <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 ${
                         toolkit.color === 'red' ? 'bg-gradient-to-br from-red-500 to-red-600 group-hover:from-red-400 group-hover:to-red-700' :
@@ -134,7 +133,7 @@ export default function Home() {
                         <i className="fas fa-arrow-right text-slate-400 group-hover:text-slate-600 transition-all duration-300 group-hover:translate-x-2"></i>
                       </div>
                     </div>
-                    
+
                     {/* Corner Effects */}
                     <div className="absolute top-0 left-0 w-0 h-0 border-l-[20px] border-l-transparent border-t-[20px] border-t-slate-200/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div className="absolute top-0 right-0 w-0 h-0 border-r-[20px] border-r-transparent border-t-[20px] border-t-slate-200/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100"></div>
@@ -159,7 +158,7 @@ export default function Home() {
               Most used tools across all categories
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredTools.slice(0, 6).map((tool) => (
               <Link key={tool.id} href={tool.route}>
@@ -181,7 +180,7 @@ export default function Home() {
               </Link>
             ))}
           </div>
-          
+
           {/* All Tools Button */}
           <div className="text-center mt-12">
             <Button 
@@ -209,7 +208,7 @@ export default function Home() {
               Built for modern workflows with cutting-edge AI technology
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="text-center group">
               <div className="w-20 h-20 bg-green-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:shadow-2xl transition-all duration-300">
@@ -221,7 +220,7 @@ export default function Home() {
                 Zero data retention policy.
               </p>
             </div>
-            
+
             <div className="text-center group">
               <div className="w-20 h-20 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:shadow-2xl transition-all duration-300">
                 <i className="fas fa-robot text-3xl text-white"></i>
@@ -232,7 +231,7 @@ export default function Home() {
                 results and accuracy in all operations.
               </p>
             </div>
-            
+
             <div className="text-center group">
               <div className="w-20 h-20 bg-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:shadow-2xl transition-all duration-300">
                 <i className="fas fa-bolt text-3xl text-white"></i>
@@ -243,7 +242,7 @@ export default function Home() {
                 caching for instant results.
               </p>
             </div>
-            
+
             <div className="text-center group">
               <div className="w-20 h-20 bg-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:shadow-2xl transition-all duration-300">
                 <i className="fas fa-mobile-alt text-3xl text-white"></i>
@@ -254,7 +253,7 @@ export default function Home() {
                 and screen sizes.
               </p>
             </div>
-            
+
             <div className="text-center group">
               <div className="w-20 h-20 bg-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:shadow-2xl transition-all duration-300">
                 <i className="fas fa-infinity text-3xl text-white"></i>
@@ -265,7 +264,7 @@ export default function Home() {
                 Completely free forever.
               </p>
             </div>
-            
+
             <div className="text-center group">
               <div className="w-20 h-20 bg-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:shadow-2xl transition-all duration-300">
                 <i className="fas fa-code text-3xl text-white"></i>

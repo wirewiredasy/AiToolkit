@@ -151,7 +151,7 @@ export default function Footer() {
                 <li key={link.name}>
                   <Link href={link.href}>
                     <span className="text-gray-300 hover:text-white transition-colors cursor-pointer flex items-center group">
-                      <svg className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 opacity-70 group-hover:opacity-100 transition-all mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                       {link.name}
