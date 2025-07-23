@@ -27,17 +27,31 @@ import {
 } from 'lucide-react';
 
 export const toolIcons: Record<string, any> = {
-  // PDF Tools
+  // PDF Tools - Complete mapping
   'pdf-merger': FilePlus,
   'pdf-splitter': Scissors,
   'pdf-compressor': Minimize2,
   'pdf-to-word': FileText,
   'pdf-to-excel': FileSpreadsheet,
   'pdf-to-powerpoint': FileImage,
+  'pdf-to-image': FileImage,
   'word-to-pdf': FileX,
   'excel-to-pdf': FileSpreadsheet,
   'powerpoint-to-pdf': FileImage,
   'ppt-to-pdf': FileImage,
+  'image-to-pdf': FileImage,
+  'pdf-unlock': Unlock,
+  'pdf-lock': Lock,
+  'pdf-rotate': Rotate3D,
+  'add-watermark': Droplet,
+  'add-page-numbers': Hash,
+  'extract-text': Type,
+  'text-to-pdf': FileText,
+  'pdf-metadata': Edit3,
+  'ocr-pdf': Scan,
+  'sign-pdf': Edit3,
+  'organize-pages': Shuffle,
+  'repair-pdf': CheckCircle,
   'pdf-ocr': Scan,
   'pdf-page-numberer': Hash,
   'pdf-password-protector': Lock,

@@ -20,7 +20,7 @@ export default function ToolIcon({ toolId, className = "", size = 'md', animate 
 
   // Convert toolId to proper format for animated icons
   const getAnimatedIcon = (id: string) => {
-    // PDF Tools
+    // PDF Tools - Enhanced mapping
     const pdfIconMap: Record<string, keyof typeof AnimatedToolIcons> = {
       'pdf-splitter': 'Split',
       'pdf-merger': 'Merge', 
@@ -31,14 +31,22 @@ export default function ToolIcon({ toolId, className = "", size = 'md', animate 
       'excel-to-pdf': 'ExcelToPDF',
       'pdf-to-jpg': 'PDFToJPG',
       'jpg-to-pdf': 'JPGToPDF',
+      'pdf-unlock': 'Unlock',
       'pdf-unlocker': 'Unlock',
+      'pdf-password-remover': 'Unlock',
+      'pdf-lock': 'Protect',
       'pdf-protector': 'Protect',
+      'pdf-password-protector': 'Protect',
       'pdf-rotator': 'Rotate',
+      'pdf-rotate': 'Rotate',
+      'pdf-to-image': 'PDFToJPG',
+      'image-to-pdf': 'JPGToPDF',
     };
 
-    // Image Tools
+    // Image Tools - Enhanced mapping
     const imageIconMap: Record<string, keyof typeof AnimatedImageIcons> = {
       'background-remover': 'BackgroundRemover',
+      'bg-remover': 'BackgroundRemover',
       'image-resizer': 'ImageResizer',
       'image-compressor': 'ImageCompressor',
       'image-cropper': 'ImageCropper',
@@ -46,7 +54,7 @@ export default function ToolIcon({ toolId, className = "", size = 'md', animate 
       'image-converter': 'ImageConverter',
     };
 
-    // Media Tools
+    // Media Tools - Enhanced mapping
     const mediaIconMap: Record<string, keyof typeof AnimatedMediaIcons> = {
       'video-converter': 'VideoConverter',
       'audio-converter': 'AudioConverter',
@@ -54,6 +62,7 @@ export default function ToolIcon({ toolId, className = "", size = 'md', animate 
       'audio-extractor': 'AudioExtractor',
       'gif-maker': 'GIFMaker',
       'video-trimmer': 'VideoTrimmer',
+      'video-to-gif': 'GIFMaker',
     };
 
     if (pdfIconMap[id]) {
@@ -71,7 +80,7 @@ export default function ToolIcon({ toolId, className = "", size = 'md', animate 
   const animatedIcon = getAnimatedIcon(toolId);
   
   // Use animated icon if available, otherwise fallback to regular icon
-  if (animatedIcon) {
+  if (animatedIcon && animate) {
     let AnimatedIcon;
     switch (animatedIcon.type) {
       case 'pdf':
@@ -92,7 +101,7 @@ export default function ToolIcon({ toolId, className = "", size = 'md', animate 
     }
   }
 
-  // Fallback to regular icon
+  // Always fallback to regular Lucide icon from tool-icons.ts
   const IconComponent = getToolIcon(toolId);
   return (
     <IconComponent 
