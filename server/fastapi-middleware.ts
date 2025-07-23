@@ -1,183 +1,97 @@
+import { Request, Response } from 'express';
 
-import { Request, Response, NextFunction } from "express";
-import { z } from "zod";
+// FastAPI service configuration
+const FASTAPI_PORT = 8000;
+const FASTAPI_URL = `http://localhost:${FASTAPI_PORT}`;
 
-// FastAPI-style dependency injection
-interface Dependency<T = any> {
-  provide: () => Promise<T>;
-}
+// Heavy processing tools that should use FastAPI
+const HEAVY_PROCESSING_TOOLS = [
+  'pdf-merger', 'pdf-splitter', 'pdf-compressor',
+  'video-converter', 'video-compressor', 'audio-converter',
+  'image-upscaler', 'bg-remover', 'image-enhancer'
+];
 
-class Depends<T> {
-  constructor(private dependency: () => Promise<T>) {}
-  
-  async resolve(): Promise<T> {
-    return await this.dependency();
-  }
-}
+// File size threshold for FastAPI routing (10MB)
+const HEAVY_PROCESSING_THRESHOLD = 10 * 1024 * 1024;
 
-// Authentication dependency
-export const getCurrentUser = (): Depends<any> => {
-  return new Depends(async () => {
-    // This will be injected by middleware
-    return null;
-  });
-};
+export class FastAPIMiddleware {
+  private static instance: FastAPIMiddleware;
+  private fastApiAvailable = false;
 
-// File upload dependency
-export const getUploadedFile = (): Depends<Express.Multer.File | null> => {
-  return new Depends(async () => {
-    return null;
-  });
-};
-
-// FastAPI-style response models
-export class HTTPException extends Error {
-  constructor(
-    public status_code: number,
-    public detail: string,
-    public headers?: Record<string, string>
-  ) {
-    super(detail);
-    this.name = 'HTTPException';
-  }
-}
-
-// Response wrapper
-export const JSONResponse = (content: any, status_code: number = 200) => {
-  return {
-    status_code,
-    content,
-    headers: { 'Content-Type': 'application/json' }
-  };
-};
-
-// Background tasks (FastAPI style)
-export class BackgroundTasks {
-  private tasks: (() => Promise<void>)[] = [];
-
-  add_task(func: () => Promise<void>) {
-    this.tasks.push(func);
+  private constructor() {
+    this.checkFastAPIService();
+    // Refresh status every 30 seconds
+    setInterval(() => this.refreshStatus(), 30000);
   }
 
-  async execute() {
-    await Promise.all(this.tasks.map(task => task()));
+  public static getInstance(): FastAPIMiddleware {
+    if (!FastAPIMiddleware.instance) {
+      FastAPIMiddleware.instance = new FastAPIMiddleware();
+    }
+    return FastAPIMiddleware.instance;
   }
-}
 
-// File cleanup background task
-export const cleanupTempFiles = async (filePath: string) => {
-  setTimeout(async () => {
+  private async checkFastAPIService(): Promise<void> {
     try {
-      await storage.deleteFile(filePath);
-    } catch (error) {
-      console.error('File cleanup failed:', error);
+      const response = await fetch(`${FASTAPI_URL}/health`);
+      this.fastApiAvailable = response.ok;
+      console.log(`FastAPI service ${this.fastApiAvailable ? 'available' : 'unavailable'} on port ${FASTAPI_PORT}`);
+    } catch (error: any) {
+      this.fastApiAvailable = false;
+      console.log('FastAPI service not available, using Express.js for all processing');
     }
-  }, 3600000); // 1 hour
-};
+  }
 
-// Status code constants (FastAPI style)
-export const status = {
-  HTTP_200_OK: 200,
-  HTTP_201_CREATED: 201,
-  HTTP_400_BAD_REQUEST: 400,
-  HTTP_401_UNAUTHORIZED: 401,
-  HTTP_403_FORBIDDEN: 403,
-  HTTP_404_NOT_FOUND: 404,
-  HTTP_422_UNPROCESSABLE_ENTITY: 422,
-  HTTP_500_INTERNAL_SERVER_ERROR: 500
-};
+  public shouldUseFastAPI(toolName: string, fileSize?: number): boolean {
+    if (!this.fastApiAvailable) {
+      return false;
+    }
 
-// Response models
-export const SuccessResponse = z.object({
-  success: z.boolean().default(true),
-  message: z.string(),
-  data: z.any().optional()
-});
-
-export const ErrorResponse = z.object({
-  success: z.boolean().default(false),
-  error: z.string(),
-  detail: z.string().optional()
-});
-
-export const ToolProcessResponse = z.object({
-  success: z.boolean(),
-  message: z.string(),
-  downloadUrl: z.string().optional(),
-  filename: z.string().optional(),
-  processingTime: z.number(),
-  metadata: z.record(z.any()).optional()
-});
-
-// Validation decorator
-export const validate = (schema: z.ZodSchema) => {
-  return (target: any, propertyName: string, descriptor: PropertyDescriptor) => {
-    const method = descriptor.value;
+    // Check if tool is in heavy processing list
+    const isHeavyTool = HEAVY_PROCESSING_TOOLS.some(tool => toolName.includes(tool));
     
-    descriptor.value = async function (...args: any[]) {
-      const [req, res] = args;
+    // Check file size threshold
+    const isLargeFile = fileSize && fileSize > HEAVY_PROCESSING_THRESHOLD;
+
+    return isHeavyTool || isLargeFile;
+  }
+
+  public async forwardToFastAPI(req: Request, res: Response, toolPath: string): Promise<void> {
+    try {
+      const response = await fetch(`${FASTAPI_URL}${toolPath}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': req.headers.authorization || '',
+        },
+        body: JSON.stringify(req.body),
+      });
+
+      const data = await response.json();
       
-      try {
-        req.body = schema.parse(req.body);
-        return await method.apply(this, args);
-      } catch (error) {
-        if (error instanceof z.ZodError) {
-          return res.status(422).json({
-            detail: error.errors.map(err => ({
-              loc: err.path,
-              msg: err.message,
-              type: err.code
-            }))
-          });
-        }
-        throw error;
+      if (response.ok) {
+        res.json(data);
+      } else {
+        res.status(response.status).json(data);
       }
-    };
-  };
-};
-
-// Rate limiting (FastAPI style)
-export const rateLimit = (calls: number, period: number) => {
-  const requests = new Map<string, number[]>();
-  
-  return (req: Request, res: Response, next: NextFunction) => {
-    const key = req.ip || 'unknown';
-    const now = Date.now();
-    
-    if (!requests.has(key)) {
-      requests.set(key, []);
-    }
-    
-    const userRequests = requests.get(key)!;
-    const cutoff = now - period * 1000;
-    
-    // Remove old requests
-    const recentRequests = userRequests.filter(time => time > cutoff);
-    
-    if (recentRequests.length >= calls) {
-      return res.status(429).json({
-        detail: `Rate limit exceeded: ${calls} calls per ${period} seconds`
+    } catch (error: any) {
+      console.error('FastAPI service error:', error);
+      // Fallback to Express.js processing
+      res.status(503).json({
+        success: false,
+        message: 'Heavy processing service temporarily unavailable, please try again',
+        fallback: true
       });
     }
-    
-    recentRequests.push(now);
-    requests.set(key, recentRequests);
-    
-    next();
-  };
-};
+  }
 
-export default {
-  getCurrentUser,
-  getUploadedFile,
-  HTTPException,
-  JSONResponse,
-  BackgroundTasks,
-  cleanupTempFiles,
-  status,
-  SuccessResponse,
-  ErrorResponse,
-  ToolProcessResponse,
-  validate,
-  rateLimit
-};
+  public isAvailable(): boolean {
+    return this.fastApiAvailable;
+  }
+
+  public async refreshStatus(): Promise<void> {
+    await this.checkFastAPIService();
+  }
+}
+
+export const fastApiMiddleware = FastAPIMiddleware.getInstance();

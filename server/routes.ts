@@ -6,6 +6,7 @@ import { z } from "zod";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { api } from "./api-router";
+import { fastApiMiddleware } from "./fastapi-middleware";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
@@ -463,10 +464,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     { endpoint: 'pdf-version-converter', name: 'PDF Version Converter', category: 'PDF' }
   ];
 
-  // Generate all PDF tool endpoints (without authentication requirement for processing)
+  // Generate all PDF tool endpoints with hybrid routing (Express.js + FastAPI)
   pdfTools.forEach(({ endpoint, name, category }) => {
     app.post(`/api/tools/${endpoint}`, async (req: any, res) => {
       const startTime = Date.now();
+      
+      // Check if should use FastAPI for heavy processing
+      const fileSize = req.body.fileSize || 0;
+      if (fastApiMiddleware.shouldUseFastAPI(endpoint, fileSize)) {
+        console.log(`🚀 Routing ${endpoint} to FastAPI service (heavy processing) - File size: ${fileSize}MB`);
+        return await fastApiMiddleware.forwardToFastAPI(req, res, `/api/tools/pdf/${endpoint.replace('pdf-', '')}`);
+      }
+      
+      console.log(`⚡ Processing ${endpoint} with Express.js (light processing)`);
       try {
         // Simulate processing time based on tool complexity
         const processingTime = Math.random() * 3000 + 1000; // 1-4 seconds
