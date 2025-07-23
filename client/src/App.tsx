@@ -89,6 +89,13 @@ import ImageUpscalePage from "@/pages/tool/image-upscale";
 import ImageBlurToolPage from "@/pages/tool/image-blur-tool";
 import ImageBorderAdderPage from "@/pages/tool/image-border-adder";
 import ImageMetadataExtractorPage from "@/pages/tool/image-metadata-extractor";
+import WatermarkAddPage from "@/pages/tool/watermark-add";
+import ImageSharpenPage from "@/pages/tool/image-sharpen";
+import MemeGeneratorPage from "@/pages/tool/meme-generator";
+import AudioExtractorPage from "@/pages/tool/audio-extractor";
+import VideoResizerPage from "@/pages/tool/video-resizer";
+import PassportPhotoPage from "@/pages/tool/passport-photo";
+import RentAgreementPage from "@/pages/tool/rent-agreement";
 import NotFound from "@/pages/not-found";
 import HelpCenter from "@/pages/help";
 import Contact from "@/pages/contact";
@@ -170,6 +177,13 @@ function Router() {
       <Route path="/tool/image-blur-tool" component={ImageBlurToolPage} />
       <Route path="/tool/image-border-adder" component={ImageBorderAdderPage} />
       <Route path="/tool/image-metadata-extractor" component={ImageMetadataExtractorPage} />
+      <Route path="/tool/watermark-add" component={WatermarkAddPage} />
+      <Route path="/tool/image-sharpen" component={ImageSharpenPage} />
+      <Route path="/tool/meme-generator" component={MemeGeneratorPage} />
+      <Route path="/tool/audio-extractor" component={AudioExtractorPage} />
+      <Route path="/tool/video-resizer" component={VideoResizerPage} />
+      <Route path="/tool/passport-photo" component={PassportPhotoPage} />
+      <Route path="/tool/rent-agreement" component={RentAgreementPage} />
 
       {/* Audio/Video Tools */}
       <Route path="/tool/audio-converter" component={AudioConverterPage} />

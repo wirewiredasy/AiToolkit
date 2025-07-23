@@ -259,3 +259,80 @@ export default function VideoResizerPage() {
     </div>
   );
 }
+import { ToolTemplate } from "@/components/ui/tool-template";
+import { Monitor } from "lucide-react";
+
+export default function VideoResizerPage() {
+  return (
+    <ToolTemplate
+      toolId="video-resizer"
+      toolName="Video Resizer"
+      description="Resize videos to different dimensions and aspect ratios. Perfect for social media, web, or device-specific requirements."
+      icon={<Monitor className="h-8 w-8 text-white" />}
+      acceptedFiles={{ "video/*": [".mp4", ".avi", ".mov", ".wmv", ".flv", ".mkv", ".webm"] }}
+      maxFileSize={1000 * 1024 * 1024}
+      allowMultiple={false}
+      settings={[
+        {
+          key: "resizeMode",
+          label: "Resize Mode",
+          type: "select",
+          options: ["Preset Dimensions", "Custom Size", "Aspect Ratio", "Scale Percentage"],
+          defaultValue: "Preset Dimensions",
+          required: true,
+          description: "Method for resizing video"
+        },
+        {
+          key: "presetSize",
+          label: "Preset Size",
+          type: "select",
+          options: ["1920x1080 (Full HD)", "1280x720 (HD)", "854x480 (SD)", "640x360", "1080x1920 (Vertical)", "720x1280 (Vertical)", "Custom"],
+          defaultValue: "1280x720 (HD)",
+          description: "Standard video dimensions"
+        },
+        {
+          key: "aspectRatio",
+          label: "Aspect Ratio",
+          type: "select",
+          options: ["16:9", "4:3", "1:1", "9:16", "21:9", "Original"],
+          defaultValue: "16:9",
+          description: "Video aspect ratio"
+        },
+        {
+          key: "scalePercentage",
+          label: "Scale Percentage",
+          type: "select",
+          options: ["25%", "50%", "75%", "125%", "150%", "200%"],
+          defaultValue: "100%",
+          description: "Scale video by percentage"
+        },
+        {
+          key: "maintainQuality",
+          label: "Maintain Quality",
+          type: "switch",
+          defaultValue: true,
+          description: "Preserve video quality during resize"
+        },
+        {
+          key: "cropMode",
+          label: "Crop Mode",
+          type: "select",
+          options: ["Letterbox", "Crop", "Stretch", "Smart Crop"],
+          defaultValue: "Letterbox",
+          description: "How to handle aspect ratio changes"
+        },
+        {
+          key: "outputFormat",
+          label: "Output Format",
+          type: "select",
+          options: ["MP4", "AVI", "MOV", "WEBM"],
+          defaultValue: "MP4",
+          description: "Output video format"
+        }
+      ]}
+      endpoint="/api/tools/video-resizer"
+      gradientFrom="from-blue-500"
+      gradientTo="to-indigo-600"
+    />
+  );
+}

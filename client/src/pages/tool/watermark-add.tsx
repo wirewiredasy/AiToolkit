@@ -229,3 +229,87 @@ export default function WatermarkAddPage() {
     </div>
   );
 }
+import { ToolTemplate } from "@/components/ui/tool-template";
+import { Shield } from "lucide-react";
+
+export default function WatermarkAddPage() {
+  return (
+    <ToolTemplate
+      toolId="watermark-add"
+      toolName="Watermark Adder"
+      description="Add professional watermarks to protect your images. Add text, logo, or image watermarks with customizable opacity, position, and styling."
+      icon={<Shield className="h-8 w-8 text-white" />}
+      acceptedFiles={{ "image/*": [".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp"] }}
+      maxFileSize={50 * 1024 * 1024}
+      allowMultiple={false}
+      settings={[
+        {
+          key: "watermarkType",
+          label: "Watermark Type",
+          type: "select",
+          options: ["Text", "Logo/Image", "Both"],
+          defaultValue: "Text",
+          required: true,
+          description: "Type of watermark to add"
+        },
+        {
+          key: "watermarkText",
+          label: "Watermark Text",
+          type: "text",
+          placeholder: "© Your Company Name",
+          description: "Text to display as watermark"
+        },
+        {
+          key: "textSize",
+          label: "Text Size",
+          type: "select",
+          options: ["Small", "Medium", "Large", "Extra Large"],
+          defaultValue: "Medium",
+          description: "Size of watermark text"
+        },
+        {
+          key: "position",
+          label: "Position",
+          type: "select",
+          options: ["Bottom Right", "Bottom Left", "Top Right", "Top Left", "Center", "Custom"],
+          defaultValue: "Bottom Right",
+          description: "Watermark position on image"
+        },
+        {
+          key: "opacity",
+          label: "Opacity (%)",
+          type: "select",
+          options: ["10", "20", "30", "40", "50", "60", "70", "80", "90", "100"],
+          defaultValue: "50",
+          description: "Transparency of watermark"
+        },
+        {
+          key: "color",
+          label: "Text Color",
+          type: "select",
+          options: ["White", "Black", "Gray", "Red", "Blue", "Green", "Yellow", "Custom"],
+          defaultValue: "White",
+          description: "Color of watermark text"
+        },
+        {
+          key: "fontStyle",
+          label: "Font Style",
+          type: "select",
+          options: ["Arial", "Times", "Helvetica", "Impact", "Bold", "Italic"],
+          defaultValue: "Arial",
+          description: "Font style for watermark"
+        },
+        {
+          key: "repeatPattern",
+          label: "Repeat Pattern",
+          type: "switch",
+          defaultValue: false,
+          description: "Repeat watermark across entire image"
+        }
+      ]}
+      endpoint="/api/tools/watermark-add"
+      gradientFrom="from-blue-500"
+      gradientTo="to-cyan-600"
+    />
+  );
+}

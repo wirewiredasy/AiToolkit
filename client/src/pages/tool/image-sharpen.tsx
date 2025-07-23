@@ -205,3 +205,79 @@ export default function ImageSharpenPage() {
     </div>
   );
 }
+import { ToolTemplate } from "@/components/ui/tool-template";
+import { Focus } from "lucide-react";
+
+export default function ImageSharpenPage() {
+  return (
+    <ToolTemplate
+      toolId="image-sharpen"
+      toolName="Image Sharpener"
+      description="Enhance image sharpness and clarity. Apply advanced sharpening algorithms to make your images crisp and detailed."
+      icon={<Focus className="h-8 w-8 text-white" />}
+      acceptedFiles={{ "image/*": [".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp"] }}
+      maxFileSize={50 * 1024 * 1024}
+      allowMultiple={false}
+      settings={[
+        {
+          key: "sharpenMethod",
+          label: "Sharpening Method",
+          type: "select",
+          options: ["Unsharp Mask", "Smart Sharpen", "High Pass", "Clarity", "Structure"],
+          defaultValue: "Unsharp Mask",
+          required: true,
+          description: "Algorithm for sharpening"
+        },
+        {
+          key: "intensity",
+          label: "Sharpening Intensity",
+          type: "select",
+          options: ["Very Light", "Light", "Medium", "Strong", "Very Strong"],
+          defaultValue: "Medium",
+          description: "Strength of sharpening effect"
+        },
+        {
+          key: "radius",
+          label: "Sharpen Radius",
+          type: "select",
+          options: ["0.5", "1.0", "1.5", "2.0", "2.5", "3.0"],
+          defaultValue: "1.0",
+          description: "Radius of sharpening effect"
+        },
+        {
+          key: "threshold",
+          label: "Edge Threshold",
+          type: "select",
+          options: ["0", "5", "10", "15", "20", "25"],
+          defaultValue: "10",
+          description: "Threshold for edge detection"
+        },
+        {
+          key: "preserveDetails",
+          label: "Preserve Fine Details",
+          type: "switch",
+          defaultValue: true,
+          description: "Protect fine textures from over-sharpening"
+        },
+        {
+          key: "noiseReduction",
+          label: "Noise Reduction",
+          type: "switch",
+          defaultValue: false,
+          description: "Reduce noise while sharpening"
+        },
+        {
+          key: "outputFormat",
+          label: "Output Format",
+          type: "select",
+          options: ["JPEG", "PNG", "WEBP"],
+          defaultValue: "JPEG",
+          description: "Output image format"
+        }
+      ]}
+      endpoint="/api/tools/image-sharpen"
+      gradientFrom="from-emerald-500"
+      gradientTo="to-teal-600"
+    />
+  );
+}
