@@ -14,6 +14,7 @@ import time
 import tempfile
 import shutil
 from pathlib import Path
+import uvicorn
 
 app = FastAPI(
     title="Suntyn AI Heavy Processing Service",
@@ -265,18 +266,33 @@ async def root():
     return {
         "message": "Suntyn AI FastAPI Heavy Processing Service",
         "version": "1.0.0",
+        "status": "running",
         "available_endpoints": [
-            "/api/tools/pdf/merger",
+            "/api/tools/pdf/merger",  
             "/api/tools/pdf/splitter", 
             "/api/tools/pdf/compressor",
             "/api/tools/video/converter",
-            "/api/tools/video/compressor",
+            "/api/tools/video/compressor", 
             "/api/tools/audio/converter",
             "/api/tools/image/enhancer",
             "/api/tools/image/upscaler",
             "/api/tools/image/bg-remover"
         ]
     }
+
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy", "service": "fastapi"}
+
+if __name__ == "__main__":
+    print("🚀 Starting Suntyn AI FastAPI Heavy Processing Service...")
+    uvicorn.run(
+        "fastapi-service:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=True,
+        log_level="info"
+    )
 
 if __name__ == "__main__":
     import uvicorn

@@ -49,7 +49,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Add multer middleware to API routes
   app.use('/api/tools', upload.array('files', 10)); // Allow up to 10 files
-  
+
   // Simple download endpoint for processed files
   app.get('/api/download/:filename', (req, res) => {
     const filename = req.params.filename;
@@ -65,12 +65,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Mount FastAPI-style router
   app.use('/api', api.getRouter());
-  
+
   // Legacy auth routes (for backward compatibility)
   app.post("/api/auth/signup", async (req, res) => {
     try {
       const validatedData = signupSchema.parse(req.body);
-      
+
       // Check if user already exists
       const existingUser = await storage.getUserByEmail(validatedData.email);
       if (existingUser) {
@@ -79,7 +79,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Hash password
       const hashedPassword = await bcrypt.hash(validatedData.password, 10);
-      
+
       // Create user
       const user = await storage.createUser({
         email: validatedData.email,
@@ -105,7 +105,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/auth/login", async (req, res) => {
     try {
       const validatedData = loginSchema.parse(req.body);
-      
+
       // Find user
       const user = await storage.getUserByEmail(validatedData.email);
       if (!user) {
@@ -160,13 +160,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Tool processing routes (sample implementations)
   app.post("/api/tools/pdf/merge", async (req: any, res) => {
     const startTime = Date.now();
-    
+
     try {
       // Simulate PDF merging process
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       const processingTime = Date.now() - startTime;
-      
+
       // Log tool usage
       await storage.createToolUsage({
         userId: req.user.id,
@@ -187,7 +187,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     } catch (error) {
       const processingTime = Date.now() - startTime;
-      
+
       await storage.createToolUsage({
         userId: req.user.id,
         toolName: "PDF Merger",
@@ -202,13 +202,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/tools/image/resize", async (req: any, res) => {
     const startTime = Date.now();
-    
+
     try {
       // Simulate image resizing process
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       const processingTime = Date.now() - startTime;
-      
+
       await storage.createToolUsage({
         userId: req.user.id,
         toolName: "Image Resizer",
@@ -228,7 +228,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     } catch (error) {
       const processingTime = Date.now() - startTime;
-      
+
       await storage.createToolUsage({
         userId: req.user.id,
         toolName: "Image Resizer",
@@ -243,13 +243,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/tools/audio/convert", async (req: any, res) => {
     const startTime = Date.now();
-    
+
     try {
       // Simulate audio conversion process
       await new Promise(resolve => setTimeout(resolve, 3000));
-      
+
       const processingTime = Date.now() - startTime;
-      
+
       await storage.createToolUsage({
         userId: req.user.id,
         toolName: "Audio Converter",
@@ -269,7 +269,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     } catch (error) {
       const processingTime = Date.now() - startTime;
-      
+
       await storage.createToolUsage({
         userId: req.user.id,
         toolName: "Audio Converter",
@@ -288,7 +288,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
       const processingTime = Date.now() - startTime;
-      
+
       await storage.createToolUsage({
         userId: req.user.id,
         toolName: "PDF to Word",
@@ -315,7 +315,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
       const processingTime = Date.now() - startTime;
-      
+
       await storage.createToolUsage({
         userId: req.user.id,
         toolName: "PDF Splitter",
@@ -342,7 +342,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
       const processingTime = Date.now() - startTime;
-      
+
       await storage.createToolUsage({
         userId: req.user.id,
         toolName: "PDF Compressor",
@@ -369,7 +369,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { width, height } = req.body;
       await new Promise(resolve => setTimeout(resolve, 1000));
       const processingTime = Date.now() - startTime;
-      
+
       await storage.createToolUsage({
         userId: req.user.id,
         toolName: "Image Resizer",
@@ -397,7 +397,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       await new Promise(resolve => setTimeout(resolve, 3000));
       const processingTime = Date.now() - startTime;
-      
+
       await storage.createToolUsage({
         userId: req.user.id,
         toolName: "AI Background Remover",
@@ -422,7 +422,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
       const processingTime = Date.now() - startTime;
-      
+
       await storage.createToolUsage({
         userId: req.user.id,
         toolName: "Audio Converter",
@@ -446,7 +446,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       await new Promise(resolve => setTimeout(resolve, 4000));
       const processingTime = Date.now() - startTime;
-      
+
       await storage.createToolUsage({
         userId: req.user.id,
         toolName: "Video Converter",
@@ -498,27 +498,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
   pdfTools.forEach(({ endpoint, name, category }) => {
     app.post(`/api/tools/${endpoint}`, async (req: any, res) => {
       const startTime = Date.now();
-      
+
       // Check if should use FastAPI for heavy processing
       const fileSize = req.body.fileSize || 0;
       if (fastApiMiddleware.shouldUseFastAPI(endpoint, fileSize)) {
         console.log(`🚀 Routing ${endpoint} to FastAPI service (heavy processing) - File size: ${fileSize}MB`);
         return await fastApiMiddleware.forwardToFastAPI(req, res, `/api/tools/pdf/${endpoint.replace('pdf-', '')}`);
       }
-      
+
       console.log(`⚡ Processing ${endpoint} with Express.js (light processing)`);
       try {
         // Simulate processing time based on tool complexity
         const processingTime = Math.random() * 3000 + 1000; // 1-4 seconds
         await new Promise(resolve => setTimeout(resolve, processingTime));
-        
+
         const actualProcessingTime = Date.now() - startTime;
-        
+
         // Only log usage if user is authenticated
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
         let userId: number | undefined;
-        
+
         if (token) {
           try {
             const decoded = jwt.verify(token, JWT_SECRET) as any;
@@ -530,7 +530,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             // User not authenticated, continue without logging
           }
         }
-        
+
         if (userId) {
           await storage.createToolUsage({
             userId,
@@ -554,12 +554,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       } catch (error) {
         const actualProcessingTime = Date.now() - startTime;
-        
+
         // Only log usage if user is authenticated
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
         let userId: number | undefined;
-        
+
         if (token) {
           try {
             const decoded = jwt.verify(token, JWT_SECRET) as any;
@@ -571,7 +571,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             // User not authenticated, continue without logging
           }
         }
-        
+
         if (userId) {
           await storage.createToolUsage({
             userId,
@@ -618,14 +618,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         const processingTime = Math.random() * 4000 + 1500; // 1.5-5.5 seconds
         await new Promise(resolve => setTimeout(resolve, processingTime));
-        
+
         const actualProcessingTime = Date.now() - startTime;
-        
+
         // Only log usage if user is authenticated
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
         let userId: number | undefined;
-        
+
         if (token) {
           try {
             const decoded = jwt.verify(token, JWT_SECRET) as any;
@@ -637,7 +637,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             // User not authenticated, continue without logging
           }
         }
-        
+
         if (userId) {
           await storage.createToolUsage({
             userId,
@@ -661,12 +661,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       } catch (error) {
         const actualProcessingTime = Date.now() - startTime;
-        
+
         // Only log usage if user is authenticated
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
         let userId: number | undefined;
-        
+
         if (token) {
           try {
             const decoded = jwt.verify(token, JWT_SECRET) as any;
@@ -678,7 +678,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             // User not authenticated, continue without logging
           }
         }
-        
+
         if (userId) {
           await storage.createToolUsage({
             userId,
@@ -725,9 +725,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         const processingTime = Math.random() * 6000 + 2000; // 2-8 seconds
         await new Promise(resolve => setTimeout(resolve, processingTime));
-        
+
         const actualProcessingTime = Date.now() - startTime;
-        
+
         await storage.createToolUsage({
           userId: req.user.id,
           toolName: name,
@@ -749,7 +749,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       } catch (error) {
         const actualProcessingTime = Date.now() - startTime;
-        
+
         await storage.createToolUsage({
           userId: req.user.id,
           toolName: name,
@@ -787,12 +787,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const panNumber = req.body.panNumber;
       const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
       const isValid = panRegex.test(panNumber);
-      
+
       const processingTime = Date.now() - startTime;
-      
+
       await storage.createToolUsage({
         userId: req.user.id,
         toolName: "PAN Validator",
+```text
         toolCategory: "Government",
         processingTime,
         success: true,
@@ -818,9 +819,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const gstNumber = req.body.gstNumber;
       const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}[Z]{1}[0-9A-Z]{1}$/;
       const isValid = gstRegex.test(gstNumber);
-      
+
       const processingTime = Date.now() - startTime;
-      
+
       await storage.createToolUsage({
         userId: req.user.id,
         toolName: "GST Validator",
@@ -867,7 +868,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const aadhaarNumber = req.body.aadhaarNumber?.replace(/\s/g, '');
       const aadhaarRegex = /^[0-9]{12}$/;
       const isValid = aadhaarRegex.test(aadhaarNumber);
-      
+
       await storage.createToolUsage({
         userId: req.user.id,
         toolName: "Aadhaar Validator",
@@ -1171,7 +1172,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         const inputValue = req.body.inputValue?.replace(/\s/g, '').toUpperCase();
         const isValid = regex.test(inputValue);
-        
+
         await storage.createToolUsage({
           userId: req.user.id,
           toolName: name,
@@ -1265,3 +1266,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
   return httpServer;
 }
+
+// Enhanced error handling middleware
+  app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
+    const status = err.status || err.statusCode || 500;
+    let message = err.message || "Internal Server Error";
+
+    // Make error messages more user-friendly
+    if (status === 413) {
+      message = "File size too large. Please use a file smaller than 50MB.";
+    } else if (status === 415) {
+      message = "Unsupported file format. Please check the supported formats for this tool.";
+    } else if (status === 429) {
+      message = "Too many requests. Please wait a moment before trying again.";
+    }
+
+    // Log error with more context
+    console.error('Server error:', {
+      error: err.name || 'UnknownError',
+      message: err.message,
+      url: req.url,
+      method: req.method,
+      status,
+      userAgent: req.get('User-Agent'),
+      ip: req.ip,
+      timestamp: new Date().toISOString()
+    });
+
+    // Don't expose internal errors in production
+    const shouldExposeStack = process.env.NODE_ENV === 'development' && status < 500;
+
+    res.status(status).json({ 
+      success: false,
+      message,
+      errorCode: err.code || 'UNKNOWN_ERROR',
+      timestamp: new Date().toISOString(),
+      ...(shouldExposeStack && { stack: err.stack })
+    });
+  });

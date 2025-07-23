@@ -33,7 +33,7 @@ export default function FileUpload({
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(false);
-    
+
     const droppedFiles = Array.from(e.dataTransfer.files);
     handleFiles(droppedFiles);
   }, []);
@@ -84,7 +84,7 @@ export default function FileUpload({
           <p className="text-neutral-600 mb-4">
             or click to browse from your device
           </p>
-          
+
           <input
             type="file"
             accept={accept}
@@ -93,13 +93,13 @@ export default function FileUpload({
             className="hidden"
             id="file-input"
           />
-          
+
           <Button asChild>
             <label htmlFor="file-input" className="cursor-pointer">
               Select Files
             </label>
           </Button>
-          
+
           <p className="text-sm text-neutral-500 mt-4">
             Maximum file size: {maxSize}MB per file
           </p>

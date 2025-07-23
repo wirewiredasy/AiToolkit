@@ -15,13 +15,49 @@ const HEAVY_PROCESSING_TOOLS = [
 const HEAVY_PROCESSING_THRESHOLD = 10 * 1024 * 1024;
 
 export class FastAPIMiddleware {
-  private static instance: FastAPIMiddleware;
-  private fastApiAvailable = false;
+  private baseUrl = 'http://localhost:8000';
+  private isAvailable = false;
+  private lastCheck = 0;
+  private checkInterval = 30000; // 30 seconds
 
-  private constructor() {
-    this.checkFastAPIService();
-    // Refresh status every 30 seconds
-    setInterval(() => this.refreshStatus(), 30000);
+  constructor() {
+    this.checkAvailability();
+    // Check availability periodically
+    setInterval(() => this.checkAvailability(), this.checkInterval);
+  }
+
+  private async checkAvailability() {
+    const now = Date.now();
+    if (now - this.lastCheck < 5000) return; // Don't check too frequently
+
+    this.lastCheck = now;
+
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+
+      const response = await fetch(`${this.baseUrl}/health`, {
+        signal: controller.signal,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      clearTimeout(timeout);
+
+      if (response.ok) {
+        const data = await response.json();
+        this.isAvailable = data.status === 'healthy';
+        if (this.isAvailable && now - this.lastCheck > 30000) {
+          console.log('✅ FastAPI service connected successfully');  
+        }
+      } else {
+        this.isAvailable = false;
+      }
+    } catch (error) {
+      this.isAvailable = false;
+      if (now - this.lastCheck > 60000) { // Only log every minute
+        console.log('⚠️ FastAPI service not available, using Express.js for all processing');
+      }
+    }
   }
 
   public static getInstance(): FastAPIMiddleware {
@@ -43,13 +79,13 @@ export class FastAPIMiddleware {
   }
 
   public shouldUseFastAPI(toolName: string, fileSize?: number): boolean {
-    if (!this.fastApiAvailable) {
+    if (!this.isAvailable) {
       return false;
     }
 
     // Check if tool is in heavy processing list
     const isHeavyTool = HEAVY_PROCESSING_TOOLS.some(tool => toolName.includes(tool));
-    
+
     // Check file size threshold
     const isLargeFile = fileSize ? fileSize > HEAVY_PROCESSING_THRESHOLD : false;
 
@@ -68,7 +104,7 @@ export class FastAPIMiddleware {
       });
 
       const data = await response.json();
-      
+
       if (response.ok) {
         res.json(data);
       } else {
@@ -86,11 +122,11 @@ export class FastAPIMiddleware {
   }
 
   public isAvailable(): boolean {
-    return this.fastApiAvailable;
+    return this.isAvailable;
   }
 
   public async refreshStatus(): Promise<void> {
-    await this.checkFastAPIService();
+    await this.checkAvailability();
   }
 }
 
