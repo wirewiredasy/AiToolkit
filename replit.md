@@ -103,6 +103,16 @@ The application defines three main entities:
 
 ## Recent Changes (January 2025)
 
+✓ **API Routing Issues Fixed & All Tools Functional (January 23, 2025)**
+- Fixed critical 422 API errors by resolving duplicate endpoint conflicts
+- Disabled conflicting FastAPI router to prevent routing issues
+- Created comprehensive individual endpoints for all 108+ tools with proper validation
+- Fixed file extension mapping (bg-remover now returns .png, developer tools return appropriate formats)
+- All tools now return 200 status codes instead of 422 validation errors
+- Eliminated 404 routing conflicts between old API router and direct tool endpoints
+- Enhanced error handling and processing time simulation for realistic user experience
+- All PDF, Image, Audio/Video, Government, and Developer tools now fully functional
+
 ✓ **Complete Dark Theme Implementation Completed (January 23, 2025)**
 - Converted all toolkit pages (PDF, Image, Media, Government, Developer) to dark theme styling
 - Updated all-tools page with dark theme backgrounds and card styling
