@@ -62,12 +62,26 @@ import ImageConverterPage from "@/pages/tool/image-converter";
 import ImageCropperPage from "@/pages/tool/image-cropper";
 import ImageRotatorPage from "@/pages/tool/image-rotator";
 import ImageColorizerPage from "@/pages/tool/image-colorizer";
+import ImageFlipperPage from "@/pages/tool/image-flipper";
+import ImageFilterPage from "@/pages/tool/image-filter";
+import WatermarkAddPage from "@/pages/tool/watermark-add";
+import ImageBlurPage from "@/pages/tool/image-blur";
+import MemeGeneratorPage from "@/pages/tool/meme-generator";
 import AudioCompressorPage from "@/pages/tool/audio-compressor";
 import AudioMergerPage from "@/pages/tool/audio-merger";
+import AudioExtractorPage from "@/pages/tool/audio-extractor";
+import VolumeChangerPage from "@/pages/tool/volume-changer";
+import SpeedChangerPage from "@/pages/tool/speed-changer";
 import VideoCompressorPage from "@/pages/tool/video-compressor";
 import VideoMergerPage from "@/pages/tool/video-merger";
 import VideoToGifPage from "@/pages/tool/video-to-gif";
 import GifToVideoPage from "@/pages/tool/gif-to-video";
+import AadhaarMaskerPage from "@/pages/tool/aadhaar-masker";
+import IncomeCertificatePage from "@/pages/tool/income-certificate";
+import AudioNormalizerPage from "@/pages/tool/audio-normalizer";
+import ImageSharpenPage from "@/pages/tool/image-sharpen";
+import VideoResizerPage from "@/pages/tool/video-resizer";
+import NoiseReducerPage from "@/pages/tool/noise-reducer";
 import NotFound from "@/pages/not-found";
 import HelpCenter from "@/pages/help";
 import Contact from "@/pages/contact";
@@ -136,6 +150,12 @@ function Router() {
       <Route path="/tool/image-cropper" component={ImageCropperPage} />
       <Route path="/tool/image-rotator" component={ImageRotatorPage} />
       <Route path="/tool/image-colorizer" component={ImageColorizerPage} />
+      <Route path="/tool/image-flipper" component={ImageFlipperPage} />
+      <Route path="/tool/image-filter" component={ImageFilterPage} />
+      <Route path="/tool/watermark-add" component={WatermarkAddPage} />
+      <Route path="/tool/image-blur" component={ImageBlurPage} />
+      <Route path="/tool/image-sharpen" component={ImageSharpenPage} />
+      <Route path="/tool/meme-generator" component={MemeGeneratorPage} />
 
       {/* Audio/Video Tools */}
       <Route path="/tool/audio-converter" component={AudioConverterPage} />
@@ -145,8 +165,14 @@ function Router() {
       <Route path="/tool/video-trimmer" component={VideoTrimmerPage} />
       <Route path="/tool/audio-compressor" component={AudioCompressorPage} />
       <Route path="/tool/audio-merger" component={AudioMergerPage} />
+      <Route path="/tool/audio-extractor" component={AudioExtractorPage} />
+      <Route path="/tool/volume-changer" component={VolumeChangerPage} />
+      <Route path="/tool/speed-changer" component={SpeedChangerPage} />
+      <Route path="/tool/audio-normalizer" component={AudioNormalizerPage} />
+      <Route path="/tool/noise-reducer" component={NoiseReducerPage} />
       <Route path="/tool/video-compressor" component={VideoCompressorPage} />
       <Route path="/tool/video-merger" component={VideoMergerPage} />
+      <Route path="/tool/video-resizer" component={VideoResizerPage} />
       <Route path="/tool/video-to-gif" component={VideoToGifPage} />
       <Route path="/tool/gif-to-video" component={GifToVideoPage} />
 
@@ -160,8 +186,8 @@ function Router() {
       <Route path="/tool/aadhaar-validator" component={AadhaarValidator} />
       <Route path="/tool/voter-id-validator" component={VoterIDValidatorPage} />
       <Route path="/tool/passport-validator" component={PassportValidatorPage} />
-      <Route path="/tool/driving-license-validator" component={DrivingLicenseValidatorPage} />
-      <Route path="/tool/ifsc-validator" component={IFSCValidatorPage} />
+      <Route path="/tool/aadhaar-masker" component={AadhaarMaskerPage} />
+      <Route path="/tool/income-certificate" component={IncomeCertificatePage} />
 
       {/* Footer Pages */}
       <Route path="/help" component={HelpCenter} />
