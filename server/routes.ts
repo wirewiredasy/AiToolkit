@@ -41,7 +41,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     limits: {
       fileSize: 50 * 1024 * 1024 // 50MB limit
     },
-    fileFilter: (req, file, cb) => {
+    fileFilter: (req: any, file: any, cb: any) => {
       // Allow all file types but validate based on tool requirements
       cb(null, true);
     }

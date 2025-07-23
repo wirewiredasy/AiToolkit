@@ -4,28 +4,65 @@ import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
 
-// Security middleware
+// Enhanced CORS and security middleware
 app.use((req, res, next) => {
-  // CORS headers
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  // Enhanced CORS headers
+  const origin = req.headers.origin;
+  if (origin) {
+    res.header("Access-Control-Allow-Origin", origin);
+  } else {
+    res.header("Access-Control-Allow-Origin", "*");
+  }
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, x-auth-token");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
   
-  // Security headers
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+    return;
+  }
+  
+  // Enhanced security headers
   res.header("X-Content-Type-Options", "nosniff");
-  res.header("X-Frame-Options", "DENY");
+  res.header("X-Frame-Options", "SAMEORIGIN");
   res.header("X-XSS-Protection", "1; mode=block");
   res.header("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.header("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
   
-  // CSP header
-  res.header("Content-Security-Policy", "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;");
+  // Enhanced CSP header for Vite HMR compatibility
+  res.header("Content-Security-Policy", 
+    "default-src 'self'; " +
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' ws: wss:; " +
+    "style-src 'self' 'unsafe-inline'; " +
+    "img-src 'self' data: https: blob:; " +
+    "font-src 'self' data:; " +
+    "connect-src 'self' ws: wss: http: https:; " +
+    "worker-src 'self' blob:;"
+  );
   
   next();
 });
 
-// Body parsing with size limits
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: false, limit: '10mb' }));
+// Body parsing with enhanced size limits and error handling
+app.use(express.json({ 
+  limit: '50mb',
+  verify: (req: any, res, buf) => {
+    req.rawBody = buf;
+  }
+}));
+app.use(express.urlencoded({ 
+  extended: false, 
+  limit: '50mb',
+  parameterLimit: 1000
+}));
+
+// Memory optimization and cleanup
+setInterval(() => {
+  if (global.gc) {
+    global.gc();
+  }
+}, 30000); // Run garbage collection every 30 seconds
 
 app.use((req, res, next) => {
   const start = Date.now();
@@ -60,12 +97,42 @@ app.use((req, res, next) => {
 (async () => {
   const server = await registerRoutes(app);
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+  // Enhanced error handling middleware
+  app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
 
-    res.status(status).json({ message });
-    throw err;
+    // Log error with more context
+    console.error('Server error:', {
+      error: err,
+      url: req.url,
+      method: req.method,
+      status,
+      timestamp: new Date().toISOString()
+    });
+
+    // Don't throw in production
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(err.stack);
+    }
+
+    res.status(status).json({ 
+      message,
+      ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+    });
+  });
+  
+  // Handle uncaught exceptions
+  process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+    // Don't exit in development for better debugging
+    if (process.env.NODE_ENV === 'production') {
+      process.exit(1);
+    }
+  });
+
+  process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
   });
 
   // importantly only setup vite in development and after
