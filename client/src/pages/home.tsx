@@ -1,5 +1,5 @@
 import DeveloperHero from '@/components/ui/developer-hero';
-import InteractivePreFooter from '@/components/ui/interactive-pre-footer';
+import ProfessionalPreFooter from '@/components/ui/professional-pre-footer';
 
 export default function Home() {
   return (
@@ -7,8 +7,8 @@ export default function Home() {
       {/* Developer Hero Section - Exact Clone */}
       <DeveloperHero />
       
-      {/* Interactive Pre-Footer Section */}
-      <InteractivePreFooter />
+      {/* Professional Pre-Footer Section */}
+      <ProfessionalPreFooter />
     </div>
   );
 }
