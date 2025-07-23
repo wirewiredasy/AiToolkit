@@ -141,6 +141,23 @@ import AffidavitGeneratorPage from "@/pages/tool/affidavit-generator";
 import RentAgreementPage from "@/pages/tool/rent-agreement";
 import RationCardStatusPage from "@/pages/tool/ration-card-status";
 
+// Missing Tools - New Imports
+import PowerPointToPDFPage from "@/pages/tool/powerpoint-to-pdf";
+import PDFBookmarkManagerPage from "@/pages/tool/pdf-bookmark-manager";
+import PDFFormFillerPage from "@/pages/tool/pdf-form-filler";
+import PDFSignatureAdderPage from "@/pages/tool/pdf-signature-adder";
+import PDFVersionConverterPage from "@/pages/tool/pdf-version-converter";
+import CollageMakerPage from "@/pages/tool/collage-maker";
+import BatchProcessorPage from "@/pages/tool/batch-processor";
+import VolumeAdjusterPage from "@/pages/tool/volume-adjuster";
+import SubtitleAdderPage from "@/pages/tool/subtitle-adder";
+import AudioEqualizerPage from "@/pages/tool/audio-equalizer";
+import VideoWatermarkPage from "@/pages/tool/video-watermark";
+import FormatInfoPage from "@/pages/tool/format-info";
+import UANValidatorPage from "@/pages/tool/uan-validator";
+import VSSAULicenceValidatorPage from "@/pages/tool/vs-sau-licence-validator";
+import ShopActLicenceValidatorPage from "@/pages/tool/shop-act-licence-validator";
+
 import NotFound from "@/pages/not-found";
 import HelpCenter from "@/pages/help";
 import Contact from "@/pages/contact";
@@ -202,6 +219,13 @@ function Router() {
       <Route path="/tool/pdf-to-powerpoint" component={PDFToPowerPointPage} />
       <Route path="/tool/pdf-page-extractor" component={PDFPageExtractorPage} />
       <Route path="/tool/pdf-page-numberer" component={PDFPageNumbererPage} />
+      
+      {/* Missing PDF Tools */}
+      <Route path="/tool/powerpoint-to-pdf" component={PowerPointToPDFPage} />
+      <Route path="/tool/pdf-bookmark-manager" component={PDFBookmarkManagerPage} />
+      <Route path="/tool/pdf-form-filler" component={PDFFormFillerPage} />
+      <Route path="/tool/pdf-signature-adder" component={PDFSignatureAdderPage} />
+      <Route path="/tool/pdf-version-converter" component={PDFVersionConverterPage} />
 
       {/* Image Tools */}
       <Route path="/tool/image-resizer" component={ImageResizerPage} />
@@ -222,6 +246,9 @@ function Router() {
       <Route path="/tool/image-blur" component={ImageBlurPage} />
       <Route path="/tool/image-sharpen" component={ImageSharpenPage} />
       <Route path="/tool/meme-generator" component={MemeGeneratorPage} />
+      
+      {/* Missing Image Tools */}
+      <Route path="/tool/collage-maker" component={CollageMakerPage} />
 
       {/* Audio/Video Tools */}
       <Route path="/tool/audio-converter" component={AudioConverterPage} />
@@ -236,17 +263,27 @@ function Router() {
       <Route path="/tool/speed-changer" component={SpeedChangerPage} />
       <Route path="/tool/audio-normalizer" component={AudioNormalizerPage} />
       <Route path="/tool/noise-reducer" component={NoiseReducerPage} />
+      
+      {/* Missing Audio Tools */}
+      <Route path="/tool/volume-adjuster" component={VolumeAdjusterPage} />
+      <Route path="/tool/audio-equalizer" component={AudioEqualizerPage} />
 
       <Route path="/tool/video-compressor" component={VideoCompressorPage} />
       <Route path="/tool/video-merger" component={VideoMergerPage} />
       <Route path="/tool/video-resizer" component={VideoResizerPage} />
       <Route path="/tool/video-to-gif" component={VideoToGifPage} />
       <Route path="/tool/gif-to-video" component={GifToVideoPage} />
+      
+      {/* Missing Video Tools */}
+      <Route path="/tool/subtitle-adder" component={SubtitleAdderPage} />
+      <Route path="/tool/video-watermark" component={VideoWatermarkPage} />
 
 
       {/* Utilities */}
       <Route path="/tool/qr-generator" component={QRGeneratorPage} />
       <Route path="/tool/barcode-generator" component={BarcodeGeneratorPage} />
+      <Route path="/tool/batch-processor" component={BatchProcessorPage} />
+      <Route path="/tool/format-info" component={FormatInfoPage} />
 
       {/* Government Validators */}
       <Route path="/tool/pan-validator" component={PANValidator} />
@@ -259,6 +296,11 @@ function Router() {
 
       <Route path="/tool/driving-license-validator" component={DrivingLicenseValidatorPage} />
       <Route path="/tool/ifsc-validator" component={IFSCValidatorPage} />
+      
+      {/* Missing Government Validators */}
+      <Route path="/tool/uan-validator" component={UANValidatorPage} />
+      <Route path="/tool/vs-sau-licence-validator" component={VSSAULicenceValidatorPage} />
+      <Route path="/tool/shop-act-licence-validator" component={ShopActLicenceValidatorPage} />
 
       {/* Developer Tools */}
       <Route path="/tool/text-to-speech" component={TextToSpeechPage} />
