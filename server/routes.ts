@@ -102,13 +102,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/auth/me", authenticateToken, (req: any, res) => {
+  app.get("/api/auth/me",  (req: any, res) => {
     const { password, ...user } = req.user;
     res.json({ user });
   });
 
   // Dashboard routes
-  app.get("/api/dashboard/stats", authenticateToken, async (req: any, res) => {
+  app.get("/api/dashboard/stats",  async (req: any, res) => {
     try {
       const stats = await storage.getToolUsageStats(req.user.id);
       res.json(stats);
@@ -117,7 +117,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/dashboard/recent-activity", authenticateToken, async (req: any, res) => {
+  app.get("/api/dashboard/recent-activity",  async (req: any, res) => {
     try {
       const activity = await storage.getUserToolUsage(req.user.id, 10);
       res.json(activity);
@@ -127,7 +127,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Tool processing routes (sample implementations)
-  app.post("/api/tools/pdf/merge", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/pdf/merge", async (req: any, res) => {
     const startTime = Date.now();
     
     try {
@@ -169,7 +169,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/tools/image/resize", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/image/resize", async (req: any, res) => {
     const startTime = Date.now();
     
     try {
@@ -210,7 +210,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/tools/audio/convert", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/audio/convert", async (req: any, res) => {
     const startTime = Date.now();
     
     try {
@@ -252,7 +252,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // PDF Tools APIs
-  app.post("/api/tools/pdf-to-word", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/pdf-to-word",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -279,7 +279,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/tools/pdf-splitter", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/pdf-splitter",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
@@ -306,7 +306,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/tools/pdf-compressor", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/pdf-compressor",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -332,7 +332,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Image Tools APIs
-  app.post("/api/tools/image-resizer", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/image-resizer",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       const { width, height } = req.body;
@@ -361,7 +361,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/tools/bg-remover", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/bg-remover",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       await new Promise(resolve => setTimeout(resolve, 3000));
@@ -386,7 +386,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Media Tools APIs
-  app.post("/api/tools/audio-converter", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/audio-converter",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -410,7 +410,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/tools/video-converter", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/video-converter",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       await new Promise(resolve => setTimeout(resolve, 4000));
@@ -463,9 +463,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     { endpoint: 'pdf-version-converter', name: 'PDF Version Converter', category: 'PDF' }
   ];
 
-  // Generate all PDF tool endpoints
+  // Generate all PDF tool endpoints (without authentication requirement for processing)
   pdfTools.forEach(({ endpoint, name, category }) => {
-    app.post(`/api/tools/${endpoint}`, authenticateToken, async (req: any, res) => {
+    app.post(`/api/tools/${endpoint}`, async (req: any, res) => {
       const startTime = Date.now();
       try {
         // Simulate processing time based on tool complexity
@@ -474,16 +474,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         const actualProcessingTime = Date.now() - startTime;
         
-        await storage.createToolUsage({
-          userId: req.user.id,
-          toolName: name,
-          toolCategory: category,
-          fileName: req.body.fileName || `processed-${endpoint}.pdf`,
-          fileSize: req.body.fileSize || Math.floor(Math.random() * 5000000) + 100000,
-          processingTime: actualProcessingTime,
-          success: true,
-          metadata: req.body.metadata || {},
-        });
+        // Only log usage if user is authenticated
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1];
+        let userId: number | undefined;
+        
+        if (token) {
+          try {
+            const decoded = jwt.verify(token, JWT_SECRET) as any;
+            const user = await storage.getUser(decoded.userId);
+            if (user) {
+              userId = user.id;
+            }
+          } catch (error) {
+            // User not authenticated, continue without logging
+          }
+        }
+        
+        if (userId) {
+          await storage.createToolUsage({
+            userId,
+            toolName: name,
+            toolCategory: category,
+            fileName: req.body.fileName || `processed-${endpoint}.pdf`,
+            fileSize: req.body.fileSize || Math.floor(Math.random() * 5000000) + 100000,
+            processingTime: actualProcessingTime,
+            success: true,
+            metadata: req.body.metadata || {},
+          });
+        }
 
         res.json({
           success: true,
@@ -496,13 +515,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } catch (error) {
         const actualProcessingTime = Date.now() - startTime;
         
-        await storage.createToolUsage({
-          userId: req.user.id,
-          toolName: name,
-          toolCategory: category,
-          processingTime: actualProcessingTime,
-          success: false,
-        });
+        // Only log usage if user is authenticated
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1];
+        let userId: number | undefined;
+        
+        if (token) {
+          try {
+            const decoded = jwt.verify(token, JWT_SECRET) as any;
+            const user = await storage.getUser(decoded.userId);
+            if (user) {
+              userId = user.id;
+            }
+          } catch (error) {
+            // User not authenticated, continue without logging
+          }
+        }
+        
+        if (userId) {
+          await storage.createToolUsage({
+            userId,
+            toolName: name,
+            toolCategory: category,
+            processingTime: actualProcessingTime,
+            success: false,
+          });
+        }
 
         res.status(500).json({ success: false, message: `${name} failed` });
       }
@@ -533,9 +571,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     { endpoint: 'image-batch-processor', name: 'Batch Processor', category: 'Image' }
   ];
 
-  // Generate all Image tool endpoints
+  // Generate all Image tool endpoints (without authentication requirement for processing)
   imageTools.forEach(({ endpoint, name, category }) => {
-    app.post(`/api/tools/${endpoint}`, authenticateToken, async (req: any, res) => {
+    app.post(`/api/tools/${endpoint}`, async (req: any, res) => {
       const startTime = Date.now();
       try {
         const processingTime = Math.random() * 4000 + 1500; // 1.5-5.5 seconds
@@ -543,16 +581,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         const actualProcessingTime = Date.now() - startTime;
         
-        await storage.createToolUsage({
-          userId: req.user.id,
-          toolName: name,
-          toolCategory: category,
-          fileName: req.body.fileName || `processed-${endpoint}.jpg`,
-          fileSize: req.body.fileSize || Math.floor(Math.random() * 10000000) + 200000,
-          processingTime: actualProcessingTime,
-          success: true,
-          metadata: req.body.metadata || {},
-        });
+        // Only log usage if user is authenticated
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1];
+        let userId: number | undefined;
+        
+        if (token) {
+          try {
+            const decoded = jwt.verify(token, JWT_SECRET) as any;
+            const user = await storage.getUser(decoded.userId);
+            if (user) {
+              userId = user.id;
+            }
+          } catch (error) {
+            // User not authenticated, continue without logging
+          }
+        }
+        
+        if (userId) {
+          await storage.createToolUsage({
+            userId,
+            toolName: name,
+            toolCategory: category,
+            fileName: req.body.fileName || `processed-${endpoint}.jpg`,
+            fileSize: req.body.fileSize || Math.floor(Math.random() * 10000000) + 200000,
+            processingTime: actualProcessingTime,
+            success: true,
+            metadata: req.body.metadata || {},
+          });
+        }
 
         res.json({
           success: true,
@@ -565,13 +622,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } catch (error) {
         const actualProcessingTime = Date.now() - startTime;
         
-        await storage.createToolUsage({
-          userId: req.user.id,
-          toolName: name,
-          toolCategory: category,
-          processingTime: actualProcessingTime,
-          success: false,
-        });
+        // Only log usage if user is authenticated
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1];
+        let userId: number | undefined;
+        
+        if (token) {
+          try {
+            const decoded = jwt.verify(token, JWT_SECRET) as any;
+            const user = await storage.getUser(decoded.userId);
+            if (user) {
+              userId = user.id;
+            }
+          } catch (error) {
+            // User not authenticated, continue without logging
+          }
+        }
+        
+        if (userId) {
+          await storage.createToolUsage({
+            userId,
+            toolName: name,
+            toolCategory: category,
+            processingTime: actualProcessingTime,
+            success: false,
+          });
+        }
 
         res.status(500).json({ success: false, message: `${name} failed` });
       }
@@ -602,9 +678,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     { endpoint: 'video-subtitle-adder', name: 'Subtitle Adder', category: 'Audio/Video' }
   ];
 
-  // Generate all Media tool endpoints
+  // Generate all Media tool endpoints (without authentication requirement for processing)
   mediaTools.forEach(({ endpoint, name, category }) => {
-    app.post(`/api/tools/${endpoint}`, authenticateToken, async (req: any, res) => {
+    app.post(`/api/tools/${endpoint}`, async (req: any, res) => {
       const startTime = Date.now();
       try {
         const processingTime = Math.random() * 6000 + 2000; // 2-8 seconds
@@ -665,7 +741,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   }
 
   // Government Validation APIs (15 tools)
-  app.post("/api/tools/pan-validator", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/pan-validator",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       const panNumber = req.body.panNumber;
@@ -696,7 +772,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/tools/gst-validator", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/gst-validator",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       const gstNumber = req.body.gstNumber;
@@ -745,7 +821,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/tools/aadhaar-validator", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/aadhaar-validator",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       const aadhaarNumber = req.body.aadhaarNumber?.replace(/\s/g, '');
@@ -772,7 +848,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Additional PDF Tools
-  app.post("/api/tools/word-to-pdf", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/word-to-pdf",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
@@ -789,7 +865,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/tools/excel-to-pdf", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/excel-to-pdf",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -806,7 +882,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/tools/ppt-to-pdf", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/ppt-to-pdf",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       await new Promise(resolve => setTimeout(resolve, 2500));
@@ -824,7 +900,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Additional Image Tools
-  app.post("/api/tools/image-compressor", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/image-compressor",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       const quality = req.body.quality || 80;
@@ -847,7 +923,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/tools/image-format-converter", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/image-format-converter",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       const format = req.body.outputFormat || 'png';
@@ -869,7 +945,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/tools/watermark-remover", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/watermark-remover",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       await new Promise(resolve => setTimeout(resolve, 3500));
@@ -890,7 +966,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/tools/photo-enhancer", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/photo-enhancer",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       await new Promise(resolve => setTimeout(resolve, 4000));
@@ -912,7 +988,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Audio/Video Tools
-  app.post("/api/tools/audio-trimmer", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/audio-trimmer",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -933,7 +1009,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/tools/video-to-audio", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/video-to-audio",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       await new Promise(resolve => setTimeout(resolve, 3000));
@@ -954,7 +1030,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/tools/video-compressor", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/video-compressor",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       await new Promise(resolve => setTimeout(resolve, 5000));
@@ -977,7 +1053,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Additional Tools
-  app.post("/api/tools/pdf-to-excel", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/pdf-to-excel",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       await new Promise(resolve => setTimeout(resolve, 2500));
@@ -994,7 +1070,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/tools/qr-generator", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/qr-generator",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       const { text, size, color, bgColor } = req.body;
@@ -1013,7 +1089,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/tools/barcode-generator", authenticateToken, async (req: any, res) => {
+  app.post("/api/tools/barcode-generator",  async (req: any, res) => {
     const startTime = Date.now();
     try {
       const { text, type, width, height } = req.body;
@@ -1050,7 +1126,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Generate all Government validation tool endpoints
   govTools.forEach(({ endpoint, name, regex, category }) => {
-    app.post(`/api/tools/${endpoint}`, authenticateToken, async (req: any, res) => {
+    app.post(`/api/tools/${endpoint}`,  async (req: any, res) => {
       const startTime = Date.now();
       try {
         const inputValue = req.body.inputValue?.replace(/\s/g, '').toUpperCase();

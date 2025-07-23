@@ -322,16 +322,26 @@ toolCategories.forEach(category => {
         
         const processingTime = Date.now() - startTime;
         
-        await storage.createToolUsage({
-          userId: req.user.id,
-          toolName: `${category} ${operation}`,
-          toolCategory: category,
-          fileName: req.body.fileName || `processed-${operation}.${getFileExtension(category)}`,
-          fileSize: req.body.fileSize || Math.floor(Math.random() * 5000000) + 100000,
-          processingTime,
-          success: true,
-          metadata: req.body.metadata || {},
-        });
+        // Only log usage if user is authenticated
+        let userId: number | undefined;
+        
+        // Try to get user from request context if available
+        if (req.user && req.user.id) {
+          userId = req.user.id;
+        }
+        
+        if (userId) {
+          await storage.createToolUsage({
+            userId,
+            toolName: `${category} ${operation}`,
+            toolCategory: category,
+            fileName: req.body.fileName || `processed-${operation}.${getFileExtension(category)}`,
+            fileSize: req.body.fileSize || Math.floor(Math.random() * 5000000) + 100000,
+            processingTime,
+            success: true,
+            metadata: req.body.metadata || {},
+          });
+        }
 
         res.json({
           success: true,
