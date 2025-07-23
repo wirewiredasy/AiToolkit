@@ -1,5 +1,5 @@
 import Hero3D from '@/components/ui/3d-hero';
-import ModernToolGrid from '@/components/ui/modern-tool-grid';
+import SimpleToolGrid from '@/components/ui/simple-tool-grid';
 
 export default function Home() {
   return (
@@ -7,8 +7,8 @@ export default function Home() {
       {/* 3D Hero Section */}
       <Hero3D />
 
-      {/* Modern Tool Grid */}
-      <ModernToolGrid />
+      {/* Simple Tool Grid */}
+      <SimpleToolGrid />
     </div>
   );
 }
