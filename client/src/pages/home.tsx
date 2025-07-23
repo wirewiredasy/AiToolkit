@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import ToolCard from '@/components/ui/tool-card';
 import ToolIcon from '@/components/ui/tool-icon';
 import SuntynLogo from '@/components/ui/suntyn-logo';
+import SuntynAnimatedLogo from '@/components/ui/suntyn-animated-logo';
 import SearchBar from '@/components/ui/search-bar';
 import { StatCardSkeleton } from '@/components/ui/loading-skeleton';
 import { toolkits, getFeaturedTools } from '@/lib/tools';
@@ -66,9 +67,9 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
           <div className="animate-fade-in">
-            {/* Logo */}
+            {/* Animated Logo */}
             <div className="flex justify-center mb-12">
-              <SuntynLogo size="xl" animated={true} showText={false} />
+              <SuntynAnimatedLogo size="hero" animated={true} showText={false} />
             </div>
 
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-8">

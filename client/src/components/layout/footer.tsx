@@ -1,9 +1,9 @@
-
 import { Link } from 'wouter';
 import SuntynLogo from '@/components/ui/suntyn-logo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
+import SuntynAnimatedLogo from '../ui/suntyn-animated-logo';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -65,7 +65,7 @@ export default function Footer() {
               Professional AI-powered tools for document processing, image editing, and data validation. 
               Transform your workflow with cutting-edge technology.
             </p>
-            
+
             {/* Social Media Icons */}
             <div className="flex items-center gap-3 mb-8">
               <a href="#" className="group">
@@ -217,6 +217,14 @@ export default function Footer() {
             </div>
           </div>
         </div>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+          <div className="mb-8 md:mb-0">
+            <SuntynAnimatedLogo size="lg" animated={true} showText={true} />
+            <p className="text-slate-400 mt-4 max-w-md">
+              Professional AI-powered tools for document processing, image editing, 
+              and data validation. Fast, secure, and completely free.
+            </p>
+          </div>
       </div>
     </footer>
   );
