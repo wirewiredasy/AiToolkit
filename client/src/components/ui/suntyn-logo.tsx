@@ -1,3 +1,4 @@
+
 import { cn } from "@/lib/utils";
 
 interface SuntynLogoProps {
@@ -29,89 +30,84 @@ export function SuntynLogo({
 
   return (
     <div className={cn("flex items-center space-x-3", className)}>
-      {/* Animated Sun Logo */}
+      {/* Sun Logo - Exact match to attached image */}
       <div className={cn("relative", sizeClasses[size])}>
-        {/* Outer rotating ring */}
-        <div className={cn(
-          "absolute inset-0 rounded-full border-2 border-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 opacity-30",
-          animated && "animate-spin"
-        )} style={{ animationDuration: "8s" }} />
+        {/* Outer circle border */}
+        <div className="absolute inset-0 rounded-full border-2 border-purple-300 opacity-60" />
         
-        {/* Neural network dots */}
+        {/* 8 Purple dots positioned around the circle */}
         <div className="absolute inset-0">
+          {/* Top */}
           <div className={cn(
-            "absolute w-1.5 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full",
-            "top-1 left-1/2 transform -translate-x-1/2",
+            "absolute w-2 h-2 bg-purple-500 rounded-full",
+            "top-0 left-1/2 transform -translate-x-1/2",
             animated && "animate-pulse"
-          )} />
+          )} style={{ animationDelay: "0s" }} />
+          
+          {/* Top Right */}
           <div className={cn(
-            "absolute w-1.5 h-1.5 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-full",
-            "right-1 top-1/2 transform -translate-y-1/2",
+            "absolute w-2 h-2 bg-purple-500 rounded-full",
+            "top-1 right-1",
+            animated && "animate-pulse"
+          )} style={{ animationDelay: "0.25s" }} />
+          
+          {/* Right */}
+          <div className={cn(
+            "absolute w-2 h-2 bg-purple-500 rounded-full",
+            "right-0 top-1/2 transform -translate-y-1/2",
             animated && "animate-pulse"
           )} style={{ animationDelay: "0.5s" }} />
+          
+          {/* Bottom Right */}
           <div className={cn(
-            "absolute w-1.5 h-1.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full",
-            "bottom-1 left-1/2 transform -translate-x-1/2",
+            "absolute w-2 h-2 bg-purple-500 rounded-full",
+            "bottom-1 right-1",
+            animated && "animate-pulse"
+          )} style={{ animationDelay: "0.75s" }} />
+          
+          {/* Bottom */}
+          <div className={cn(
+            "absolute w-2 h-2 bg-purple-500 rounded-full",
+            "bottom-0 left-1/2 transform -translate-x-1/2",
             animated && "animate-pulse"
           )} style={{ animationDelay: "1s" }} />
+          
+          {/* Bottom Left */}
           <div className={cn(
-            "absolute w-1.5 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full",
-            "left-1 top-1/2 transform -translate-y-1/2",
+            "absolute w-2 h-2 bg-purple-500 rounded-full",
+            "bottom-1 left-1",
+            animated && "animate-pulse"
+          )} style={{ animationDelay: "1.25s" }} />
+          
+          {/* Left */}
+          <div className={cn(
+            "absolute w-2 h-2 bg-purple-500 rounded-full",
+            "left-0 top-1/2 transform -translate-y-1/2",
             animated && "animate-pulse"
           )} style={{ animationDelay: "1.5s" }} />
+          
+          {/* Top Left */}
+          <div className={cn(
+            "absolute w-2 h-2 bg-purple-500 rounded-full",
+            "top-1 left-1",
+            animated && "animate-pulse"
+          )} style={{ animationDelay: "1.75s" }} />
         </div>
 
-        {/* Central sun core */}
+        {/* Central blue circle - exact match */}
         <div className={cn(
           "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2",
-          "w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 via-purple-500 to-cyan-500",
+          "w-6 h-6 rounded-full bg-blue-500",
           "shadow-lg",
           animated && "animate-pulse"
-        )} style={{ animationDuration: "2s" }}>
-          {/* Inner glow */}
-          <div className="absolute inset-1 rounded-full bg-white/20" />
-          <div className="absolute inset-2 rounded-full bg-gradient-to-br from-blue-400 to-purple-400" />
-        </div>
-
-        {/* AI particles */}
-        {animated && (
-          <>
-            <div 
-              className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-60 animate-ping"
-              style={{ 
-                top: "20%", 
-                right: "25%",
-                animationDuration: "3s",
-                animationDelay: "0s"
-              }} 
-            />
-            <div 
-              className="absolute w-1 h-1 bg-purple-400 rounded-full opacity-60 animate-ping"
-              style={{ 
-                bottom: "20%", 
-                left: "25%",
-                animationDuration: "3s",
-                animationDelay: "1s"
-              }} 
-            />
-            <div 
-              className="absolute w-1 h-1 bg-cyan-400 rounded-full opacity-60 animate-ping"
-              style={{ 
-                top: "25%", 
-                left: "20%",
-                animationDuration: "3s",
-                animationDelay: "2s"
-              }} 
-            />
-          </>
-        )}
+        )} style={{ animationDuration: "2s" }} />
       </div>
 
       {/* Brand Text */}
       {showText && (
         <div className="flex flex-col">
           <h1 className={cn(
-            "font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent",
+            "font-bold bg-gradient-to-r from-blue-500 via-blue-600 to-purple-500 bg-clip-text text-transparent",
             textSizeClasses[size]
           )}>
             Suntyn AI
