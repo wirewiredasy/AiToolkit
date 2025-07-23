@@ -9,20 +9,18 @@ import {
   User, 
   LogOut, 
   FileText, 
-  ImageIcon, 
-  PlayCircle, 
-  ShieldCheck,
-  Grid3X3,
-  Home
+  Image, 
+  Video, 
+  Shield,
+  Sparkles
 } from 'lucide-react';
 
 const navigationItems = [
-  { name: 'Home', href: '/', icon: Home },
-  { name: 'PDF Tools', href: '/toolkit/pdf', icon: FileText },
-  { name: 'Image Tools', href: '/toolkit/image', icon: ImageIcon },
-  { name: 'Media Tools', href: '/toolkit/media', icon: PlayCircle },
-  { name: 'Gov Tools', href: '/toolkit/government', icon: ShieldCheck },
-  { name: 'All Tools', href: '/all-tools', icon: Grid3X3 },
+  { name: 'PDF', href: '/toolkit/pdf', icon: FileText },
+  { name: 'Image', href: '/toolkit/image', icon: Image },
+  { name: 'Media', href: '/toolkit/media', icon: Video },
+  { name: 'Government', href: '/toolkit/government', icon: Shield },
+  { name: 'All Tools', href: '/all-tools', icon: Sparkles },
 ];
 
 export default function ModernNavbar() {
@@ -59,20 +57,20 @@ export default function ModernNavbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-2">
+          <div className="hidden md:flex items-center space-x-1">
             {navigationItems.map((item) => {
               const Icon = item.icon;
-              const isActive = location === item.href || (item.href !== '/' && location.startsWith(item.href));
+              const isActive = location === item.href || location.startsWith(item.href + '/');
               
               return (
                 <Link key={item.name} href={item.href}>
-                  <div className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 ${
+                  <div className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 ${
                     isActive 
-                      ? 'bg-blue-500/20 dark:bg-blue-400/20 text-blue-600 dark:text-blue-400 shadow-lg' 
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100/70 dark:hover:bg-white/10'
+                      ? 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400' 
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                   }`}>
                     <Icon className="h-4 w-4" />
-                    <span className="font-medium text-sm">{item.name}</span>
+                    <span className="font-medium">{item.name}</span>
                   </div>
                 </Link>
               );
@@ -84,9 +82,9 @@ export default function ModernNavbar() {
             {user ? (
               <div className="flex items-center space-x-3">
                 <Link href="/dashboard">
-                  <div className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-gray-100/70 dark:bg-white/10 hover:bg-gray-200/70 dark:hover:bg-white/15 transition-all duration-200">
+                  <div className="flex items-center space-x-2 px-4 py-2 rounded-lg glass-effect hover:bg-white/20 transition-all duration-300">
                     <User className="h-4 w-4" />
-                    <span className="font-medium text-sm">{user.name}</span>
+                    <span className="font-medium">{user.name}</span>
                   </div>
                 </Link>
                 <Button

@@ -14,12 +14,37 @@ import {
   Code
 } from 'lucide-react';
 
-const SimpleBackgroundElements = () => (
-  <div className="absolute inset-0 pointer-events-none">
-    <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-br from-blue-600/10 to-purple-600/10 rounded-full blur-xl"></div>
-    <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-gradient-to-br from-purple-600/10 to-cyan-600/10 rounded-full blur-xl"></div>
-  </div>
-);
+const FloatingParticles = () => {
+  const [particles, setParticles] = useState<Array<{id: number, x: number, y: number, delay: number}>>([]);
+
+  useEffect(() => {
+    const newParticles = Array.from({ length: 20 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      delay: Math.random() * 15
+    }));
+    setParticles(newParticles);
+  }, []);
+
+  return (
+    <div className="particles">
+      {particles.map((particle) => (
+        <div
+          key={particle.id}
+          className="particle"
+          style={{
+            left: `${particle.x}%`,
+            bottom: `${particle.y}%`,
+            width: `${Math.random() * 4 + 2}px`,
+            height: `${Math.random() * 4 + 2}px`,
+            animationDelay: `${particle.delay}s`
+          }}
+        />
+      ))}
+    </div>
+  );
+};
 
 const FloatingToolCard = ({ 
   icon: Icon, 
@@ -40,27 +65,54 @@ const FloatingToolCard = ({
   </div>
 );
 
-const SimpleToolShowcase = () => {
+const OrbitingTools = () => {
   const tools = [
     { icon: FileText, name: "PDF Tools", color: "from-red-500 to-orange-500" },
     { icon: Image, name: "Image AI", color: "from-green-500 to-teal-500" },
     { icon: Video, name: "Media Tools", color: "from-purple-500 to-pink-500" },
     { icon: Shield, name: "Gov Tools", color: "from-blue-500 to-indigo-500" },
+    { icon: Code, name: "Dev Tools", color: "from-yellow-500 to-red-500" },
+    { icon: Brain, name: "AI Tools", color: "from-cyan-500 to-blue-500" },
   ];
 
   return (
-    <div className="flex justify-center items-center space-x-8">
-      {tools.map((tool, index) => (
-        <div
-          key={tool.name}
-          className="glass-card rounded-2xl p-4 hover:scale-105 transition-transform duration-200"
-        >
-          <div className={`p-3 bg-gradient-to-br ${tool.color} rounded-xl shadow-lg`}>
-            <tool.icon className="h-6 w-6 text-white" />
+    <div className="relative w-96 h-96 mx-auto">
+      <div className="tool-orbit w-full h-full">
+        {tools.map((tool, index) => {
+          const angle = (index * 60) * (Math.PI / 180);
+          const radius = 150;
+          const x = Math.cos(angle) * radius;
+          const y = Math.sin(angle) * radius;
+          
+          return (
+            <div
+              key={tool.name}
+              className="orbit-item"
+              style={{
+                left: `calc(50% + ${x}px)`,
+                top: `calc(50% + ${y}px)`,
+                transform: 'translate(-50%, -50%)',
+              }}
+            >
+              <div className="glass-card rounded-2xl p-4 tool-card-3d hover:scale-110 transition-all duration-300">
+                <div className={`p-3 bg-gradient-to-br ${tool.color} rounded-xl shadow-lg`}>
+                  <tool.icon className="h-6 w-6 text-white" />
+                </div>
+                <p className="text-white text-sm font-medium mt-2 text-center">{tool.name}</p>
+              </div>
+            </div>
+          );
+        })}
+        
+        {/* Central hub */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <div className="glass-card rounded-full p-8 animate-glow">
+            <div className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-full p-6">
+              <Sparkles className="h-12 w-12 text-white animate-spin" style={{ animationDuration: '3s' }} />
+            </div>
           </div>
-          <p className="text-white text-sm font-medium mt-2 text-center">{tool.name}</p>
         </div>
-      ))}
+      </div>
     </div>
   );
 };
@@ -72,7 +124,7 @@ export default function Hero3D() {
 
   return (
     <section className="relative min-h-screen hero-bg flex items-center justify-center overflow-hidden">
-      <SimpleBackgroundElements />
+      <FloatingParticles />
       
       {/* Main content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -94,8 +146,9 @@ export default function Hero3D() {
               </span>
             </h1>
             
-            <p className="text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed mb-4">
-              Ready to supercharge your workflow? Join thousands of professionals using Suntyn AI for their daily tasks.
+            <p className="text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
+              One platform. All smart tools. Transform your workflow with 108+ AI-powered tools 
+              for document processing, creative design, and professional automation.
             </p>
           </div>
 
@@ -116,14 +169,14 @@ export default function Hero3D() {
               asChild
             >
               <Link href="/all-tools">
-                Explore All Tools
+                Watch Demo
               </Link>
             </Button>
           </div>
 
-          {/* Simple Tools Showcase */}
+          {/* 3D Orbiting Tools Visualization */}
           <div className="hidden lg:block">
-            <SimpleToolShowcase />
+            <OrbitingTools />
           </div>
 
           {/* Floating tool cards for mobile */}
