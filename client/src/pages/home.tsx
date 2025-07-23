@@ -49,10 +49,41 @@ export default function Home() {
                 Suntyn AI
               </span>
             </h1>
-            <p className="text-xl text-slate-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-slate-300 mb-6 max-w-3xl mx-auto leading-relaxed">
               Professional AI-powered tools for document processing, image editing, 
               audio/video conversion, and government documents. Fast, secure, and reliable.
             </p>
+            <div className="bg-white/10 backdrop-blur-xl rounded-xl p-4 mb-8 max-w-2xl mx-auto border border-white/20">
+              <p className="text-slate-200 text-sm">
+                🚀 <strong>All tools are 100% free</strong> • No registration required • Process files securely
+              </p>
+            </div>
+
+            {/* Search Bar */}
+            <div className="max-w-md mx-auto mb-8">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search tools... (e.g., PDF, Image, Audio)"
+                  className="w-full px-4 py-3 pl-12 rounded-xl bg-white/20 backdrop-blur-lg border border-white/30 text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  onChange={(e) => {
+                    const query = e.target.value.toLowerCase();
+                    if (query) {
+                      // Simple search implementation
+                      const toolsSection = document.getElementById('tools');
+                      if (toolsSection) {
+                        toolsSection.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }
+                  }}
+                />
+                <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                  <svg className="w-5 h-5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
               <Button 
@@ -74,7 +105,7 @@ export default function Home() {
             </div>
 
             {/* Statistics */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
               <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-xl">
                 <div className="flex items-center justify-center mb-4">
                   <Wrench className="w-8 h-8 text-white" />

@@ -3,9 +3,11 @@ import { Link } from 'wouter';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { toolkits, getFeaturedTools } from '@/lib/tools';
+import { useState, useMemo } from 'react';
 
 export default function AllTools() {
   const featuredTools = getFeaturedTools();
+  const [searchQuery, setSearchQuery] = useState('');
 
   const scrollToCategory = (categoryId: string) => {
     document.getElementById(categoryId)?.scrollIntoView({ behavior: 'smooth' });
