@@ -1,11 +1,11 @@
-import SuntynHero from '@/components/ui/suntyn-hero';
+import ReferenceHero from '@/components/ui/reference-hero';
 import ProfessionalPreFooter from '@/components/ui/professional-pre-footer';
 
 export default function Home() {
   return (
     <div className="min-h-screen">
-      {/* Suntyn AI Hero Section - Exact Clone */}
-      <SuntynHero />
+      {/* Reference Hero Section - Exact Replica */}
+      <ReferenceHero />
       
       {/* Professional Pre-Footer Section */}
       <ProfessionalPreFooter />
