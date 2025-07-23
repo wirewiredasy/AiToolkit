@@ -89,11 +89,6 @@ import ImageUpscalePage from "@/pages/tool/image-upscale";
 import ImageBlurToolPage from "@/pages/tool/image-blur-tool";
 import ImageBorderAdderPage from "@/pages/tool/image-border-adder";
 import ImageMetadataExtractorPage from "@/pages/tool/image-metadata-extractor";
-import WatermarkAddPage from "@/pages/tool/watermark-add";
-import ImageSharpenPage from "@/pages/tool/image-sharpen";
-import MemeGeneratorPage from "@/pages/tool/meme-generator";
-import AudioExtractorPage from "@/pages/tool/audio-extractor";
-import VideoResizerPage from "@/pages/tool/video-resizer";
 import PassportPhotoPage from "@/pages/tool/passport-photo";
 import RentAgreementPage from "@/pages/tool/rent-agreement";
 import NotFound from "@/pages/not-found";
@@ -104,13 +99,28 @@ import Privacy from "@/pages/privacy";
 import Terms from "@/pages/terms";
 import AllTools from "@/pages/all-tools";
 
+//Missing tool imports
+import ImageMergePage from "@/pages/tool/image-merge";
+import ImageSplitPage from "@/pages/tool/image-split";
+import ColorPickerPage from "@/pages/tool/color-picker";
+import AudioReverserPage from "@/pages/tool/audio-reverser";
+import PitchChangerPage from "@/pages/tool/pitch-changer";
+import VideoRotatorPage from "@/pages/tool/video-rotator";
+import CasteCertificatePage from "@/pages/tool/caste-certificate";
+import BirthCertificatePage from "@/pages/tool/birth-certificate";
+import WatermarkRemovePage from "@/pages/tool/watermark-remove";
+import SubtitleExtractorPage from "@/pages/tool/subtitle-extractor";
+import ThumbnailGeneratorPage from "@/pages/tool/thumbnail-generator";
+import DeathCertificatePage from "@/pages/tool/death-certificate";
+import AffidavitGeneratorPage from "@/pages/tool/affidavit-generator";
+
 function ScrollToTop() {
   const [location] = useLocation();
-  
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [location]);
-  
+
   return null;
 }
 
@@ -177,13 +187,9 @@ function Router() {
       <Route path="/tool/image-blur-tool" component={ImageBlurToolPage} />
       <Route path="/tool/image-border-adder" component={ImageBorderAdderPage} />
       <Route path="/tool/image-metadata-extractor" component={ImageMetadataExtractorPage} />
-      <Route path="/tool/watermark-add" component={WatermarkAddPage} />
-      <Route path="/tool/image-sharpen" component={ImageSharpenPage} />
-      <Route path="/tool/meme-generator" component={MemeGeneratorPage} />
-      <Route path="/tool/audio-extractor" component={AudioExtractorPage} />
-      <Route path="/tool/video-resizer" component={VideoResizerPage} />
-      <Route path="/tool/passport-photo" component={PassportPhotoPage} />
-      <Route path="/tool/rent-agreement" component={RentAgreementPage} />
+      <Route path="/tool/image-merge" component={ImageMergePage} />
+      <Route path="/tool/image-split" component={ImageSplitPage} />
+      <Route path="/tool/color-picker" component={ColorPickerPage} />
 
       {/* Audio/Video Tools */}
       <Route path="/tool/audio-converter" component={AudioConverterPage} />
@@ -198,11 +204,16 @@ function Router() {
       <Route path="/tool/speed-changer" component={SpeedChangerPage} />
       <Route path="/tool/audio-normalizer" component={AudioNormalizerPage} />
       <Route path="/tool/noise-reducer" component={NoiseReducerPage} />
+      <Route path="/tool/audio-reverser" component={AudioReverserPage} />
+      <Route path="/tool/pitch-changer" component={PitchChangerPage} />
+      <Route path="/tool/video-rotator" component={VideoRotatorPage} />
       <Route path="/tool/video-compressor" component={VideoCompressorPage} />
       <Route path="/tool/video-merger" component={VideoMergerPage} />
       <Route path="/tool/video-resizer" component={VideoResizerPage} />
       <Route path="/tool/video-to-gif" component={VideoToGifPage} />
       <Route path="/tool/gif-to-video" component={GifToVideoPage} />
+       <Route path="/tool/subtitle-extractor" component={SubtitleExtractorPage} />
+       <Route path="/tool/thumbnail-generator" component={ThumbnailGeneratorPage} />
 
       {/* Utilities */}
       <Route path="/tool/qr-generator" component={QRGeneratorPage} />
@@ -216,7 +227,10 @@ function Router() {
       <Route path="/tool/passport-validator" component={PassportValidatorPage} />
       <Route path="/tool/aadhaar-masker" component={AadhaarMaskerPage} />
       <Route path="/tool/income-certificate" component={IncomeCertificatePage} />
-
+      <Route path="/tool/caste-certificate" component={CasteCertificatePage} />
+      <Route path="/tool/birth-certificate" component={BirthCertificatePage} />
+       <Route path="/tool/death-certificate" component={DeathCertificatePage} />
+        <Route path="/tool/affidavit-generator" component={AffidavitGeneratorPage} />
       {/* Footer Pages */}
       <Route path="/help" component={HelpCenter} />
       <Route path="/contact" component={Contact} />

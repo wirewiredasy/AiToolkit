@@ -28,20 +28,10 @@ export default function ImageToolkit() {
     { id: 'image-metadata-extractor', name: 'Metadata Extractor', description: 'Extract EXIF data from images', icon: 'fas fa-info-circle', route: '/tool/image-metadata-extractor' },
     { id: 'meme-generator', name: 'Meme Generator', description: 'Create hilarious memes with text', icon: 'fas fa-laugh', route: '/tool/meme-generator' },
     { id: 'image-colorizer', name: 'AI Image Colorizer', description: 'Add color to black and white images', icon: 'fas fa-palette', route: '/tool/image-colorizer' },
-    { id: 'image-enhancer', name: 'Image Enhancer', description: 'Professional image enhancement', icon: 'fas fa-magic', route: '/tool/image-enhancer' },
-    { id: 'image-upscaler', name: 'Image Upscaler', description: 'Upscale images to higher resolution', icon: 'fas fa-expand-arrows-alt', route: '/tool/image-upscaler' },
-    { id: 'watermark-remover', name: 'Watermark Remover', description: 'Remove watermarks from images', icon: 'fas fa-eraser', route: '/tool/watermark-remover' }
-    { id: 'image-upscale', name: 'Image Upscaler', description: 'Upscale images with AI', icon: 'fas fa-search-plus', route: '/tool/image-upscale' },
-    { id: 'watermark-add', name: 'Add Watermark', description: 'Add text or image watermark', icon: 'fas fa-tint', route: '/tool/watermark-add' },
     { id: 'watermark-remove', name: 'Remove Watermark', description: 'Remove watermarks from images', icon: 'fas fa-eraser', route: '/tool/watermark-remove' },
-    { id: 'image-blur', name: 'Image Blur', description: 'Apply blur effects', icon: 'fas fa-eye-slash', route: '/tool/image-blur' },
-    { id: 'image-sharpen', name: 'Image Sharpen', description: 'Sharpen blurry images', icon: 'fas fa-eye', route: '/tool/image-sharpen' },
-    { id: 'image-border', name: 'Add Border', description: 'Add borders to images', icon: 'fas fa-border-style', route: '/tool/image-border' },
     { id: 'image-merge', name: 'Image Merger', description: 'Combine multiple images', icon: 'fas fa-object-group', route: '/tool/image-merge' },
     { id: 'image-split', name: 'Image Splitter', description: 'Split images into parts', icon: 'fas fa-cut', route: '/tool/image-split' },
     { id: 'color-picker', name: 'Color Picker', description: 'Extract colors from images', icon: 'fas fa-eyedropper', route: '/tool/color-picker' },
-    { id: 'image-metadata', name: 'Image Metadata', description: 'View and edit image metadata', icon: 'fas fa-info-circle', route: '/tool/image-metadata' },
-    { id: 'meme-generator', name: 'Meme Generator', description: 'Create memes with text', icon: 'fas fa-laugh', route: '/tool/meme-generator' },
   ];
 
   const breadcrumbItems = [
