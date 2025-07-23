@@ -1,3 +1,4 @@
+
 import { Link } from 'wouter';
 import SuntynLogo from '@/components/ui/suntyn-logo';
 import { Button } from '@/components/ui/button';
@@ -211,20 +212,19 @@ export default function Footer() {
 
         {/* Bottom Section */}
         <div className="border-t border-gray-700 pt-8 mt-12">
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+            <div className="mb-8 md:mb-0">
+              <SuntynAnimatedLogo size="lg" animated={true} showText={true} />
+              <p className="text-slate-400 mt-4 max-w-md">
+                Professional AI-powered tools for document processing, image editing, 
+                and data validation. Fast, secure, and completely free.
+              </p>
+            </div>
             <div className="text-gray-400 text-sm text-center">
               © 2025 Suntyn AI. All rights reserved.
             </div>
           </div>
         </div>
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-          <div className="mb-8 md:mb-0">
-            <SuntynAnimatedLogo size="lg" animated={true} showText={true} />
-            <p className="text-slate-400 mt-4 max-w-md">
-              Professional AI-powered tools for document processing, image editing, 
-              and data validation. Fast, secure, and completely free.
-            </p>
-          </div>
       </div>
     </footer>
   );
