@@ -35,20 +35,20 @@ export default function GovernmentToolkit() {
   ];
 
   return (
-    <div className="py-8 bg-neutral-50 min-h-screen">
+    <div className="py-8 bg-gray-900 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <BreadcrumbNav items={breadcrumbItems} />
 
         {/* Toolkit Header */}
         <div className="text-center mb-12">
-          <div className="w-20 h-20 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <ToolIcon toolId="pan-validator" className="w-8 h-8 text-orange-600" />
+          <div className="w-20 h-20 bg-orange-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-orange-500/30">
+            <ToolIcon toolId="pan-validator" className="w-8 h-8 text-orange-400" />
           </div>
-          <h1 className="text-4xl font-bold text-neutral-800 mb-4">{toolkit.name}</h1>
-          <p className="text-xl text-neutral-600 max-w-3xl mx-auto mb-8">
+          <h1 className="text-4xl font-bold text-white mb-4">{toolkit.name}</h1>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
             {toolkit.description}
           </p>
-          <div className="flex items-center justify-center space-x-4 text-sm text-neutral-500">
+          <div className="flex items-center justify-center space-x-4 text-sm text-gray-400">
             <span>{toolkit.toolCount} Tools Available</span>
             <span>•</span>
             <span>India Specific</span>
@@ -60,17 +60,17 @@ export default function GovernmentToolkit() {
         {/* Tools Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {govTools.map((tool) => (
-            <Card key={tool.id} className="tool-card hover:shadow-lg transition-all duration-300">
+            <Card key={tool.id} className="bg-gray-800 border-gray-700 hover:bg-gray-750 hover:border-orange-500/50 transition-all duration-300">
               <CardContent className="p-6">
                 <Link href={tool.route}>
-                  <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
-                    <ToolIcon toolId={tool.id} className="w-6 h-6 text-orange-600" />
+                  <div className="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center mb-4 border border-orange-500/30">
+                    <ToolIcon toolId={tool.id} className="w-6 h-6 text-orange-400" />
                   </div>
-                  <h3 className="font-semibold text-neutral-800 mb-2">{tool.name}</h3>
-                  <p className="text-sm text-neutral-600 mb-4">{tool.description}</p>
+                  <h3 className="font-semibold text-white mb-2">{tool.name}</h3>
+                  <p className="text-sm text-gray-300 mb-4">{tool.description}</p>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-orange-600 font-medium">Free</span>
-                    <i className="fas fa-arrow-right text-neutral-400"></i>
+                    <span className="text-orange-400 font-medium">Free</span>
+                    <i className="fas fa-arrow-right text-gray-500"></i>
                   </div>
                 </Link>
               </CardContent>
@@ -79,12 +79,12 @@ export default function GovernmentToolkit() {
         </div>
 
         {/* India-specific Notice */}
-        <div className="mt-16 bg-orange-50 border border-orange-200 rounded-lg p-6">
+        <div className="mt-16 bg-orange-500/10 border border-orange-500/30 rounded-lg p-6">
           <div className="flex items-start space-x-3">
-            <i className="fas fa-info-circle text-orange-600 text-xl mt-1"></i>
+            <i className="fas fa-info-circle text-orange-400 text-xl mt-1"></i>
             <div>
-              <h3 className="font-semibold text-orange-800 mb-2">India-Specific Tools</h3>
-              <p className="text-orange-700">
+              <h3 className="font-semibold text-orange-300 mb-2">India-Specific Tools</h3>
+              <p className="text-gray-300">
                 These tools are specifically designed for Indian government documents and procedures. 
                 They comply with Indian government standards and formats. Please note that these 
                 tools are for informational purposes and should not be considered as official 

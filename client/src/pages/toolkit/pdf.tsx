@@ -41,20 +41,20 @@ export default function PDFToolkit() {
   ];
 
   return (
-    <div className="py-8 bg-neutral-50 min-h-screen">
+    <div className="py-8 bg-gray-900 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <BreadcrumbNav items={breadcrumbItems} />
 
         {/* Toolkit Header */}
         <div className="text-center mb-12">
-          <div className="w-20 h-20 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <ToolIcon toolId="pdf-merger" className="w-8 h-8 text-red-600" />
+          <div className="w-20 h-20 bg-red-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-red-500/30">
+            <ToolIcon toolId="pdf-merger" className="w-8 h-8 text-red-400" />
           </div>
-          <h1 className="text-4xl font-bold text-neutral-800 mb-4">{toolkit.name}</h1>
-          <p className="text-xl text-neutral-600 max-w-3xl mx-auto mb-8">
+          <h1 className="text-4xl font-bold text-white mb-4">{toolkit.name}</h1>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
             {toolkit.description}
           </p>
-          <div className="flex items-center justify-center space-x-4 text-sm text-neutral-500">
+          <div className="flex items-center justify-center space-x-4 text-sm text-gray-400">
             <span>{toolkit.toolCount} Tools Available</span>
             <span>•</span>
             <span>Free Forever</span>
@@ -66,17 +66,17 @@ export default function PDFToolkit() {
         {/* Tools Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {pdfTools.map((tool) => (
-            <Card key={tool.id} className="tool-card hover:shadow-lg transition-all duration-300">
+            <Card key={tool.id} className="bg-gray-800 border-gray-700 hover:bg-gray-750 hover:border-red-500/50 transition-all duration-300">
               <CardContent className="p-6">
                 <Link href={tool.route}>
-                  <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
-                    <ToolIcon toolId={tool.id} className="w-6 h-6 text-red-600" />
+                  <div className="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-4 border border-red-500/30">
+                    <ToolIcon toolId={tool.id} className="w-6 h-6 text-red-400" />
                   </div>
-                  <h3 className="font-semibold text-neutral-800 mb-2">{tool.name}</h3>
-                  <p className="text-sm text-neutral-600 mb-4">{tool.description}</p>
+                  <h3 className="font-semibold text-white mb-2">{tool.name}</h3>
+                  <p className="text-sm text-gray-300 mb-4">{tool.description}</p>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-primary font-medium">Free</span>
-                    <i className="fas fa-arrow-right text-neutral-400"></i>
+                    <span className="text-red-400 font-medium">Free</span>
+                    <i className="fas fa-arrow-right text-gray-500"></i>
                   </div>
                 </Link>
               </CardContent>
@@ -86,34 +86,34 @@ export default function PDFToolkit() {
 
         {/* Features Section */}
         <div className="mt-16">
-          <h2 className="text-2xl font-bold text-neutral-800 mb-8 text-center">
+          <h2 className="text-2xl font-bold text-white mb-8 text-center">
             Why Choose Our PDF Tools?
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i className="fas fa-shield-alt text-2xl text-green-600"></i>
+              <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-500/30">
+                <i className="fas fa-shield-alt text-2xl text-green-400"></i>
               </div>
-              <h3 className="font-semibold text-neutral-800 mb-2">Secure Processing</h3>
-              <p className="text-neutral-600">
+              <h3 className="font-semibold text-white mb-2">Secure Processing</h3>
+              <p className="text-gray-300">
                 All files are processed securely and deleted automatically after processing.
               </p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i className="fas fa-bolt text-2xl text-blue-600"></i>
+              <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
+                <i className="fas fa-bolt text-2xl text-blue-400"></i>
               </div>
-              <h3 className="font-semibold text-neutral-800 mb-2">Fast & Reliable</h3>
-              <p className="text-neutral-600">
+              <h3 className="font-semibold text-white mb-2">Fast & Reliable</h3>
+              <p className="text-gray-300">
                 Optimized algorithms ensure quick processing without quality loss.
               </p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i className="fas fa-mobile-alt text-2xl text-purple-600"></i>
+              <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-purple-500/30">
+                <i className="fas fa-mobile-alt text-2xl text-purple-400"></i>
               </div>
-              <h3 className="font-semibold text-neutral-800 mb-2">Works Everywhere</h3>
-              <p className="text-neutral-600">
+              <h3 className="font-semibold text-white mb-2">Works Everywhere</h3>
+              <p className="text-gray-300">
                 Access our tools from any device - desktop, tablet, or mobile.
               </p>
             </div>

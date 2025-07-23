@@ -41,20 +41,20 @@ export default function ImageToolkit() {
   ];
 
   return (
-    <div className="py-8 bg-neutral-50 min-h-screen">
+    <div className="py-8 bg-gray-900 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <BreadcrumbNav items={breadcrumbItems} />
 
         {/* Toolkit Header */}
         <div className="text-center mb-12">
-          <div className="w-20 h-20 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <ToolIcon toolId="image-resizer" className="w-8 h-8 text-purple-600" />
+          <div className="w-20 h-20 bg-purple-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-purple-500/30">
+            <ToolIcon toolId="image-resizer" className="w-8 h-8 text-purple-400" />
           </div>
-          <h1 className="text-4xl font-bold text-neutral-800 mb-4">{toolkit.name}</h1>
-          <p className="text-xl text-neutral-600 max-w-3xl mx-auto mb-8">
+          <h1 className="text-4xl font-bold text-white mb-4">{toolkit.name}</h1>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
             {toolkit.description}
           </p>
-          <div className="flex items-center justify-center space-x-4 text-sm text-neutral-500">
+          <div className="flex items-center justify-center space-x-4 text-sm text-gray-400">
             <span>{toolkit.toolCount} Tools Available</span>
             <span>•</span>
             <span>AI-Powered</span>
@@ -66,17 +66,17 @@ export default function ImageToolkit() {
         {/* Tools Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {imageTools.map((tool) => (
-            <Card key={tool.id} className="tool-card hover:shadow-lg transition-all duration-300">
+            <Card key={tool.id} className="bg-gray-800 border-gray-700 hover:bg-gray-750 hover:border-purple-500/50 transition-all duration-300">
               <CardContent className="p-6">
                 <Link href={tool.route}>
-                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                    <ToolIcon toolId={tool.id} className="w-6 h-6 text-purple-600" />
+                  <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4 border border-purple-500/30">
+                    <ToolIcon toolId={tool.id} className="w-6 h-6 text-purple-400" />
                   </div>
-                  <h3 className="font-semibold text-neutral-800 mb-2">{tool.name}</h3>
-                  <p className="text-sm text-neutral-600 mb-4">{tool.description}</p>
+                  <h3 className="font-semibold text-white mb-2">{tool.name}</h3>
+                  <p className="text-sm text-gray-300 mb-4">{tool.description}</p>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-purple-600 font-medium">Free</span>
-                    <i className="fas fa-arrow-right text-neutral-400"></i>
+                    <span className="text-purple-400 font-medium">Free</span>
+                    <i className="fas fa-arrow-right text-gray-500"></i>
                   </div>
                 </Link>
               </CardContent>

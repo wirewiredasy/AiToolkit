@@ -56,7 +56,7 @@ export default function AllTools() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-gray-900">
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -127,12 +127,12 @@ export default function AllTools() {
       </section>
 
       {/* Search Results */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Results Header */}
           <div className="flex flex-col sm:flex-row justify-between items-center mb-8">
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
                 {searchQuery ? (
                   <>Search Results for "{searchQuery}"</>
                 ) : selectedCategory !== 'all' ? (
@@ -141,7 +141,7 @@ export default function AllTools() {
                   <>All Tools</>
                 )}
               </h2>
-              <p className="text-slate-600">
+              <p className="text-gray-400">
                 {isLoading ? 'Searching...' : `${filteredTools.length} tools found`}
               </p>
             </div>
@@ -150,7 +150,7 @@ export default function AllTools() {
               <Button
                 variant="outline"
                 onClick={() => setSearchQuery('')}
-                className="mt-4 sm:mt-0"
+                className="mt-4 sm:mt-0 border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white"
               >
                 Clear Search
               </Button>
@@ -176,29 +176,29 @@ export default function AllTools() {
               {filteredTools.length > 0 ? (
                 <div className={`grid gap-6 ${viewMode === 'grid' ? 'md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 'grid-cols-1'}`}>
                   {filteredTools.map((tool) => (
-                    <Card key={tool.id} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-blue-200">
+                    <Card key={tool.id} className="group bg-gray-800 border-gray-700 hover:bg-gray-750 hover:border-blue-500/50 transition-all duration-300">
                       <CardContent className="p-6">
                         <Link href={tool.route}>
                           <div className={`${viewMode === 'list' ? 'flex items-center space-x-4' : ''}`}>
                             <div className={`${viewMode === 'list' ? 'flex-shrink-0' : 'mb-4'}`}>
-                              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                                <ToolIcon toolId={tool.id} className="text-blue-600" size="md" />
+                              <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center border border-blue-500/30">
+                                <ToolIcon toolId={tool.id} className="text-blue-400" size="md" />
                               </div>
                             </div>
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-2">
-                                <h3 className="font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">
+                                <h3 className="font-semibold text-white group-hover:text-blue-400 transition-colors">
                                   {tool.name}
                                 </h3>
                                 {tool.featured && (
                                   <Star className="w-4 h-4 text-yellow-500 fill-current" />
                                 )}
                               </div>
-                              <p className="text-sm text-slate-600 mb-2">{tool.description}</p>
+                              <p className="text-sm text-gray-300 mb-2">{tool.description}</p>
                               <div className="flex items-center justify-between">
-                                <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded">{tool.category}</span>
+                                <span className="text-xs text-gray-400 bg-gray-700 px-2 py-1 rounded">{tool.category}</span>
                                 {tool.usageCount && (
-                                  <span className="text-xs text-green-600 font-medium">{tool.usageCount} uses</span>
+                                  <span className="text-xs text-green-400 font-medium">{tool.usageCount} uses</span>
                                 )}
                               </div>
                             </div>
@@ -210,15 +210,18 @@ export default function AllTools() {
                 </div>
               ) : (
                 <div className="text-center py-16">
-                  <Search className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-slate-900 mb-2">No tools found</h3>
-                  <p className="text-slate-600 mb-6">
+                  <Search className="w-16 h-16 text-gray-500 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-white mb-2">No tools found</h3>
+                  <p className="text-gray-400 mb-6">
                     {searchQuery 
                       ? `No tools match "${searchQuery}". Try different keywords or browse by category.`
                       : 'No tools available in this category.'
                     }
                   </p>
-                  <Button onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}>
+                  <Button 
+                    onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
                     Show All Tools
                   </Button>
                 </div>
