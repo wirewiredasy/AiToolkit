@@ -51,7 +51,7 @@ export class FastAPIMiddleware {
     const isHeavyTool = HEAVY_PROCESSING_TOOLS.some(tool => toolName.includes(tool));
     
     // Check file size threshold
-    const isLargeFile = fileSize && fileSize > HEAVY_PROCESSING_THRESHOLD;
+    const isLargeFile = fileSize ? fileSize > HEAVY_PROCESSING_THRESHOLD : false;
 
     return isHeavyTool || isLargeFile;
   }

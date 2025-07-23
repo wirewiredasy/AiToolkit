@@ -86,7 +86,7 @@ export function ToolTemplate({
         });
       }, 200);
 
-      const response = await fetch(`/api${endpoint}`, {
+      const response = await fetch(endpoint, {
         method: "POST",
         body: formData,
         headers: {

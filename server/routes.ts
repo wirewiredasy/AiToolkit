@@ -8,7 +8,7 @@ import jwt from "jsonwebtoken";
 import { api } from "./api-router";
 import { fastApiMiddleware } from "./fastapi-middleware";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
+const JWT_SECRET = process.env.JWT_SECRET || require('crypto').randomBytes(64).toString('hex');
 
 // Middleware to verify JWT token
 const authenticateToken = async (req: any, res: any, next: any) => {

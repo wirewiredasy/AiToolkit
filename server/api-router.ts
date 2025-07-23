@@ -5,7 +5,7 @@ import { storage } from "./storage";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
+const JWT_SECRET = process.env.JWT_SECRET || require('crypto').randomBytes(64).toString('hex');
 
 // API Documentation Generator (FastAPI style)
 interface APIEndpoint {
@@ -286,7 +286,8 @@ api.post('/auth/login', {
   
   const user = await storage.getUserByEmail(email);
   if (!user || !await bcrypt.compare(password, user.password)) {
-    return res.status(401).json({ detail: 'Invalid credentials' });
+    res.status(401).json({ detail: 'Invalid credentials' });
+    return;
   }
 
   const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '7d' });
