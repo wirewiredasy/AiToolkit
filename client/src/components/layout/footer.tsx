@@ -2,7 +2,7 @@ import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
-import SuntynIconOnly from '@/components/ui/suntyn-icon-only';
+import GeometricLogo from '@/components/ui/geometric-logo';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -41,16 +41,8 @@ export default function Footer() {
         <div className="grid lg:grid-cols-5 md:grid-cols-3 gap-8">
           {/* Brand Section */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-3 mb-6">
-              <SuntynIconOnly size="lg" animated={true} />
-              <div>
-                <span className="text-2xl font-bold bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">
-                  Suntyn AI
-                </span>
-                <p className="text-xs text-gray-400 uppercase tracking-wider font-medium">
-                  Neural Intelligence
-                </p>
-              </div>
+            <div className="mb-6">
+              <GeometricLogo size="lg" showText={true} />
             </div>
             <p className="text-gray-400 mb-8 leading-relaxed">
               Professional AI-powered tools for document processing, image editing, 
@@ -160,11 +152,8 @@ export default function Footer() {
         <div className="border-t border-gray-700 pt-8 mt-12">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
             <div className="mb-8 md:mb-0">
-              <div className="flex items-center gap-3 mb-4">
-                <SuntynIconOnly size="md" animated={true} />
-                <span className="text-lg font-bold bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">
-                  Suntyn AI
-                </span>
+              <div className="mb-4">
+                <GeometricLogo size="md" showText={true} />
               </div>
               <p className="text-slate-400 max-w-md">
                 Professional AI-powered tools for document processing, image editing, 

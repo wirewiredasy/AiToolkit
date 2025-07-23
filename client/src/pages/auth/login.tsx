@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
-import SuntynIconOnly from '@/components/ui/suntyn-icon-only';
+import GeometricLogo from '@/components/ui/geometric-logo';
 
 export default function Login() {
   const [, setLocation] = useLocation();
@@ -50,7 +50,7 @@ export default function Login() {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <div className="flex justify-center mb-4">
-            <SuntynIconOnly size="lg" animated={true} />
+            <GeometricLogo size="lg" showText={false} />
           </div>
           <h2 className="text-3xl font-bold text-neutral-800">Welcome back</h2>
           <p className="mt-2 text-neutral-600">Sign in to your account</p>
@@ -59,7 +59,7 @@ export default function Login() {
         <Card>
           <CardHeader>
             <div className="flex justify-center mb-6">
-              <SuntynIconOnly size="lg" animated={true} />
+              <GeometricLogo size="lg" showText={false} />
             </div>
             <CardTitle>Sign In</CardTitle>
           </CardHeader>

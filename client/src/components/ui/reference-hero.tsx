@@ -60,7 +60,7 @@ const ReferenceHero: React.FC = () => {
 
             {/* Statistics Badge */}
             <motion.div
-              className="inline-flex items-center space-x-6 bg-gray-800/30 backdrop-blur-sm rounded-full px-6 py-3 border border-gray-700/50"
+              className="inline-flex items-center space-x-6 bg-gray-800/30 backdrop-blur-sm rounded-full px-6 py-3 border border-gray-700/50 mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
@@ -79,6 +79,21 @@ const ReferenceHero: React.FC = () => {
                 <div className="text-2xl font-bold text-white">1M+</div>
                 <div className="text-xs text-gray-400">Users Served</div>
               </div>
+            </motion.div>
+
+            {/* Get Now Button */}
+            <motion.div
+              className="flex justify-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              <button
+                onClick={() => window.location.href = '/auth/login'}
+                className="px-8 py-4 bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white font-semibold rounded-full text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              >
+                Get Now
+              </button>
             </motion.div>
           </div>
 

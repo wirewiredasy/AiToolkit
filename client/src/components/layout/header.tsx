@@ -4,11 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Menu, X, Search, User, Bell } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
-import SuntynIconOnly from '@/components/ui/suntyn-icon-only';
+import GeometricLogo from '@/components/ui/geometric-logo';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user, signOut } = useAuth();
+  const { user, logout } = useAuth();
 
   const navLinks = [
     { name: 'All Tools', href: '/all-tools' },
@@ -23,11 +23,8 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 max-w-screen-2xl items-center">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2">
-          <SuntynIconOnly size="md" animated={false} />
-          <span className="hidden font-bold sm:inline-block bg-gradient-to-r from-orange-600 to-yellow-600 bg-clip-text text-transparent">
-            Suntyn AI
-          </span>
+        <Link href="/" className="flex items-center">
+          <GeometricLogo size="md" showText={true} />
         </Link>
 
         {/* Desktop Navigation */}
@@ -57,7 +54,7 @@ export default function Header() {
               <Button variant="ghost" size="sm" className="h-8 w-8 px-0">
                 <Bell className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="sm" onClick={signOut}>
+              <Button variant="ghost" size="sm" onClick={logout}>
                 Sign Out
               </Button>
             </div>
@@ -69,8 +66,8 @@ export default function Header() {
                 </Button>
               </Link>
               <Link href="/auth/signup">
-                <Button size="sm">
-                  Sign Up
+                <Button size="sm" className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600">
+                  Get Now
                 </Button>
               </Link>
             </div>
