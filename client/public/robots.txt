@@ -1,0 +1,24 @@
+
+# Robots.txt for Suntyn AI - Neural Intelligence Platform
+# Generated automatically
+# Visit: https://suntyn-ai.com
+
+User-agent: *
+Allow: /
+
+# Important pages
+Allow: /all-tools
+Allow: /toolkit/
+Allow: /tool/
+
+# API endpoints - restricted for crawlers
+Disallow: /api/
+Disallow: /auth/
+Disallow: /uploads/
+
+# Sitemaps
+Sitemap: https://suntyn-ai.com/sitemap.xml
+Sitemap: https://suntyn-ai.com/sitemap-tools.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1

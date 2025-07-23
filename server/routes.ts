@@ -8,6 +8,8 @@ import jwt from "jsonwebtoken";
 import { api } from "./api-router";
 import { fastApiMiddleware } from "./fastapi-middleware";
 import { randomBytes } from "crypto";
+import { SitemapRobotsGenerator } from "./sitemap-generator";
+import { AutoUpdater } from "./auto-updater";
 
 const JWT_SECRET = process.env.JWT_SECRET || randomBytes(64).toString('hex');
 
@@ -34,6 +36,14 @@ const authenticateToken = async (req: any, res: any, next: any) => {
 };
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Initialize automatic sitemap and robots.txt generator
+  const sitemapGenerator = new SitemapRobotsGenerator('https://suntyn-ai.com');
+  sitemapGenerator.setupAutoGeneration(app);
+
+  // Start automatic file change monitoring
+  const autoUpdater = new AutoUpdater();
+  autoUpdater.start();
+
   // File upload handling with multer
   const multer = (await import('multer')).default;
   const upload = multer({
