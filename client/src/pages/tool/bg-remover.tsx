@@ -18,9 +18,9 @@ export default function BackgroundRemoverPage() {
           key: "aiModel",
           label: "AI Model",
           type: "select",
-          options: ["U2Net (General)", "SILUETA (People)", "Realistic (Photos)", "Anime (Illustrations)"],
+          options: ["U2Net (General)", "SILUETA (Portraits)", "ISNET (Precise)", "MODNet (Fast)"],
           defaultValue: "U2Net (General)",
-          description: "AI model optimized for different image types"
+          description: "AI model for background removal"
         },
         {
           key: "edgeSmoothing",
@@ -30,33 +30,40 @@ export default function BackgroundRemoverPage() {
           max: 10,
           step: 1,
           defaultValue: 3,
-          description: "Smooth rough edges (0=none, 10=maximum)"
+          description: "Smooth edges around subject (0-10)"
         },
         {
           key: "featherEdges",
           label: "Feather Edges",
           type: "slider",
           min: 0,
-          max: 5,
-          step: 0.5,
-          defaultValue: 1,
-          description: "Soften edges for natural blending"
-        },
-        {
-          key: "backgroundReplacement",
-          label: "Background Replacement",
-          type: "select",
-          options: ["Transparent", "White", "Black", "Blue", "Green"],
-          defaultValue: "Transparent",
-          description: "Replace background with color or transparency"
+          max: 20,
+          step: 1,
+          defaultValue: 2,
+          description: "Feather edge pixels for natural blending"
         },
         {
           key: "outputFormat",
           label: "Output Format",
           type: "select",
-          options: ["PNG (Transparent)", "JPG (With Background)", "WebP (Transparent)"],
+          options: ["PNG (Transparent)", "JPG (White Background)", "WebP (Transparent)"],
           defaultValue: "PNG (Transparent)",
-          description: "Output format for the processed image"
+          description: "Output file format"
+        },
+        {
+          key: "backgroundColor",
+          label: "Background Color",
+          type: "text",
+          defaultValue: "#FFFFFF",
+          placeholder: "#FFFFFF",
+          description: "Background color (for non-transparent formats)"
+        },
+        {
+          key: "highPrecision",
+          label: "High Precision Mode",
+          type: "switch",
+          defaultValue: false,
+          description: "Use higher precision (slower but better quality)"
         }
       ]}
       endpoint="/api/tools/bg-remover"

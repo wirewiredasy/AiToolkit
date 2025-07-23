@@ -6,32 +6,48 @@ export default function ImageResizerPage() {
     <ToolTemplate
       toolId="image-resizer"
       toolName="Image Resizer"
-      description="Resize images to any dimensions while maintaining quality. Perfect for social media posts, websites, or printing requirements."
+      description="Resize images to specific dimensions or percentages. Maintain aspect ratio or stretch to exact dimensions with quality preservation."
       icon={<Maximize className="h-8 w-8 text-white" />}
       acceptedFiles={{ 
-        "image/*": [".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".webp"] 
+        "image/*": [".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".webp", ".gif"] 
       }}
       maxFileSize={25 * 1024 * 1024}
-      allowMultiple={false}
+      allowMultiple={true}
       settings={[
+        {
+          key: "resizeMode",
+          label: "Resize Mode",
+          type: "select",
+          options: ["By Percentage", "By Width", "By Height", "Exact Dimensions", "Fit in Box"],
+          defaultValue: "By Percentage",
+          description: "How to resize the image"
+        },
+        {
+          key: "percentage",
+          label: "Resize Percentage",
+          type: "slider",
+          min: 10,
+          max: 500,
+          step: 5,
+          defaultValue: 100,
+          description: "Percentage to resize (10-500%)"
+        },
         {
           key: "width",
           label: "Width (pixels)",
           type: "number",
-          min: 1,
+          min: 10,
           max: 8000,
           defaultValue: 800,
-          required: true,
           description: "Target width in pixels"
         },
         {
           key: "height",
           label: "Height (pixels)",
           type: "number",
-          min: 1,
+          min: 10,
           max: 8000,
           defaultValue: 600,
-          required: true,
           description: "Target height in pixels"
         },
         {
@@ -39,23 +55,25 @@ export default function ImageResizerPage() {
           label: "Maintain Aspect Ratio",
           type: "switch",
           defaultValue: true,
-          description: "Keep the original image proportions"
+          description: "Keep original proportions"
         },
         {
-          key: "resizeMethod",
-          label: "Resize Method",
-          type: "select",
-          options: ["Lanczos (Best Quality)", "Bicubic (Good)", "Bilinear (Fast)", "Nearest (Fastest)"],
-          defaultValue: "Lanczos (Best Quality)",
-          description: "Algorithm used for resizing"
+          key: "quality",
+          label: "Output Quality",
+          type: "slider",
+          min: 10,
+          max: 100,
+          step: 5,
+          defaultValue: 90,
+          description: "Image quality (10-100%)"
         },
         {
-          key: "outputFormat",
-          label: "Output Format",
+          key: "resamplingMethod",
+          label: "Resampling Method",
           type: "select",
-          options: ["Same as Input", "JPG", "PNG", "WebP"],
-          defaultValue: "Same as Input",
-          description: "Output image format"
+          options: ["Bicubic (Best)", "Bilinear", "Nearest Neighbor", "Lanczos"],
+          defaultValue: "Bicubic (Best)",
+          description: "Algorithm for resizing"
         }
       ]}
       endpoint="/api/tools/image-resizer"

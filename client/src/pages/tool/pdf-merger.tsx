@@ -1,13 +1,13 @@
 import { ToolTemplate } from "@/components/ui/tool-template";
-import { FileText } from "lucide-react";
+import { Combine } from "lucide-react";
 
 export default function PDFMergerPage() {
   return (
     <ToolTemplate
       toolId="pdf-merger"
       toolName="PDF Merger"
-      description="Merge multiple PDF files into a single document. Combine PDFs in any order and create professional consolidated documents."
-      icon={<FileText className="h-8 w-8 text-white" />}
+      description="Combine multiple PDF files into a single document. Merge PDFs in any order while maintaining quality and formatting."
+      icon={<Combine className="h-8 w-8 text-white" />}
       acceptedFiles={{ "application/pdf": [".pdf"] }}
       maxFileSize={50 * 1024 * 1024}
       allowMultiple={true}
@@ -16,30 +16,37 @@ export default function PDFMergerPage() {
           key: "mergeOrder",
           label: "Merge Order",
           type: "select",
-          options: ["Upload Order", "Alphabetical", "Reverse Alphabetical", "File Size (Small to Large)", "File Size (Large to Small)"],
+          options: ["Upload Order", "Alphabetical", "Date Modified", "File Size"],
           defaultValue: "Upload Order",
-          description: "Order in which PDFs will be merged"
+          description: "Order of merging PDF files"
+        },
+        {
+          key: "pageRange",
+          label: "Page Range (per file)",
+          type: "text",
+          placeholder: "all, 1-5, 10-20",
+          description: "Specific pages to merge from each file (comma separated)"
         },
         {
           key: "addBookmarks",
           label: "Add Bookmarks",
           type: "switch",
           defaultValue: true,
-          description: "Create bookmarks for each merged PDF"
+          description: "Create bookmarks for each merged file"
         },
         {
-          key: "preserveMetadata",
-          label: "Preserve Metadata",
+          key: "preserveLinks",
+          label: "Preserve Links",
           type: "switch",
           defaultValue: true,
-          description: "Keep original PDF metadata"
+          description: "Keep hyperlinks and internal links"
         },
         {
-          key: "optimizeSize",
-          label: "Optimize File Size",
+          key: "addPageNumbers",
+          label: "Add Page Numbers",
           type: "switch",
           defaultValue: false,
-          description: "Compress the merged PDF to reduce size"
+          description: "Add continuous page numbers to merged PDF"
         }
       ]}
       endpoint="/api/tools/pdf-merger"

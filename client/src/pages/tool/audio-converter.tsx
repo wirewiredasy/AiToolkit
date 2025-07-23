@@ -5,20 +5,20 @@ export default function AudioConverterPage() {
   return (
     <ToolTemplate
       toolId="audio-converter"
-      toolName="Audio Converter"
-      description="Convert audio files between different formats. Support for MP3, WAV, AAC, FLAC, OGG and more with quality control options."
+      toolName="Audio Format Converter"
+      description="Convert audio files between different formats. Support for MP3, WAV, AAC, FLAC, OGG, and more with quality control options."
       icon={<Music className="h-8 w-8 text-white" />}
       acceptedFiles={{ 
-        "audio/*": [".mp3", ".wav", ".aac", ".flac", ".ogg", ".m4a", ".wma"] 
+        "audio/*": [".mp3", ".wav", ".aac", ".flac", ".ogg", ".m4a", ".wma", ".opus"] 
       }}
-      maxFileSize={100 * 1024 * 1024}
-      allowMultiple={false}
+      maxFileSize={200 * 1024 * 1024}
+      allowMultiple={true}
       settings={[
         {
           key: "outputFormat",
           label: "Output Format",
           type: "select",
-          options: ["MP3", "WAV", "AAC", "FLAC", "OGG", "M4A"],
+          options: ["MP3", "WAV", "AAC", "FLAC", "OGG", "M4A", "OPUS", "WMA"],
           defaultValue: "MP3",
           required: true,
           description: "Target audio format"
@@ -27,24 +27,24 @@ export default function AudioConverterPage() {
           key: "quality",
           label: "Audio Quality",
           type: "select",
-          options: ["High (320 kbps)", "Standard (192 kbps)", "Good (128 kbps)", "Low (96 kbps)"],
-          defaultValue: "High (320 kbps)",
-          description: "Audio quality and bitrate"
+          options: ["320 kbps (Highest)", "256 kbps (High)", "192 kbps (Standard)", "128 kbps (Good)", "96 kbps (Low)"],
+          defaultValue: "192 kbps (Standard)",
+          description: "Audio bitrate and quality"
         },
         {
           key: "sampleRate",
           label: "Sample Rate",
           type: "select",
-          options: ["44100 Hz (CD Quality)", "48000 Hz (Professional)", "96000 Hz (High-Res)", "Auto"],
-          defaultValue: "Auto",
+          options: ["48000 Hz (Professional)", "44100 Hz (CD Quality)", "22050 Hz (Voice)", "16000 Hz (Podcast)", "Original"],
+          defaultValue: "44100 Hz (CD Quality)",
           description: "Audio sample rate"
         },
         {
           key: "channels",
-          label: "Channels",
+          label: "Audio Channels",
           type: "select",
-          options: ["Auto", "Mono", "Stereo"],
-          defaultValue: "Auto",
+          options: ["Stereo", "Mono", "Original"],
+          defaultValue: "Original",
           description: "Audio channel configuration"
         },
         {
@@ -53,6 +53,13 @@ export default function AudioConverterPage() {
           type: "switch",
           defaultValue: false,
           description: "Adjust volume to standard level"
+        },
+        {
+          key: "removeMetadata",
+          label: "Remove Metadata",
+          type: "switch",
+          defaultValue: false,
+          description: "Strip ID3 tags and metadata"
         }
       ]}
       endpoint="/api/tools/audio-converter"

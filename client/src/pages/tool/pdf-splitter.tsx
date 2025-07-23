@@ -6,26 +6,26 @@ export default function PDFSplitterPage() {
     <ToolTemplate
       toolId="pdf-splitter"
       toolName="PDF Splitter"
-      description="Split PDF files into multiple documents. Extract specific pages, create separate files, or divide by page ranges."
+      description="Split large PDF files into smaller documents. Extract specific pages or split by page ranges, bookmarks, or file size."
       icon={<Scissors className="h-8 w-8 text-white" />}
       acceptedFiles={{ "application/pdf": [".pdf"] }}
-      maxFileSize={50 * 1024 * 1024}
+      maxFileSize={100 * 1024 * 1024}
       allowMultiple={false}
       settings={[
         {
-          key: "splitMethod",
-          label: "Split Method",
+          key: "splitMode",
+          label: "Split Mode",
           type: "select",
-          options: ["All Pages (One per file)", "Page Ranges", "Every N Pages", "Split at Bookmarks"],
-          defaultValue: "All Pages (One per file)",
+          options: ["By Page Range", "Every N Pages", "By Bookmarks", "By File Size", "Extract Pages"],
+          defaultValue: "By Page Range",
           description: "How to split the PDF"
         },
         {
           key: "pageRanges",
           label: "Page Ranges",
           type: "text",
-          placeholder: "1-5, 10-15, 20",
-          description: "Specify ranges (e.g., 1-5, 10-15, 20)"
+          placeholder: "1-5, 6-10, 11-15",
+          description: "Specific page ranges (for Page Range mode)"
         },
         {
           key: "pagesPerFile",
@@ -33,16 +33,23 @@ export default function PDFSplitterPage() {
           type: "number",
           min: 1,
           max: 100,
-          defaultValue: 1,
-          description: "Number of pages in each output file"
+          defaultValue: 10,
+          description: "Number of pages in each split file"
         },
         {
-          key: "namingPattern",
-          label: "File Naming",
+          key: "preserveBookmarks",
+          label: "Preserve Bookmarks",
+          type: "switch",
+          defaultValue: true,
+          description: "Keep bookmarks in split files"
+        },
+        {
+          key: "filenamePattern",
+          label: "Filename Pattern",
           type: "select",
-          options: ["Page Numbers", "Sequential", "Original + Suffix"],
-          defaultValue: "Page Numbers",
-          description: "How to name the split files"
+          options: ["original_part1", "original_pages_1-5", "part_001", "custom"],
+          defaultValue: "original_part1",
+          description: "Naming pattern for split files"
         }
       ]}
       endpoint="/api/tools/pdf-splitter"
