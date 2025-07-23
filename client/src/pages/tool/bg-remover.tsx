@@ -1,211 +1,67 @@
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useAuth } from "@/hooks/use-auth";
-import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
-import { Upload, Eraser, Image as ImageIcon, CheckCircle } from "lucide-react";
+import { ToolTemplate } from "@/components/ui/tool-template";
+import { Layers } from "lucide-react";
 
-export default function BackgroundRemover() {
-  const { user } = useAuth();
-  const { toast } = useToast();
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [processing, setProcessing] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-
-  const removeBackground = useMutation({
-    mutationFn: async (file: File) => {
-      const formData = new FormData();
-      formData.append('image', file);
-      return apiRequest('/api/tools/bg-remover', {
-        method: 'POST',
-        body: formData,
-      });
-    },
-    onSuccess: (data: any) => {
-      if (data.success) {
-        const link = document.createElement('a');
-        link.href = data.downloadUrl;
-        link.download = data.filename || 'no-bg-image.png';
-        link.click();
-        toast({
-          title: "Background Removed!",
-          description: "Background has been removed successfully using AI",
-        });
-      }
-      setProcessing(false);
-    },
-    onError: () => {
-      toast({
-        title: "Processing Failed",
-        description: "Please try again with a valid image file",
-        variant: "destructive",
-      });
-      setProcessing(false);
-    }
-  });
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setSelectedFile(file);
-      
-      const reader = new FileReader();
-      reader.onload = (e) => setImagePreview(e.target?.result as string);
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleRemoveBackground = () => {
-    if (!user) {
-      toast({
-        title: "Login Required",
-        description: "Please log in to remove backgrounds",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!selectedFile) {
-      toast({
-        title: "No File Selected",
-        description: "Please select an image file to process",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setProcessing(true);
-    removeBackground.mutate(selectedFile);
-  };
-
+export default function BackgroundRemoverPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-cyan-900 dark:to-blue-900 py-8">
-      <div className="container mx-auto px-4 max-w-6xl">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-3 mb-4">
-            <div className="p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg">
-              <Eraser className="w-6 h-6 text-cyan-600" />
-            </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
-              AI Background Remover
-            </h1>
-          </div>
-          <p className="text-xl text-muted-foreground">
-            Remove backgrounds from images instantly using AI technology
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <Card className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 border-0 shadow-xl">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Upload className="w-5 h-5" />
-                  Upload & Process Image
-                </CardTitle>
-                <CardDescription>
-                  Upload an image to remove its background automatically
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="image-upload">Select Image</Label>
-                  <Input
-                    id="image-upload"
-                    type="file"
-                    accept=".jpg,.jpeg,.png,.webp"
-                    onChange={handleFileSelect}
-                    className="cursor-pointer"
-                  />
-                  {selectedFile && (
-                    <p className="text-sm text-muted-foreground">
-                      Selected: {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
-                    </p>
-                  )}
-                </div>
-
-                {imagePreview && (
-                  <div className="space-y-2">
-                    <Label>Preview</Label>
-                    <div className="border rounded-lg p-4 bg-gray-50 dark:bg-gray-900">
-                      <img
-                        src={imagePreview}
-                        alt="Preview"
-                        className="max-w-full max-h-64 object-contain mx-auto"
-                      />
-                    </div>
-                  </div>
-                )}
-
-                <Button
-                  onClick={handleRemoveBackground}
-                  disabled={!selectedFile || processing}
-                  className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700"
-                  size="lg"
-                >
-                  {processing ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2" />
-                      Processing with AI...
-                    </>
-                  ) : (
-                    <>
-                      <Eraser className="w-4 h-4 mr-2" />
-                      Remove Background
-                    </>
-                  )}
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="space-y-6">
-            <Card className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 border-0 shadow-xl">
-              <CardHeader>
-                <CardTitle className="text-lg">AI Features</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                    Automatic detection
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                    Precise edge cutting
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                    Hair & fine details
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                    Transparent PNG output
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 border-0 shadow-xl">
-              <CardHeader>
-                <CardTitle className="text-lg">Best Results</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm">
-                  <li>• Clear subject separation</li>
-                  <li>• Good lighting conditions</li>
-                  <li>• High resolution images</li>
-                  <li>• Minimal background clutter</li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ToolTemplate
+      toolId="bg-remover"
+      toolName="AI Background Remover"
+      description="Remove backgrounds from images automatically using advanced AI. Perfect for product photos, portraits, and creating transparent images."
+      icon={<Layers className="h-8 w-8 text-white" />}
+      acceptedFiles={{ 
+        "image/*": [".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".webp"] 
+      }}
+      maxFileSize={25 * 1024 * 1024}
+      allowMultiple={false}
+      settings={[
+        {
+          key: "aiModel",
+          label: "AI Model",
+          type: "select",
+          options: ["U2Net (General)", "SILUETA (People)", "Realistic (Photos)", "Anime (Illustrations)"],
+          defaultValue: "U2Net (General)",
+          description: "AI model optimized for different image types"
+        },
+        {
+          key: "edgeSmoothing",
+          label: "Edge Smoothing",
+          type: "slider",
+          min: 0,
+          max: 10,
+          step: 1,
+          defaultValue: 3,
+          description: "Smooth rough edges (0=none, 10=maximum)"
+        },
+        {
+          key: "featherEdges",
+          label: "Feather Edges",
+          type: "slider",
+          min: 0,
+          max: 5,
+          step: 0.5,
+          defaultValue: 1,
+          description: "Soften edges for natural blending"
+        },
+        {
+          key: "backgroundReplacement",
+          label: "Background Replacement",
+          type: "select",
+          options: ["Transparent", "White", "Black", "Blue", "Green"],
+          defaultValue: "Transparent",
+          description: "Replace background with color or transparency"
+        },
+        {
+          key: "outputFormat",
+          label: "Output Format",
+          type: "select",
+          options: ["PNG (Transparent)", "JPG (With Background)", "WebP (Transparent)"],
+          defaultValue: "PNG (Transparent)",
+          description: "Output format for the processed image"
+        }
+      ]}
+      endpoint="/api/tools/bg-remover"
+      gradientFrom="from-purple-500"
+      gradientTo="to-pink-600"
+    />
   );
 }
