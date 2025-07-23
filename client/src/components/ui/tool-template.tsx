@@ -86,28 +86,29 @@ export function ToolTemplate({
         });
       }, 200);
 
-      const response = await fetch(endpoint, {
+      // Use the correct endpoint format
+      const processEndpoint = endpoint.startsWith('/api/') ? endpoint : `/api/tools/${toolId}`;
+      
+      const response = await fetch(processEndpoint, {
         method: "POST",
         body: formData,
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
-        },
+        // Don't set Content-Type - let browser handle FormData
       });
 
       clearInterval(interval);
       setUploadProgress(100);
 
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`API request failed: ${response.status} - ${errorText}`);
+        const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
+        throw new Error(errorData.message || `API request failed: ${response.status}`);
       }
 
       return await response.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast({
         title: "Success!",
-        description: `${toolName} completed successfully`,
+        description: data.message || `${toolName} completed successfully`,
       });
       setUploadProgress(0);
     },
@@ -125,26 +126,19 @@ export function ToolTemplate({
   const handleProcess = () => {
     const formData = new FormData();
 
-    // Add files if required
-    if (resultType === "file" && files.length > 0) {
-      files.forEach((file, index) => {
-        formData.append(`file${index}`, file);
+    // Add files - use consistent field names for server
+    if (files.length > 0) {
+      files.forEach(file => {
+        formData.append('files', file);
       });
-      formData.append("fileName", files[0].name);
-      formData.append("fileSize", files[0].size.toString());
     }
 
-    // Add settings
-    Object.entries(settingsValues).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        formData.append(key, value.toString());
-      }
-    });
+    // Add toolId
+    formData.append('toolId', toolId);
 
-    // Add metadata
-    formData.append("metadata", JSON.stringify({
-      toolId,
-      settings: settingsValues,
+    // Add settings as metadata
+    formData.append('metadata', JSON.stringify({
+      ...settingsValues,
       fileCount: files.length
     }));
 
