@@ -102,56 +102,6 @@
     animation: slideUp 0.8s ease-out;
   }
 
-  .glass-morphism {
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  }
-
-  .glass-effect-3d {
-    background: linear-gradient(145deg, 
-      rgba(255, 255, 255, 0.4) 0%, 
-      rgba(255, 255, 255, 0.1) 100%);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 
-      0 8px 32px rgba(0, 0, 0, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.4),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-  }
-
-  @keyframes float3d {
-    0%, 100% { transform: translateY(0px) rotateX(0deg); }
-    50% { transform: translateY(-10px) rotateX(5deg); }
-  }
-
-  @keyframes glassShine {
-    0% { opacity: 0; transform: translateX(-100%) skewX(-15deg); }
-    50% { opacity: 1; }
-    100% { opacity: 0; transform: translateX(100%) skewX(-15deg); }
-  }
-
-  .animate-float-3d {
-    animation: float3d 3s ease-in-out infinite;
-  }
-
-  .glass-shine::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.4) 50%,
-      transparent 100%
-    );
-    animation: glassShine 3s ease-in-out infinite;
-  }
-
   .animate-pulse-slow {
     animation: pulse 3s infinite;
   }

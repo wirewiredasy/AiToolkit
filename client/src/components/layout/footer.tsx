@@ -37,15 +37,29 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-t border-white/10 overflow-hidden">
-      {/* Glass overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm"></div>
+    <footer className="bg-gray-900 border-t border-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid lg:grid-cols-5 md:grid-cols-3 gap-8">
           {/* Brand Section */}
           <div className="lg:col-span-2">
-            <div className="mb-6">
-              <SuntynLogo size="lg" animated={true} showText={true} className="mb-4" />
+            <div className="flex items-center gap-3 mb-6">
+              <div className="relative">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-white">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                  Suntyn AI
+                </span>
+                <p className="text-xs text-gray-400 uppercase tracking-wider font-medium">
+                  Neural Intelligence
+                </p>
+              </div>
             </div>
             <p className="text-gray-300 mb-8 leading-relaxed max-w-md">
               Professional AI-powered tools for document processing, image editing, and data validation. 

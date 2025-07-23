@@ -47,11 +47,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1)_1px,transparent_1px)] bg-[length:32px_32px]"></div>
-      </div>
+    <div className="min-h-screen flex items-center justify-center bg-neutral-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <div className="flex justify-center mb-4">
@@ -63,7 +59,7 @@ export default function Signup() {
           <p className="mt-2 text-neutral-600">Create your free account</p>
         </div>
 
-        <Card className="glass-effect-3d border-white/20 shadow-2xl">
+        <Card>
           <CardHeader>
             <CardTitle>Sign Up</CardTitle>
           </CardHeader>
