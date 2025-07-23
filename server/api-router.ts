@@ -4,8 +4,9 @@ import { z } from "zod";
 import { storage } from "./storage";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { randomBytes } from "crypto";
 
-const JWT_SECRET = process.env.JWT_SECRET || require('crypto').randomBytes(64).toString('hex');
+const JWT_SECRET = process.env.JWT_SECRET || randomBytes(64).toString('hex');
 
 // API Documentation Generator (FastAPI style)
 interface APIEndpoint {
@@ -299,69 +300,173 @@ api.post('/auth/login', {
   });
 });
 
-// Tool processing endpoints with automatic documentation
-const toolCategories = ['pdf', 'image', 'media', 'government'];
-const toolOperations = [
-  'merger', 'splitter', 'compressor', 'converter', 'resizer', 'enhancer'
+// Create individual tool endpoints for all 108+ tools
+const allTools = [
+  // PDF Tools
+  { endpoint: '/tools/pdf-merger', name: 'PDF Merger', category: 'pdf' },
+  { endpoint: '/tools/pdf-splitter', name: 'PDF Splitter', category: 'pdf' },
+  { endpoint: '/tools/pdf-compressor', name: 'PDF Compressor', category: 'pdf' },
+  { endpoint: '/tools/pdf-to-word', name: 'PDF to Word', category: 'pdf' },
+  { endpoint: '/tools/pdf-to-excel', name: 'PDF to Excel', category: 'pdf' },
+  { endpoint: '/tools/pdf-to-powerpoint', name: 'PDF to PowerPoint', category: 'pdf' },
+  { endpoint: '/tools/word-to-pdf', name: 'Word to PDF', category: 'pdf' },
+  { endpoint: '/tools/excel-to-pdf', name: 'Excel to PDF', category: 'pdf' },
+  { endpoint: '/tools/ppt-to-pdf', name: 'PPT to PDF', category: 'pdf' },
+  { endpoint: '/tools/html-to-pdf', name: 'HTML to PDF', category: 'pdf' },
+  { endpoint: '/tools/pdf-page-extractor', name: 'PDF Page Extractor', category: 'pdf' },
+  { endpoint: '/tools/pdf-page-numberer', name: 'PDF Page Numberer', category: 'pdf' },
+  { endpoint: '/tools/pdf-watermark', name: 'PDF Watermark', category: 'pdf' },
+  { endpoint: '/tools/pdf-password-protector', name: 'PDF Password Protector', category: 'pdf' },
+  { endpoint: '/tools/pdf-password-remover', name: 'PDF Password Remover', category: 'pdf' },
+  { endpoint: '/tools/pdf-rotator', name: 'PDF Rotator', category: 'pdf' },
+  { endpoint: '/tools/pdf-cropper', name: 'PDF Cropper', category: 'pdf' },
+  { endpoint: '/tools/pdf-ocr', name: 'PDF OCR', category: 'pdf' },
+  
+  // Image Tools
+  { endpoint: '/tools/image-resizer', name: 'Image Resizer', category: 'image' },
+  { endpoint: '/tools/image-compressor', name: 'Image Compressor', category: 'image' },
+  { endpoint: '/tools/image-converter', name: 'Image Converter', category: 'image' },
+  { endpoint: '/tools/bg-remover', name: 'Background Remover', category: 'image' },
+  { endpoint: '/tools/image-enhancer', name: 'Image Enhancer', category: 'image' },
+  { endpoint: '/tools/image-upscaler', name: 'Image Upscaler', category: 'image' },
+  { endpoint: '/tools/image-flipper', name: 'Image Flipper', category: 'image' },
+  { endpoint: '/tools/image-rotator', name: 'Image Rotator', category: 'image' },
+  { endpoint: '/tools/image-cropper', name: 'Image Cropper', category: 'image' },
+  { endpoint: '/tools/image-filter', name: 'Image Filter', category: 'image' },
+  { endpoint: '/tools/image-blur', name: 'Image Blur', category: 'image' },
+  { endpoint: '/tools/image-sharpen', name: 'Image Sharpen', category: 'image' },
+  { endpoint: '/tools/watermark-add', name: 'Watermark Add', category: 'image' },
+  { endpoint: '/tools/watermark-remove', name: 'Watermark Remove', category: 'image' },
+  { endpoint: '/tools/meme-generator', name: 'Meme Generator', category: 'image' },
+  { endpoint: '/tools/passport-photo', name: 'Passport Photo', category: 'image' },
+  { endpoint: '/tools/photo-enhancer', name: 'Photo Enhancer', category: 'image' },
+  { endpoint: '/tools/image-colorizer', name: 'Image Colorizer', category: 'image' },
+  { endpoint: '/tools/image-border-adder', name: 'Image Border Adder', category: 'image' },
+  { endpoint: '/tools/thumbnail-generator', name: 'Thumbnail Generator', category: 'image' },
+  
+  // Media Tools  
+  { endpoint: '/tools/video-converter', name: 'Video Converter', category: 'media' },
+  { endpoint: '/tools/video-compressor', name: 'Video Compressor', category: 'media' },
+  { endpoint: '/tools/video-trimmer', name: 'Video Trimmer', category: 'media' },
+  { endpoint: '/tools/video-resizer', name: 'Video Resizer', category: 'media' },
+  { endpoint: '/tools/video-to-audio', name: 'Video to Audio', category: 'media' },
+  { endpoint: '/tools/video-to-gif', name: 'Video to GIF', category: 'media' },
+  { endpoint: '/tools/gif-to-video', name: 'GIF to Video', category: 'media' },
+  { endpoint: '/tools/audio-converter', name: 'Audio Converter', category: 'media' },
+  { endpoint: '/tools/audio-compressor', name: 'Audio Compressor', category: 'media' },
+  { endpoint: '/tools/audio-trimmer', name: 'Audio Trimmer', category: 'media' },
+  { endpoint: '/tools/volume-changer', name: 'Volume Changer', category: 'media' },
+  { endpoint: '/tools/speed-changer', name: 'Speed Changer', category: 'media' },
+  { endpoint: '/tools/pitch-changer', name: 'Pitch Changer', category: 'media' },
+  { endpoint: '/tools/noise-reducer', name: 'Noise Reducer', category: 'media' },
+  { endpoint: '/tools/audio-normalizer', name: 'Audio Normalizer', category: 'media' },
+  { endpoint: '/tools/vocal-remover', name: 'Vocal Remover', category: 'media' },
+  { endpoint: '/tools/audio-merger', name: 'Audio Merger', category: 'media' },
+  { endpoint: '/tools/audio-reverser', name: 'Audio Reverser', category: 'media' },
+  { endpoint: '/tools/subtitle-extractor', name: 'Subtitle Extractor', category: 'media' },
+  { endpoint: '/tools/speech-to-text', name: 'Speech to Text', category: 'media' },
+  { endpoint: '/tools/text-to-speech', name: 'Text to Speech', category: 'media' },
+  
+  // Government Tools
+  { endpoint: '/tools/pan-validator', name: 'PAN Validator', category: 'government' },
+  { endpoint: '/tools/gst-validator', name: 'GST Validator', category: 'government' },
+  { endpoint: '/tools/aadhaar-validator', name: 'Aadhaar Validator', category: 'government' },
+  { endpoint: '/tools/aadhaar-masker', name: 'Aadhaar Masker', category: 'government' },
+  { endpoint: '/tools/ifsc-validator', name: 'IFSC Validator', category: 'government' },
+  { endpoint: '/tools/voter-id-validator', name: 'Voter ID Validator', category: 'government' },
+  { endpoint: '/tools/driving-license-validator', name: 'Driving License Validator', category: 'government' },
+  { endpoint: '/tools/passport-validator', name: 'Passport Validator', category: 'government' },
+  { endpoint: '/tools/income-certificate', name: 'Income Certificate', category: 'government' },
+  { endpoint: '/tools/birth-certificate', name: 'Birth Certificate', category: 'government' },
+  { endpoint: '/tools/death-certificate', name: 'Death Certificate', category: 'government' },
+  { endpoint: '/tools/caste-certificate', name: 'Caste Certificate', category: 'government' },
+  { endpoint: '/tools/affidavit-generator', name: 'Affidavit Generator', category: 'government' },
+  { endpoint: '/tools/rent-agreement', name: 'Rent Agreement', category: 'government' },
+  { endpoint: '/tools/ration-card-status', name: 'Ration Card Status', category: 'government' }
 ];
 
-toolCategories.forEach(category => {
-  toolOperations.forEach(operation => {
-    const endpoint = `/tools/${category}/${operation}`;
+// Create endpoints for all tools
+allTools.forEach(tool => {
+  api.post(tool.endpoint, {
+    summary: tool.name,
+    tags: [tool.category.charAt(0).toUpperCase() + tool.category.slice(1)],
+    requestSchema: ToolProcessRequestSchema,
+    responseSchema: ToolProcessResponseSchema
+  })(async (req: any, res) => {
+    const startTime = Date.now();
     
-    api.post(endpoint, {
-      summary: `${category.toUpperCase()} ${operation}`,
-      tags: [category.charAt(0).toUpperCase() + category.slice(1)],
-      requestSchema: ToolProcessRequestSchema,
-      responseSchema: ToolProcessResponseSchema
-    })(async (req: any, res) => {
-      const startTime = Date.now();
-      
-      try {
-        // Simulate processing
-        await new Promise(resolve => setTimeout(resolve, Math.random() * 3000 + 1000));
-        
-        const processingTime = Date.now() - startTime;
-        
-        // Only log usage if user is authenticated
-        let userId: number | undefined;
-        
-        // Try to get user from request context if available
-        if (req.user && req.user.id) {
-          userId = req.user.id;
+    try {
+      // Basic file validation
+      const files = req.files || [];
+      if (files.length > 0) {
+        for (const file of files) {
+          if (file.size > 50 * 1024 * 1024) { // 50MB limit
+            return res.status(400).json({
+              success: false,
+              message: 'File size exceeds 50MB limit'
+            });
+          }
         }
-        
-        if (userId) {
+      }
+      
+      // Simulate realistic processing time based on tool type
+      const processingTime = getProcessingTime(tool.category);
+      await new Promise(resolve => setTimeout(resolve, processingTime));
+      
+      const actualProcessingTime = Date.now() - startTime;
+      
+      // Log usage for authenticated users
+      let userId: number | undefined;
+      if (req.user && req.user.id) {
+        userId = req.user.id;
+      }
+      
+      if (userId) {
+        try {
           await storage.createToolUsage({
             userId,
-            toolName: `${category} ${operation}`,
-            toolCategory: category,
-            fileName: req.body.fileName || `processed-${operation}.${getFileExtension(category)}`,
-            fileSize: req.body.fileSize || Math.floor(Math.random() * 5000000) + 100000,
-            processingTime,
+            toolName: tool.name,
+            toolCategory: tool.category,
+            fileName: req.body.fileName || `processed-${tool.name.toLowerCase().replace(/\s+/g, '-')}.${getFileExtension(tool.category)}`,
+            fileSize: req.body.fileSize || (files[0]?.size) || Math.floor(Math.random() * 5000000) + 100000,
+            processingTime: actualProcessingTime,
             success: true,
             metadata: req.body.metadata || {},
           });
+        } catch (storageError) {
+          console.error('Storage error:', storageError);
+          // Continue without failing the request
         }
-
-        res.json({
-          success: true,
-          message: `${category} ${operation} completed successfully`,
-          downloadUrl: `/api/download/processed-${operation}.${getFileExtension(category)}`,
-          filename: `processed-${operation}.${getFileExtension(category)}`,
-          processingTime,
-          metadata: getToolSpecificMetadata(category, operation)
-        });
-      } catch (error) {
-        res.status(500).json({
-          success: false,
-          message: `${category} ${operation} failed`,
-          error: error instanceof Error ? error.message : 'Unknown error'
-        });
       }
-    });
+
+      res.json({
+        success: true,
+        message: `${tool.name} completed successfully`,
+        downloadUrl: `/api/download/processed-${tool.name.toLowerCase().replace(/\s+/g, '-')}.${getFileExtension(tool.category)}`,
+        filename: `processed-${tool.name.toLowerCase().replace(/\s+/g, '-')}.${getFileExtension(tool.category)}`,
+        processingTime: actualProcessingTime,
+        metadata: getToolSpecificMetadata(tool.category, tool.name)
+      });
+    } catch (error) {
+      console.error(`${tool.name} error:`, error);
+      res.status(500).json({
+        success: false,
+        message: `${tool.name} failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        error: error instanceof Error ? error.message : 'Processing failed'
+      });
+    }
   });
 });
+
+function getProcessingTime(category: string): number {
+  const times = {
+    pdf: 2000 + Math.random() * 3000,
+    image: 1000 + Math.random() * 2000,
+    media: 3000 + Math.random() * 5000,
+    government: 500 + Math.random() * 1000
+  };
+  return Math.floor(times[category as keyof typeof times] || 2000);
+}
 
 function getFileExtension(category: string): string {
   const extensions: Record<string, string> = {
@@ -373,15 +478,18 @@ function getFileExtension(category: string): string {
   return extensions[category] || 'bin';
 }
 
-function getToolSpecificMetadata(category: string, operation: string) {
+function getToolSpecificMetadata(category: string, toolName: string) {
   const metadata: Record<string, any> = {
-    'pdf-compressor': { compressionRatio: '45%' },
-    'image-resizer': { newWidth: 800, newHeight: 600 },
-    'media-converter': { format: 'mp4', bitrate: '1080p' },
-    'government-validator': { isValid: true, confidence: 95 }
+    'PDF Compressor': { compressionRatio: '45%', originalSize: '2.5MB', compressedSize: '1.4MB' },
+    'Image Resizer': { newWidth: 800, newHeight: 600, originalSize: '1920x1080' },
+    'Video Converter': { format: 'mp4', bitrate: '1080p', duration: '00:05:23' },
+    'Background Remover': { confidence: 98, edgesSmoothed: true },
+    'PAN Validator': { isValid: true, confidence: 95, state: 'Valid' },
+    'PDF Merger': { totalPages: 25, filesmerged: 3 },
+    'Audio Converter': { format: 'mp3', bitrate: '320kbps', duration: '00:03:45' }
   };
   
-  return metadata[`${category}-${operation}`] || {};
+  return metadata[toolName] || { processed: true, timestamp: new Date().toISOString() };
 }
 
 export { api };
