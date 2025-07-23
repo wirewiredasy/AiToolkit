@@ -61,18 +61,30 @@ export default function Home() {
             {/* Statistics */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-xl">
-                <div className="text-4xl font-bold text-white mb-2">80+</div>
+                <div className="flex items-center justify-center mb-4">
+                  <i className="fas fa-tools text-3xl text-white"></i>
+                </div>
+                <div className="text-4xl font-bold text-white mb-2">108+</div>
                 <div className="text-slate-300 text-sm">AI Tools</div>
               </div>
               <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-xl">
+                <div className="flex items-center justify-center mb-4">
+                  <i className="fas fa-file-alt text-3xl text-white"></i>
+                </div>
                 <div className="text-4xl font-bold text-white mb-2">1M+</div>
                 <div className="text-slate-300 text-sm">Files Processed</div>
               </div>
               <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-xl">
+                <div className="flex items-center justify-center mb-4">
+                  <i className="fas fa-exchange-alt text-3xl text-white"></i>
+                </div>
                 <div className="text-4xl font-bold text-white mb-2">50+</div>
                 <div className="text-slate-300 text-sm">File Formats</div>
               </div>
               <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-xl">
+                <div className="flex items-center justify-center mb-4">
+                  <i className="fas fa-shield-alt text-3xl text-white"></i>
+                </div>
                 <div className="text-4xl font-bold text-white mb-2">100%</div>
                 <div className="text-slate-300 text-sm">Secure</div>
               </div>
