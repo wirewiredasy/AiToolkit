@@ -232,7 +232,7 @@ export default function WatermarkAddPage() {
 import { ToolTemplate } from "@/components/ui/tool-template";
 import { Shield } from "lucide-react";
 
-export default function WatermarkAddPage() {
+export default function WatermarkAdderPage() {
   return (
     <ToolTemplate
       toolId="watermark-add"

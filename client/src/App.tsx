@@ -65,7 +65,11 @@ import ImageRotatorPage from "@/pages/tool/image-rotator";
 import ImageColorizerPage from "@/pages/tool/image-colorizer";
 import ImageFlipperPage from "@/pages/tool/image-flipper";
 import ImageFilterPage from "@/pages/tool/image-filter";
-import WatermarkAddPage from "@/pages/tool/watermark-add";
+import WatermarkAdderPage from "@/pages/tool/watermark-add";
+import VolumeChangerPage from "@/pages/tool/volume-changer";
+import VocalRemoverPage from "@/pages/tool/vocal-remover";
+import VideoSpeedChangerPage from "@/pages/tool/video-speed-changer";
+import RationCardStatusPage from "@/pages/tool/ration-card-status";
 import ImageBlurPage from "@/pages/tool/image-blur";
 import MemeGeneratorPage from "@/pages/tool/meme-generator";
 import AudioCompressorPage from "@/pages/tool/audio-compressor";
@@ -177,7 +181,11 @@ function Router() {
       <Route path="/tool/image-colorizer" component={ImageColorizerPage} />
       <Route path="/tool/image-flipper" component={ImageFlipperPage} />
       <Route path="/tool/image-filter" component={ImageFilterPage} />
-      <Route path="/tool/watermark-add" component={WatermarkAddPage} />
+      <Route path="/tool/watermark-add" component={WatermarkAdderPage} />
+      <Route path="/tool/volume-changer" component={VolumeChangerPage} />
+      <Route path="/tool/vocal-remover" component={VocalRemoverPage} />
+      <Route path="/tool/video-speed-changer" component={VideoSpeedChangerPage} />
+      <Route path="/tool/ration-card-status" component={RationCardStatusPage} />
       <Route path="/tool/image-blur" component={ImageBlurPage} />
       <Route path="/tool/image-sharpen" component={ImageSharpenPage} />
       <Route path="/tool/meme-generator" component={MemeGeneratorPage} />

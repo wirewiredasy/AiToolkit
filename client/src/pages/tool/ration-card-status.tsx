@@ -234,3 +234,189 @@ export default function RationCardStatusPage() {
     </div>
   );
 }
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CreditCard, Search, CheckCircle, AlertCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+
+export default function RationCardStatusPage() {
+  const [rationCardNumber, setRationCardNumber] = useState("");
+  const [state, setState] = useState("");
+  const [isChecking, setIsChecking] = useState(false);
+  const [result, setResult] = useState<any>(null);
+  const { toast } = useToast();
+
+  const handleStatusCheck = async () => {
+    if (!rationCardNumber.trim() || !state) {
+      toast({
+        title: "Missing Information",
+        description: "Please enter ration card number and select state.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsChecking(true);
+    try {
+      const response = await fetch('/api/tools/ration-card-status', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          rationCardNumber: rationCardNumber.trim(),
+          state
+        }),
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        setResult(data);
+        toast({
+          title: "Status Retrieved!",
+          description: "Ration card status checked successfully.",
+        });
+      } else {
+        throw new Error(data.error || 'Status check failed');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to check status. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsChecking(false);
+    }
+  };
+
+  const states = [
+    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+    "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka",
+    "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram",
+    "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu",
+    "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Ration Card Status Checker
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-300">
+              Check your ration card status and eligibility online
+            </p>
+          </div>
+
+          <Card className="shadow-xl border-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CreditCard className="h-6 w-6 text-orange-500" />
+                Ration Card Status
+              </CardTitle>
+              <CardDescription>
+                Enter your ration card details to check status
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="ration-number">Ration Card Number</Label>
+                  <Input
+                    id="ration-number"
+                    value={rationCardNumber}
+                    onChange={(e) => setRationCardNumber(e.target.value)}
+                    placeholder="Enter ration card number"
+                    maxLength={20}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>State</Label>
+                  <Select value={state} onValueChange={setState}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select your state" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {states.map((stateName) => (
+                        <SelectItem key={stateName} value={stateName}>
+                          {stateName}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <Button
+                onClick={handleStatusCheck}
+                disabled={!rationCardNumber.trim() || !state || isChecking}
+                className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
+                size="lg"
+              >
+                <Search className="h-4 w-4 mr-2" />
+                {isChecking ? "Checking Status..." : "Check Status"}
+              </Button>
+
+              {result && (
+                <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                  <div className="flex items-center gap-2 mb-4">
+                    <CheckCircle className="h-5 w-5 text-green-500" />
+                    <span className="font-medium">Status Retrieved</span>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="font-medium">Card Number:</span>
+                      <span>{result.cardNumber}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-medium">Status:</span>
+                      <span className={result.status === 'Active' ? 'text-green-600' : 'text-red-600'}>
+                        {result.status}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-medium">Card Type:</span>
+                      <span>{result.cardType}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-medium">Head of Family:</span>
+                      <span>{result.headOfFamily}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="grid md:grid-cols-2 gap-4 mt-8">
+                <div className="bg-gradient-to-r from-orange-500/10 to-red-500/10 p-4 rounded-lg">
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    Real-time Status
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Get live updates on your ration card status
+                  </p>
+                </div>
+                <div className="bg-gradient-to-r from-orange-500/10 to-red-500/10 p-4 rounded-lg">
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    Secure Check
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Your information is processed securely
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
