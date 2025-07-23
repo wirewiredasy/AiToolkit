@@ -2,7 +2,10 @@ import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import ToolCard from '@/components/ui/tool-card';
 import SuntynLogo from '@/components/ui/suntyn-logo';
+import SearchBar from '@/components/ui/search-bar';
+import { StatCardSkeleton } from '@/components/ui/loading-skeleton';
 import { toolkits, getFeaturedTools } from '@/lib/tools';
+import { useState, useMemo, Suspense } from 'react';
 import { 
   Wrench, 
   FileText, 
@@ -23,10 +26,33 @@ import {
 
 export default function Home() {
   const featuredTools = getFeaturedTools();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const scrollToTools = () => {
     document.getElementById('tools')?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    setIsLoading(true);
+    // Simulate search loading
+    setTimeout(() => {
+      setIsLoading(false);
+      if (query) {
+        // Navigate to all-tools with search query
+        window.location.href = `/all-tools?search=${encodeURIComponent(query)}`;
+      }
+    }, 500);
+  };
+
+  const filteredTools = useMemo(() => {
+    if (!searchQuery) return featuredTools;
+    return featuredTools.filter(tool => 
+      tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      tool.description.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [featuredTools, searchQuery]);
 
   return (
     <div className="min-h-screen">
