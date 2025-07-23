@@ -586,3 +586,13 @@
 .animate-float {
   animation: animate-float 6s ease-in-out infinite;
 }
+
+/* Grid animation for hero background */
+@keyframes grid-move {
+  0% {
+    transform: translateY(0px) translateX(0px);
+  }
+  100% {
+    transform: translateY(-50px) translateX(-50px);
+  }
+}
