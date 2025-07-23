@@ -231,6 +231,12 @@ function Router() {
       <Route path="/tool/birth-certificate" component={BirthCertificatePage} />
        <Route path="/tool/death-certificate" component={DeathCertificatePage} />
         <Route path="/tool/affidavit-generator" component={AffidavitGeneratorPage} />
+      <Route path="/tool/passport-photo" component={PassportPhotoPage} />
+      <Route path="/tool/rent-agreement" component={RentAgreementPage} />
+      <Route path="/tool/watermark-remove" component={WatermarkRemovePage} />
+      <Route path="/tool/driving-license-validator" component={DrivingLicenseValidatorPage} />
+      <Route path="/tool/ifsc-validator" component={IFSCValidatorPage} />
+
       {/* Footer Pages */}
       <Route path="/help" component={HelpCenter} />
       <Route path="/contact" component={Contact} />
