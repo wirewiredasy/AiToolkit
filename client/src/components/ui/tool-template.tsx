@@ -88,7 +88,7 @@ export function ToolTemplate({
 
       // Use the correct endpoint format
       const processEndpoint = endpoint.startsWith('/api/') ? endpoint : `/api/tools/${toolId}`;
-      
+
       const response = await fetch(processEndpoint, {
         method: "POST",
         body: formData,
