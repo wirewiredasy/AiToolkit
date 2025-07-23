@@ -44,7 +44,7 @@ export function SuntynIconOnly({
         const nodeDistance = rayLength * 0.7;
         
         return (
-          <motion.g key={`ray-${i}`}>
+          <div key={`ray-${i}`}>
             {/* Main ray line */}
             <motion.div
               className="absolute bg-gradient-to-r from-orange-400 via-yellow-400 to-pink-400 opacity-80"
@@ -89,7 +89,7 @@ export function SuntynIconOnly({
                 ease: "easeInOut"
               }}
             />
-          </motion.g>
+          </div>
         );
       })}
       
@@ -206,7 +206,10 @@ export function SuntynIconOnly({
             key={`orbit-${i}`}
             className="absolute w-2 h-2 bg-gradient-to-r from-orange-400 to-pink-400 rounded-sm opacity-70 shadow-lg"
             style={{
-              clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)'
+              clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%)'
             }}
             animate={{
               x: [
@@ -228,11 +231,6 @@ export function SuntynIconOnly({
               repeat: Infinity,
               ease: "linear",
               delay: i * 1.2
-            }}
-            style={{
-              left: '50%',
-              top: '50%',
-              transform: 'translate(-50%, -50%)'
             }}
           />
         );

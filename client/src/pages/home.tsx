@@ -6,6 +6,7 @@ import SuntynLogo from '@/components/ui/suntyn-logo';
 import SuntynAnimatedLogo from '@/components/ui/suntyn-animated-logo';
 import SearchBar from '@/components/ui/search-bar';
 import { StatCardSkeleton } from '@/components/ui/loading-skeleton';
+import { ModernHero } from '@/components/ui/modern-hero';
 import { toolkits, getFeaturedTools } from '@/lib/tools';
 import { useState, useMemo, Suspense } from 'react';
 import { 
@@ -58,24 +59,15 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-24 overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:32px_32px]"></div>
-        </div>
+      {/* Modern Hero Section */}
+      <ModernHero />
 
+      {/* Original content continues below */}
+      <section className="relative bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
           <div className="animate-fade-in">
-            {/* Animated Logo */}
-            <div className="flex justify-center mb-12">
-              <SuntynAnimatedLogo size="hero" animated={true} showText={false} />
-            </div>
-
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-8">
-              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                Suntyn AI
-              </span>
+            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white mb-8">
+              Suntyn <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">AI</span>
             </h1>
             <p className="text-xl text-slate-300 mb-6 max-w-3xl mx-auto leading-relaxed">
               Professional AI-powered tools for document processing, image editing, 
