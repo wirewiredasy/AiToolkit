@@ -401,10 +401,11 @@ allTools.forEach(tool => {
       if (files.length > 0) {
         for (const file of files) {
           if (file.size > 50 * 1024 * 1024) { // 50MB limit
-            return res.status(400).json({
+            res.status(400).json({
               success: false,
               message: 'File size exceeds 50MB limit'
             });
+            return;
           }
         }
       }

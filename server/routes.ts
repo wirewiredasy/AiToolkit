@@ -34,6 +34,35 @@ const authenticateToken = async (req: any, res: any, next: any) => {
 };
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // File upload handling with multer
+  const multer = (await import('multer')).default;
+  const upload = multer({
+    dest: './uploads/',
+    limits: {
+      fileSize: 50 * 1024 * 1024 // 50MB limit
+    },
+    fileFilter: (req, file, cb) => {
+      // Allow all file types but validate based on tool requirements
+      cb(null, true);
+    }
+  });
+
+  // Add multer middleware to API routes
+  app.use('/api/tools', upload.array('files', 10)); // Allow up to 10 files
+  
+  // Simple download endpoint for processed files
+  app.get('/api/download/:filename', (req, res) => {
+    const filename = req.params.filename;
+    // In a real implementation, this would serve actual processed files
+    // For now, we'll simulate a download response
+    res.json({
+      message: 'Download ready',
+      filename: filename,
+      url: `/api/download/${filename}`,
+      note: 'This is a simulated download. In production, this would serve actual processed files.'
+    });
+  });
+
   // Mount FastAPI-style router
   app.use('/api', api.getRouter());
   

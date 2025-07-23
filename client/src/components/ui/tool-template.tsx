@@ -90,20 +90,19 @@ export function ToolTemplate({
         method: "POST",
         body: formData,
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
         },
       });
-
-      if (!response.ok) {
-        throw new Error('API request failed');
-      }
-
-      return await response.json();
 
       clearInterval(interval);
       setUploadProgress(100);
 
-      return response;
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`API request failed: ${response.status} - ${errorText}`);
+      }
+
+      return await response.json();
     },
     onSuccess: () => {
       toast({
@@ -112,10 +111,11 @@ export function ToolTemplate({
       });
       setUploadProgress(0);
     },
-    onError: () => {
+    onError: (error: Error) => {
+      console.error('Tool processing error:', error);
       toast({
         title: "Error",
-        description: `${toolName} failed. Please try again.`,
+        description: error.message || `${toolName} failed. Please try again.`,
         variant: "destructive",
       });
       setUploadProgress(0);
