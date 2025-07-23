@@ -53,6 +53,21 @@ import VoterIDValidatorPage from "@/pages/tool/voter-id-validator";
 import PassportValidatorPage from "@/pages/tool/passport-validator";
 import DrivingLicenseValidatorPage from "@/pages/tool/driving-license-validator";
 import IFSCValidatorPage from "@/pages/tool/ifsc-validator";
+
+// New tool imports
+import PDFToPowerPointPage from "@/pages/tool/pdf-to-powerpoint";
+import PDFPageExtractorPage from "@/pages/tool/pdf-page-extractor";
+import PDFPageNumbererPage from "@/pages/tool/pdf-page-numberer";
+import ImageConverterPage from "@/pages/tool/image-converter";
+import ImageCropperPage from "@/pages/tool/image-cropper";
+import ImageRotatorPage from "@/pages/tool/image-rotator";
+import ImageColorizerPage from "@/pages/tool/image-colorizer";
+import AudioCompressorPage from "@/pages/tool/audio-compressor";
+import AudioMergerPage from "@/pages/tool/audio-merger";
+import VideoCompressorPage from "@/pages/tool/video-compressor";
+import VideoMergerPage from "@/pages/tool/video-merger";
+import VideoToGifPage from "@/pages/tool/video-to-gif";
+import GifToVideoPage from "@/pages/tool/gif-to-video";
 import NotFound from "@/pages/not-found";
 import HelpCenter from "@/pages/help";
 import Contact from "@/pages/contact";
@@ -104,6 +119,9 @@ function Router() {
       <Route path="/tool/pdf-password-protector" component={PDFPasswordProtectorPage} />
       <Route path="/tool/pdf-rotator" component={PDFRotatorPage} />
       <Route path="/tool/pdf-cropper" component={PDFCropperPage} />
+      <Route path="/tool/pdf-to-powerpoint" component={PDFToPowerPointPage} />
+      <Route path="/tool/pdf-page-extractor" component={PDFPageExtractorPage} />
+      <Route path="/tool/pdf-page-numberer" component={PDFPageNumbererPage} />
 
       {/* Image Tools */}
       <Route path="/tool/image-resizer" component={ImageResizerPage} />
@@ -114,6 +132,10 @@ function Router() {
       <Route path="/tool/photo-enhancer" component={PhotoEnhancerPage} />
       <Route path="/tool/image-enhancer" component={ImageEnhancerPage} />
       <Route path="/tool/image-upscaler" component={ImageUpscalerPage} />
+      <Route path="/tool/image-converter" component={ImageConverterPage} />
+      <Route path="/tool/image-cropper" component={ImageCropperPage} />
+      <Route path="/tool/image-rotator" component={ImageRotatorPage} />
+      <Route path="/tool/image-colorizer" component={ImageColorizerPage} />
 
       {/* Audio/Video Tools */}
       <Route path="/tool/audio-converter" component={AudioConverterPage} />
@@ -121,6 +143,12 @@ function Router() {
       <Route path="/tool/video-converter" component={VideoConverterPage} />
       <Route path="/tool/video-to-audio" component={VideoToAudioPage} />
       <Route path="/tool/video-trimmer" component={VideoTrimmerPage} />
+      <Route path="/tool/audio-compressor" component={AudioCompressorPage} />
+      <Route path="/tool/audio-merger" component={AudioMergerPage} />
+      <Route path="/tool/video-compressor" component={VideoCompressorPage} />
+      <Route path="/tool/video-merger" component={VideoMergerPage} />
+      <Route path="/tool/video-to-gif" component={VideoToGifPage} />
+      <Route path="/tool/gif-to-video" component={GifToVideoPage} />
 
       {/* Utilities */}
       <Route path="/tool/qr-generator" component={QRGeneratorPage} />
