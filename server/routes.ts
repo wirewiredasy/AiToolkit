@@ -1,4 +1,4 @@
-import type { Express } from "express";
+import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { loginSchema, signupSchema } from "@shared/schema";
@@ -47,8 +47,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Add multer middleware to API routes
-  app.use('/api/tools', upload.array('files', 10)); // Allow up to 10 files
+  // Add flexible multer middleware for different upload scenarios
+  // Handle both single 'file' and multiple 'files' uploads
+  const flexibleUpload = (req: any, res: any, next: any) => {
+    // Try array first, then single file, then any unexpected fields
+    upload.array('files', 10)(req, res, (err: any) => {
+      if (err && err.code === 'LIMIT_UNEXPECTED_FILE') {
+        // Try single file upload
+        upload.single('file')(req, res, (singleErr: any) => {
+          if (singleErr && singleErr.code === 'LIMIT_UNEXPECTED_FILE') {
+            // Try accepting any file field
+            upload.any()(req, res, (anyErr: any) => {
+              if (anyErr) {
+                console.error('File upload error:', anyErr);
+                return res.status(400).json({
+                  success: false,
+                  message: 'File upload failed. Please check file size (max 50MB) and try again.',
+                  errorCode: anyErr.code || 'UPLOAD_ERROR'
+                });
+              }
+              next();
+            });
+          } else if (singleErr) {
+            console.error('Single file upload error:', singleErr);
+            return res.status(400).json({
+              success: false,
+              message: 'File upload failed. Please check file size (max 50MB) and try again.',
+              errorCode: singleErr.code || 'UPLOAD_ERROR'
+            });
+          } else {
+            next();
+          }
+        });
+      } else if (err) {
+        console.error('Multiple files upload error:', err);
+        return res.status(400).json({
+          success: false,
+          message: 'File upload failed. Please check file size (max 50MB) and try again.',
+          errorCode: err.code || 'UPLOAD_ERROR'
+        });
+      } else {
+        next();
+      }
+    });
+  };
+
+  app.use('/api/tools', flexibleUpload);
 
   // Simple download endpoint for processed files
   app.get('/api/download/:filename', (req, res) => {
@@ -1274,21 +1318,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
       url: req.url,
       method: req.method,
       status,
-      userAgent: req.get('User-Agent'),
-      ip: req.ip,
+      userAgent: req.get ? req.get('User-Agent') : 'Unknown',
+      ip: req.ip || 'Unknown',
       timestamp: new Date().toISOString()
     });
 
     // Don't expose internal errors in production
     const shouldExposeStack = process.env.NODE_ENV === 'development' && status < 500;
 
-    res.status(status).json({ 
+    res.status(Number(status)).json({ 
       success: false,
       message,
       errorCode: err.code || 'UNKNOWN_ERROR',
       timestamp: new Date().toISOString(),
       ...(shouldExposeStack && { stack: err.stack })
     });
+  });
+
+  // SPA catch-all route - must be last to not interfere with API routes
+  // This handles client-side routing for React apps
+  app.get('*', (req, res, next) => {
+    // Skip API routes and file extensions
+    if (req.path.startsWith('/api/') || req.path.includes('.')) {
+      return next();
+    }
+    
+    // For SPA routes, let Vite or static file serving handle it
+    // This will be handled by the Vite setup in development
+    // and by static file serving in production
+    next();
   });
 
   // Cleanup expired files periodically
