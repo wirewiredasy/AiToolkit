@@ -1,80 +1,87 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'wouter';
-import { ArrowRight, FileText, Image, Music, Building, Code, Sparkles, Users, Zap, Shield } from 'lucide-react';
+import { ArrowRight, FileText, Image, Music, Building, Code, Sparkles, Users, Zap, Shield, TrendingUp, Database, Globe, Lock } from 'lucide-react';
 
 const realToolkits = [
-  { id: 'pdf-merger', name: 'PDF Merger', category: 'PDF Tools', users: '25K+', icon: '📄' },
-  { id: 'image-resizer', name: 'Image Resizer', category: 'Image Tools', users: '18K+', icon: '🖼️' },
-  { id: 'video-converter', name: 'Video Converter', category: 'Media Tools', users: '12K+', icon: '🎬' },
+  { id: 'pdf-merger', name: 'PDF Merger', category: 'PDF Tools', users: '25K+', icon: FileText },
+  { id: 'image-resizer', name: 'Image Resizer', category: 'Image Tools', users: '18K+', icon: Image },
+  { id: 'video-converter', name: 'Video Converter', category: 'Media Tools', users: '12K+', icon: Music },
+  { id: 'gov-docs', name: 'Gov Documents', category: 'Government', users: '22K+', icon: Building },
 ];
 
-const realFeatures = [
+const leftSideFeatures = [
   {
     icon: FileText,
     title: 'PDF Processing Hub',
     description: '25+ tools for merge, split, compress, convert PDFs instantly',
     count: '50K+ users',
-    position: 'left-top'
+    position: 'top'
   },
   {
     icon: Image,
     title: 'Image Enhancement',
     description: 'Resize, compress, filter, remove backgrounds with AI',
     count: '35K+ users',
-    position: 'left-middle'
+    position: 'middle-top'
   },
   {
     icon: Music,
     title: 'Media Conversion',
     description: 'Convert videos, extract audio, trim files seamlessly',
     count: '28K+ users',
-    position: 'left-bottom'
+    position: 'middle-bottom'
   },
   {
     icon: Code,
     title: 'Developer Toolkit',
     description: 'Code formatters, validators, minifiers for developers',
     count: '15K+ users',
-    position: 'left-bottom-2'
+    position: 'bottom'
   },
+];
+
+const rightSideFeatures = [
   {
     icon: Building,
     title: 'Government Docs',
     description: 'PAN, Aadhaar, GST validators and certificate generators',
     count: '22K+ users',
-    position: 'right-top'
+    position: 'top'
   },
   {
-    icon: Sparkles,
+    icon: TrendingUp,
     title: 'AI-Powered Tools',
     description: 'Intelligent automation for faster workflow processing',
     count: '40K+ users',
-    position: 'right-middle'
+    position: 'middle-top'
   },
   {
     icon: Users,
     title: 'Collaboration Suite',
     description: 'Share, collaborate, and manage projects with teams',
     count: '18K+ users',
-    position: 'right-bottom'
+    position: 'middle-bottom'
   },
   {
     icon: Shield,
     title: 'Secure Processing',
     description: 'End-to-end encryption with automatic file deletion',
     count: '45K+ users',
-    position: 'right-bottom-2'
+    position: 'bottom'
   },
 ];
 
 export default function InteractivePreFooter() {
   const [hoveredTool, setHoveredTool] = useState<string | null>(null);
   const [animationStep, setAnimationStep] = useState(0);
+  const [activeOrbit, setActiveOrbit] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setAnimationStep(prev => (prev + 1) % 3);
+      setActiveOrbit(prev => (prev + 1) % 4);
     }, 3000);
     return () => clearInterval(interval);
   }, []);
@@ -86,6 +93,14 @@ export default function InteractivePreFooter() {
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-500/5 rounded-full blur-3xl animate-ping"></div>
+      </div>
+
+      {/* Professional grid pattern */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)`,
+          backgroundSize: '50px 50px'
+        }}></div>
       </div>
 
       {/* Floating particles */}
@@ -110,7 +125,7 @@ export default function InteractivePreFooter() {
           
           {/* Left side features - Enhanced 3D */}
           <div className="absolute left-0 top-1/2 transform -translate-y-1/2 space-y-8">
-            {realFeatures.slice(0, 4).map((feature, index) => {
+            {leftSideFeatures.map((feature, index) => {
               const Icon = feature.icon;
               return (
                 <div 
@@ -143,7 +158,7 @@ export default function InteractivePreFooter() {
 
           {/* Right side features - Enhanced 3D */}
           <div className="absolute right-0 top-1/2 transform -translate-y-1/2 space-y-8">
-            {realFeatures.slice(4).map((feature, index) => {
+            {rightSideFeatures.map((feature, index) => {
               const Icon = feature.icon;
               return (
                 <div 
@@ -178,15 +193,34 @@ export default function InteractivePreFooter() {
           <div className="relative w-[500px] h-[500px]" style={{ perspective: '1000px' }}>
             {/* Multi-layered Orbital rings with 3D depth */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-96 h-96 border-2 border-cyan-400/30 rounded-full animate-spin-slow shadow-2xl shadow-cyan-500/20" style={{ transform: 'rotateX(60deg)' }}></div>
-              <div className="absolute w-[450px] h-[450px] border border-blue-400/20 rounded-full animate-spin-reverse shadow-xl shadow-blue-500/10" style={{ transform: 'rotateX(75deg)' }}></div>
-              <div className="absolute w-80 h-80 border border-purple-400/25 rounded-full" style={{animation: 'spin-slow 30s linear infinite reverse', transform: 'rotateX(45deg)'}}></div>
-              <div className="absolute w-64 h-64 border border-pink-400/20 rounded-full animate-pulse" style={{ transform: 'rotateX(30deg)' }}></div>
+              <div 
+                className={`w-96 h-96 border-2 rounded-full animate-spin-slow shadow-2xl transition-colors duration-1000 ${
+                  activeOrbit === 0 ? 'border-cyan-400/40 shadow-cyan-500/30' : 'border-cyan-400/20 shadow-cyan-500/10'
+                }`} 
+                style={{ transform: 'rotateX(60deg)', animationDuration: '20s' }}
+              ></div>
+              <div 
+                className={`absolute w-[450px] h-[450px] border rounded-full transition-colors duration-1000 ${
+                  activeOrbit === 1 ? 'border-blue-400/30 shadow-blue-500/20' : 'border-blue-400/15 shadow-blue-500/5'
+                }`} 
+                style={{animation: 'spin-slow 25s linear infinite reverse', transform: 'rotateX(75deg)'}}
+              ></div>
+              <div 
+                className={`absolute w-80 h-80 border rounded-full transition-colors duration-1000 ${
+                  activeOrbit === 2 ? 'border-purple-400/35 shadow-purple-500/25' : 'border-purple-400/20 shadow-purple-500/10'
+                }`} 
+                style={{animation: 'spin-slow 30s linear infinite reverse', transform: 'rotateX(45deg)'}}
+              ></div>
+              <div 
+                className={`absolute w-64 h-64 border rounded-full animate-pulse transition-colors duration-1000 ${
+                  activeOrbit === 3 ? 'border-pink-400/30 shadow-pink-500/20' : 'border-pink-400/15 shadow-pink-500/5'
+                }`} 
+                style={{ transform: 'rotateX(30deg)' }}
+              ></div>
             </div>
 
-            {/* Central floating cards with enhanced 3D */}
+            {/* Central floating showcase with glassmorphism */}
             <div className="absolute inset-0 flex items-center justify-center">
-              {/* Main central card with glassmorphism */}
               <div className="relative z-10 group">
                 <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-8 shadow-2xl max-w-sm border border-white/20 hover:scale-105 transition-all duration-500" style={{ transform: 'rotateY(0deg) rotateX(0deg)' }}>
                   <div className="flex items-center space-x-3 mb-6">
@@ -215,21 +249,25 @@ export default function InteractivePreFooter() {
                 </div>
               </div>
 
-              {/* Enhanced floating tool bubbles with real data */}
-              <div className="absolute top-12 right-12 bg-slate-800/90 backdrop-blur-xl text-white px-6 py-3 rounded-2xl border border-cyan-400/50 text-sm shadow-xl hover:scale-110 transition-all duration-300 cursor-pointer">
-                <span className="text-blue-400">📄</span> PDF Merger → <span className="text-cyan-300 font-semibold">25K users</span>
+              {/* Professional floating tool bubbles with icons */}
+              <div className="absolute top-12 right-12 bg-slate-800/90 backdrop-blur-xl text-white px-6 py-3 rounded-2xl border border-cyan-400/50 text-sm shadow-xl hover:scale-110 transition-all duration-300 cursor-pointer flex items-center space-x-2">
+                <FileText className="h-4 w-4 text-cyan-400" />
+                <span>PDF Merger → <span className="text-cyan-300 font-semibold">25K users</span></span>
               </div>
               
-              <div className="absolute bottom-12 left-12 bg-slate-800/90 backdrop-blur-xl text-white px-6 py-3 rounded-2xl border border-purple-400/50 text-sm shadow-xl hover:scale-110 transition-all duration-300 cursor-pointer">
-                <span className="text-purple-400">🖼️</span> Image Resizer → <span className="text-purple-300 font-semibold">18K users</span>
+              <div className="absolute bottom-12 left-12 bg-slate-800/90 backdrop-blur-xl text-white px-6 py-3 rounded-2xl border border-purple-400/50 text-sm shadow-xl hover:scale-110 transition-all duration-300 cursor-pointer flex items-center space-x-2">
+                <Image className="h-4 w-4 text-purple-400" />
+                <span>Image Resizer → <span className="text-purple-300 font-semibold">18K users</span></span>
               </div>
               
-              <div className="absolute bottom-20 right-20 bg-slate-800/90 backdrop-blur-xl text-white px-6 py-3 rounded-2xl border border-green-400/50 text-sm shadow-xl hover:scale-110 transition-all duration-300 cursor-pointer">
-                <span className="text-green-400">🎬</span> Video Converter → <span className="text-green-300 font-semibold">12K users</span>
+              <div className="absolute bottom-20 right-20 bg-slate-800/90 backdrop-blur-xl text-white px-6 py-3 rounded-2xl border border-green-400/50 text-sm shadow-xl hover:scale-110 transition-all duration-300 cursor-pointer flex items-center space-x-2">
+                <Music className="h-4 w-4 text-green-400" />
+                <span>Video Converter → <span className="text-green-300 font-semibold">12K users</span></span>
               </div>
 
-              <div className="absolute top-20 left-20 bg-slate-800/90 backdrop-blur-xl text-white px-6 py-3 rounded-2xl border border-yellow-400/50 text-sm shadow-xl hover:scale-110 transition-all duration-300 cursor-pointer">
-                <span className="text-yellow-400">🏛️</span> Gov Docs → <span className="text-yellow-300 font-semibold">22K users</span>
+              <div className="absolute top-20 left-20 bg-slate-800/90 backdrop-blur-xl text-white px-6 py-3 rounded-2xl border border-orange-400/50 text-sm shadow-xl hover:scale-110 transition-all duration-300 cursor-pointer flex items-center space-x-2">
+                <Building className="h-4 w-4 text-orange-400" />
+                <span>Gov Docs → <span className="text-orange-300 font-semibold">22K users</span></span>
               </div>
 
               {/* Enhanced floating interaction elements */}
