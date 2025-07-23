@@ -84,6 +84,63 @@ import ImageSharpenPage from "@/pages/tool/image-sharpen";
 import VideoResizerPage from "@/pages/tool/video-resizer";
 import NoiseReducerPage from "@/pages/tool/noise-reducer";
 
+// Additional Developer and Utility Tools
+import TextToSpeechPage from "@/pages/tool/text-to-speech";
+import SpeechToTextPage from "@/pages/tool/speech-to-text";
+import PasswordGeneratorPage from "@/pages/tool/password-generator";
+import Base64EncoderPage from "@/pages/tool/base64-encoder";
+import HashGeneratorPage from "@/pages/tool/hash-generator";
+import JSONFormatterPage from "@/pages/tool/json-formatter";
+import XMLFormatterPage from "@/pages/tool/xml-formatter";
+import MarkdownToHTMLPage from "@/pages/tool/markdown-to-html";
+import HTMLToPDFPage from "@/pages/tool/html-to-pdf";
+import CSVToJSONPage from "@/pages/tool/csv-to-json";
+import URLShortenerPage from "@/pages/tool/url-shortener";
+import RegexTesterPage from "@/pages/tool/regex-tester";
+import ColorPickerPage from "@/pages/tool/color-picker";
+import ColorPaletteGeneratorPage from "@/pages/tool/color-palette-generator";
+import LogoGeneratorPage from "@/pages/tool/logo-generator";
+import FaviconGeneratorPage from "@/pages/tool/favicon-generator";
+import MetaTagGeneratorPage from "@/pages/tool/meta-tag-generator";
+import CSSMinifierPage from "@/pages/tool/css-minifier";
+import JSMinifierPage from "@/pages/tool/js-minifier";
+import LoremIpsumGeneratorPage from "@/pages/tool/lorem-ipsum-generator";
+import TimestampConverterPage from "@/pages/tool/timestamp-converter";
+import UnicodeConverterPage from "@/pages/tool/unicode-converter";
+import UnitConverterPage from "@/pages/tool/unit-converter";
+import GradientGeneratorPage from "@/pages/tool/gradient-generator";
+import ThumbnailGeneratorPage from "@/pages/tool/thumbnail-generator";
+
+// Additional PDF Tools
+// HTMLToPDFPage already imported above
+
+// Additional Image Tools  
+import ImageBorderAdderPage from "@/pages/tool/image-border-adder";
+import ImageMergePage from "@/pages/tool/image-merge";
+import ImageSplitPage from "@/pages/tool/image-split";
+import ImageMetadataExtractorPage from "@/pages/tool/image-metadata-extractor";
+import ImageEnhancePage from "@/pages/tool/image-enhance";
+import ImageUpscalePage from "@/pages/tool/image-upscale";
+import ImageFilterEffectsPage from "@/pages/tool/image-filter-effects";
+import WatermarkRemovePage from "@/pages/tool/watermark-remove";
+import PassportPhotoPage from "@/pages/tool/passport-photo";
+
+// Additional Audio/Video Tools
+import AudioReverserPage from "@/pages/tool/audio-reverser";
+import VocalRemoverPage from "@/pages/tool/vocal-remover";
+import PitchChangerPage from "@/pages/tool/pitch-changer";
+import SubtitleExtractorPage from "@/pages/tool/subtitle-extractor";
+import VideoRotatorPage from "@/pages/tool/video-rotator";
+import VideoSpeedChangerPage from "@/pages/tool/video-speed-changer";
+
+// Additional Government Tools
+import BirthCertificatePage from "@/pages/tool/birth-certificate";
+import DeathCertificatePage from "@/pages/tool/death-certificate";
+import CasteCertificatePage from "@/pages/tool/caste-certificate";
+import AffidavitGeneratorPage from "@/pages/tool/affidavit-generator";
+import RentAgreementPage from "@/pages/tool/rent-agreement";
+import RationCardStatusPage from "@/pages/tool/ration-card-status";
+
 import NotFound from "@/pages/not-found";
 import HelpCenter from "@/pages/help";
 import Contact from "@/pages/contact";
@@ -199,6 +256,60 @@ function Router() {
 
       <Route path="/tool/driving-license-validator" component={DrivingLicenseValidatorPage} />
       <Route path="/tool/ifsc-validator" component={IFSCValidatorPage} />
+
+      {/* Developer Tools */}
+      <Route path="/tool/text-to-speech" component={TextToSpeechPage} />
+      <Route path="/tool/speech-to-text" component={SpeechToTextPage} />
+      <Route path="/tool/password-generator" component={PasswordGeneratorPage} />
+      <Route path="/tool/base64-encoder" component={Base64EncoderPage} />
+      <Route path="/tool/hash-generator" component={HashGeneratorPage} />
+      <Route path="/tool/json-formatter" component={JSONFormatterPage} />
+      <Route path="/tool/xml-formatter" component={XMLFormatterPage} />
+      <Route path="/tool/markdown-to-html" component={MarkdownToHTMLPage} />
+      <Route path="/tool/html-to-pdf" component={HTMLToPDFPage} />
+      <Route path="/tool/csv-to-json" component={CSVToJSONPage} />
+      <Route path="/tool/url-shortener" component={URLShortenerPage} />
+      <Route path="/tool/regex-tester" component={RegexTesterPage} />
+      <Route path="/tool/color-picker" component={ColorPickerPage} />
+      <Route path="/tool/color-palette-generator" component={ColorPaletteGeneratorPage} />
+      <Route path="/tool/logo-generator" component={LogoGeneratorPage} />
+      <Route path="/tool/favicon-generator" component={FaviconGeneratorPage} />
+      <Route path="/tool/meta-tag-generator" component={MetaTagGeneratorPage} />
+      <Route path="/tool/css-minifier" component={CSSMinifierPage} />
+      <Route path="/tool/js-minifier" component={JSMinifierPage} />
+      <Route path="/tool/lorem-ipsum-generator" component={LoremIpsumGeneratorPage} />
+      <Route path="/tool/timestamp-converter" component={TimestampConverterPage} />
+      <Route path="/tool/unicode-converter" component={UnicodeConverterPage} />
+      <Route path="/tool/unit-converter" component={UnitConverterPage} />
+      <Route path="/tool/gradient-generator" component={GradientGeneratorPage} />
+      <Route path="/tool/thumbnail-generator" component={ThumbnailGeneratorPage} />
+
+      {/* Additional Image Tools */}
+      <Route path="/tool/image-border-adder" component={ImageBorderAdderPage} />
+      <Route path="/tool/image-merge" component={ImageMergePage} />
+      <Route path="/tool/image-split" component={ImageSplitPage} />
+      <Route path="/tool/image-metadata-extractor" component={ImageMetadataExtractorPage} />
+      <Route path="/tool/image-enhance" component={ImageEnhancePage} />
+      <Route path="/tool/image-upscale" component={ImageUpscalePage} />
+      <Route path="/tool/image-filter-effects" component={ImageFilterEffectsPage} />
+      <Route path="/tool/watermark-remove" component={WatermarkRemovePage} />
+      <Route path="/tool/passport-photo" component={PassportPhotoPage} />
+
+      {/* Additional Audio/Video Tools */}
+      <Route path="/tool/audio-reverser" component={AudioReverserPage} />
+      <Route path="/tool/vocal-remover" component={VocalRemoverPage} />
+      <Route path="/tool/pitch-changer" component={PitchChangerPage} />
+      <Route path="/tool/subtitle-extractor" component={SubtitleExtractorPage} />
+      <Route path="/tool/video-rotator" component={VideoRotatorPage} />
+      <Route path="/tool/video-speed-changer" component={VideoSpeedChangerPage} />
+
+      {/* Additional Government Tools */}
+      <Route path="/tool/birth-certificate" component={BirthCertificatePage} />
+      <Route path="/tool/death-certificate" component={DeathCertificatePage} />
+      <Route path="/tool/caste-certificate" component={CasteCertificatePage} />
+      <Route path="/tool/affidavit-generator" component={AffidavitGeneratorPage} />
+      <Route path="/tool/rent-agreement" component={RentAgreementPage} />
+      <Route path="/tool/ration-card-status" component={RationCardStatusPage} />
 
       {/* Footer Pages */}
       <Route path="/help" component={HelpCenter} />
