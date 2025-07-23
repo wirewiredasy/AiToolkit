@@ -111,7 +111,7 @@ export function SuntynLogo({
       {showText && (
         <div className="flex flex-col">
           <h1 className={cn(
-            "font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent",
+            "font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent gradient-text",
             textSizeClasses[size]
           )}>
             Suntyn AI

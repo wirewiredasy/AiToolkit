@@ -2,7 +2,7 @@ import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
-import GeometricLogo from '@/components/ui/geometric-logo';
+import { SuntynLogo } from '@/components/ui/suntyn-logo';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -42,7 +42,7 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="lg:col-span-2">
             <div className="mb-6">
-              <GeometricLogo size="lg" showText={true} />
+              <SuntynLogo size="lg" showText={true} className="[&_.gradient-text]:bg-gradient-to-r [&_.gradient-text]:from-orange-500 [&_.gradient-text]:to-yellow-500" />
             </div>
             <p className="text-gray-400 mb-8 leading-relaxed">
               Professional AI-powered tools for document processing, image editing, 
@@ -153,7 +153,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
             <div className="mb-8 md:mb-0">
               <div className="mb-4">
-                <GeometricLogo size="md" showText={true} />
+                <SuntynLogo size="md" showText={true} className="[&_.gradient-text]:bg-gradient-to-r [&_.gradient-text]:from-orange-500 [&_.gradient-text]:to-yellow-500" />
               </div>
               <p className="text-slate-400 max-w-md">
                 Professional AI-powered tools for document processing, image editing, 
