@@ -107,24 +107,39 @@ export default function Home() {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {toolkits.map((toolkit) => (
-              <div key={toolkit.id} className="group">
+              <div key={toolkit.id} className="group perspective-1000">
                 <Link href={toolkit.route}>
-                  <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-200">
-                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 ${
-                      toolkit.color === 'red' ? 'bg-gradient-to-br from-red-500 to-red-600' :
-                      toolkit.color === 'purple' ? 'bg-gradient-to-br from-purple-500 to-purple-600' :
-                      toolkit.color === 'green' ? 'bg-gradient-to-br from-green-500 to-green-600' :
-                      toolkit.color === 'orange' ? 'bg-gradient-to-br from-orange-500 to-orange-600' :
-                      'bg-gradient-to-br from-blue-500 to-blue-600'
-                    } shadow-lg`}>
-                      <i className={`${toolkit.icon} text-2xl text-white`}></i>
+                  <div className="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-slate-200 overflow-hidden group-hover:animate-pulse">
+                    {/* Splitting Effect Overlay */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                      <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-slate-300/50 to-transparent transform translate-x-[-50%] scale-y-0 group-hover:scale-y-100 transition-transform duration-500 delay-100"></div>
+                      <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-300/50 to-transparent transform translate-y-[-50%] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-200"></div>
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-3">{toolkit.name}</h3>
-                    <p className="text-slate-600 mb-4">{toolkit.description}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-slate-500">{toolkit.toolCount} tools</span>
-                      <i className="fas fa-arrow-right text-slate-400 group-hover:text-slate-600 transition-colors"></i>
+                    
+                    <div className="relative z-10">
+                      <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 ${
+                        toolkit.color === 'red' ? 'bg-gradient-to-br from-red-500 to-red-600 group-hover:from-red-400 group-hover:to-red-700' :
+                        toolkit.color === 'purple' ? 'bg-gradient-to-br from-purple-500 to-purple-600 group-hover:from-purple-400 group-hover:to-purple-700' :
+                        toolkit.color === 'green' ? 'bg-gradient-to-br from-green-500 to-green-600 group-hover:from-green-400 group-hover:to-green-700' :
+                        toolkit.color === 'orange' ? 'bg-gradient-to-br from-orange-500 to-orange-600 group-hover:from-orange-400 group-hover:to-orange-700' :
+                        'bg-gradient-to-br from-blue-500 to-blue-600 group-hover:from-blue-400 group-hover:to-blue-700'
+                      } shadow-lg group-hover:shadow-2xl`}>
+                        <i className={`${toolkit.icon} text-2xl text-white transition-all duration-300 group-hover:scale-125`}></i>
+                      </div>
+                      <h3 className="text-xl font-bold text-slate-900 mb-3 transition-all duration-300 group-hover:text-slate-700">{toolkit.name}</h3>
+                      <p className="text-slate-600 mb-4 transition-all duration-300 group-hover:text-slate-500">{toolkit.description}</p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-slate-500 transition-all duration-300 group-hover:text-slate-400">{toolkit.toolCount} tools</span>
+                        <i className="fas fa-arrow-right text-slate-400 group-hover:text-slate-600 transition-all duration-300 group-hover:translate-x-2"></i>
+                      </div>
                     </div>
+                    
+                    {/* Corner Effects */}
+                    <div className="absolute top-0 left-0 w-0 h-0 border-l-[20px] border-l-transparent border-t-[20px] border-t-slate-200/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute top-0 right-0 w-0 h-0 border-r-[20px] border-r-transparent border-t-[20px] border-t-slate-200/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100"></div>
+                    <div className="absolute bottom-0 left-0 w-0 h-0 border-l-[20px] border-l-transparent border-b-[20px] border-b-slate-200/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200"></div>
+                    <div className="absolute bottom-0 right-0 w-0 h-0 border-r-[20px] border-r-transparent border-b-[20px] border-b-slate-200/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-300"></div>
                   </div>
                 </Link>
               </div>

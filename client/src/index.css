@@ -23,11 +23,11 @@
   --destructive-foreground: hsl(60, 9.1%, 97.8%);
   --ring: hsl(20, 14.3%, 4.1%);
   --radius: 0.5rem;
-  
+
   /* Custom gradient colors */
   --gradient-from: hsl(221, 83%, 53%);
   --gradient-to: hsl(262, 83%, 58%);
-  
+
   /* Neutral colors */
   --neutral-50: hsl(210, 40%, 98%);
   --neutral-100: hsl(210, 40%, 96%);
@@ -79,29 +79,29 @@
   .gradient-bg {
     background: linear-gradient(135deg, var(--gradient-from) 0%, var(--gradient-to) 100%);
   }
-  
+
   .glass-effect {
     background: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.18);
   }
-  
+
   .tool-card {
     @apply transition-all duration-300 ease-in-out;
   }
-  
+
   .tool-card:hover {
     @apply transform -translate-y-1 shadow-xl;
   }
-  
+
   .animate-fade-in {
     animation: fadeIn 0.6s ease-out;
   }
-  
+
   .animate-slide-up {
     animation: slideUp 0.8s ease-out;
   }
-  
+
   .animate-pulse-slow {
     animation: pulse 3s infinite;
   }
@@ -272,12 +272,24 @@
   .hero-text {
     @apply text-3xl;
   }
-  
+
   .tool-grid {
     @apply grid-cols-1 gap-4;
   }
-  
+
   .stats-grid {
     @apply grid-cols-2;
   }
+}
+
+/* Custom utility classes */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* Tool card splitting animation keyframes */
+@keyframes split-glow {
+  0% { box-shadow: 0 0 0 rgba(59, 130, 246, 0); }
+  50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+  100% { box-shadow: 0 0 0 rgba(59, 130, 246, 0); }
 }
