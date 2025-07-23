@@ -14,6 +14,7 @@ import PDFToolkit from "@/pages/toolkit/pdf";
 import ImageToolkit from "@/pages/toolkit/image";
 import MediaToolkit from "@/pages/toolkit/media";
 import GovernmentToolkit from "@/pages/toolkit/government";
+import DeveloperToolkit from "@/pages/toolkit/developer";
 import PDFMerger from "@/pages/tool/pdf-merger";
 import PDFToWordPage from "@/pages/tool/pdf-to-word";
 import PDFSplitterAlternate from "@/pages/tool/pdf-splitter";
@@ -82,6 +83,12 @@ import AudioNormalizerPage from "@/pages/tool/audio-normalizer";
 import ImageSharpenPage from "@/pages/tool/image-sharpen";
 import VideoResizerPage from "@/pages/tool/video-resizer";
 import NoiseReducerPage from "@/pages/tool/noise-reducer";
+import ImageFilterEffectsPage from "@/pages/tool/image-filter-effects";
+import ImageEnhancePage from "@/pages/tool/image-enhance";
+import ImageUpscalePage from "@/pages/tool/image-upscale";
+import ImageBlurToolPage from "@/pages/tool/image-blur-tool";
+import ImageBorderAdderPage from "@/pages/tool/image-border-adder";
+import ImageMetadataExtractorPage from "@/pages/tool/image-metadata-extractor";
 import NotFound from "@/pages/not-found";
 import HelpCenter from "@/pages/help";
 import Contact from "@/pages/contact";
@@ -116,6 +123,7 @@ function Router() {
       <Route path="/toolkit/image" component={ImageToolkit} />
       <Route path="/toolkit/media" component={MediaToolkit} />
       <Route path="/toolkit/government" component={GovernmentToolkit} />
+      <Route path="/toolkit/developer" component={DeveloperToolkit} />
 
       {/* Individual tool pages */}
       {/* PDF Tools */}
@@ -156,6 +164,12 @@ function Router() {
       <Route path="/tool/image-blur" component={ImageBlurPage} />
       <Route path="/tool/image-sharpen" component={ImageSharpenPage} />
       <Route path="/tool/meme-generator" component={MemeGeneratorPage} />
+      <Route path="/tool/image-filter-effects" component={ImageFilterEffectsPage} />
+      <Route path="/tool/image-enhance" component={ImageEnhancePage} />
+      <Route path="/tool/image-upscale" component={ImageUpscalePage} />
+      <Route path="/tool/image-blur-tool" component={ImageBlurToolPage} />
+      <Route path="/tool/image-border-adder" component={ImageBorderAdderPage} />
+      <Route path="/tool/image-metadata-extractor" component={ImageMetadataExtractorPage} />
 
       {/* Audio/Video Tools */}
       <Route path="/tool/audio-converter" component={AudioConverterPage} />
