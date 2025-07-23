@@ -507,3 +507,22 @@
   0% { transform: rotate(0deg) translateX(30px) rotate(0deg); }
   100% { transform: rotate(360deg) translateX(30px) rotate(-360deg); }
 }
+
+/* Developer hero specific animations */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 15s linear infinite;
+}

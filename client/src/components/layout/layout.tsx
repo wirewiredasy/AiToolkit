@@ -1,4 +1,4 @@
-import ModernNavbar from '@/components/ui/modern-navbar';
+import DarkNavbar from '@/components/ui/dark-navbar';
 import Footer from './footer';
 
 interface LayoutProps {
@@ -8,7 +8,7 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col">
-      <ModernNavbar />
+      <DarkNavbar />
       <main className="flex-1 pt-16">
         {children}
       </main>
