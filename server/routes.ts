@@ -5,6 +5,7 @@ import { loginSchema, signupSchema } from "@shared/schema";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { api } from "./api-router";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
@@ -31,7 +32,10 @@ const authenticateToken = async (req: any, res: any, next: any) => {
 };
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Auth routes
+  // Mount FastAPI-style router
+  app.use('/api', api.getRouter());
+  
+  // Legacy auth routes (for backward compatibility)
   app.post("/api/auth/signup", async (req, res) => {
     try {
       const validatedData = signupSchema.parse(req.body);
