@@ -642,6 +642,33 @@ export const toolkits: Toolkit[] = [
         icon: 'fas fa-desktop',
         route: '/tool/screen-recorder',
         usageCount: '200K+',
+      },
+      {
+        id: 'volume-changer',
+        name: 'Volume Changer',
+        description: 'Adjust audio volume levels',
+        category: 'Media',
+        icon: 'fas fa-volume-up',
+        route: '/tool/volume-changer',
+        usageCount: '25K+',
+      },
+      {
+        id: 'vocal-remover',
+        name: 'Vocal Remover',
+        description: 'Remove vocals for karaoke tracks',
+        category: 'Media',
+        icon: 'fas fa-microphone-slash',
+        route: '/tool/vocal-remover',
+        usageCount: '35K+',
+      },
+      {
+        id: 'video-speed-changer',
+        name: 'Video Speed Changer',
+        description: 'Change video playback speed',
+        category: 'Media',
+        icon: 'fas fa-tachometer-alt',
+        route: '/tool/video-speed-changer',
+        usageCount: '20K+',
       }
     ],
   },
@@ -789,6 +816,15 @@ export const toolkits: Toolkit[] = [
         icon: 'fas fa-store',
         route: '/tool/shop-act-validator',
         usageCount: '18K+',
+      },
+      {
+        id: 'ration-card-status',
+        name: 'Ration Card Status',
+        description: 'Check ration card status and benefits',
+        category: 'Government',
+        icon: 'fas fa-id-card',
+        route: '/tool/ration-card-status',
+        usageCount: '12K+',
       }
     ],
   },
@@ -1110,6 +1146,6 @@ export const getColorClasses = (color: string) => {
       hover: 'hover:border-blue-500',
     },
   };
-  
+
   return colorMap[color as keyof typeof colorMap] || colorMap.blue;
 };
