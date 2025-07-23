@@ -1,5 +1,8 @@
 import { ToolTemplate } from "@/components/ui/tool-template";
 import { Maximize } from "lucide-react";
+import { Card, CardContent } from '../../components/ui/card';
+import { Alert, AlertDescription } from '../../components/ui/alert';
+import { RecommendedTools } from '../../components/ui/recommended-tools';
 
 export default function ImageResizerPage() {
   return (

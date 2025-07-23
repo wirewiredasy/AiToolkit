@@ -1,5 +1,9 @@
 import { ToolTemplate } from "@/components/ui/tool-template";
 import { Combine } from "lucide-react";
+import { Separator } from '../../components/ui/separator';
+import { Card, CardContent } from '../../components/ui/card';
+import { Alert, AlertDescription } from '../../components/ui/alert';
+import { RecommendedTools } from '../../components/ui/recommended-tools';
 
 export default function PDFMergerPage() {
   return (

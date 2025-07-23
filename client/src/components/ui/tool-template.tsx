@@ -14,6 +14,8 @@ import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { Separator } from './separator';
+import { RecommendedTools } from './recommended-tools';
 
 interface ToolSetting {
   key: string;
@@ -91,16 +93,16 @@ export function ToolTemplate({
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      
+
       if (!response.ok) {
         throw new Error('API request failed');
       }
-      
+
       return await response.json();
 
       clearInterval(interval);
       setUploadProgress(100);
-      
+
       return response;
     },
     onSuccess: () => {
@@ -122,7 +124,7 @@ export function ToolTemplate({
 
   const handleProcess = () => {
     const formData = new FormData();
-    
+
     // Add files if required
     if (resultType === "file" && files.length > 0) {
       files.forEach((file, index) => {
@@ -296,12 +298,12 @@ export function ToolTemplate({
 
   const canProcess = () => {
     if (resultType === "file" && files.length === 0) return false;
-    
+
     // Check required settings
     const hasRequiredSettings = settings
       .filter(s => s.required)
       .every(s => settingsValues[s.key] !== undefined && settingsValues[s.key] !== "");
-    
+
     return hasRequiredSettings;
   };
 
@@ -415,7 +417,13 @@ export function ToolTemplate({
             />
           )}
         </div>
-      </div>
+
+      {/* Recommended Tools Section */}
+      <RecommendedTools 
+        currentToolId={toolName?.toLowerCase().replace(/\s+/g, '-')} 
+        category={toolName?.split(' ')[0]} 
+        limit={6} 
+      />
     </div>
   );
 }
