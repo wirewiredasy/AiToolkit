@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { Button } from './button';
 import { Card, CardContent } from './card';
 
@@ -19,6 +19,7 @@ export default function FileUpload({
 }: FileUploadProps) {
   const [isDragOver, setIsDragOver] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -54,6 +55,7 @@ export default function FileUpload({
     if (validFiles.length !== fileList.length) {
       // Show error for files that are too large
       console.warn(`Some files exceed the ${maxSize}MB limit`);
+        setUploadError(`Some files exceed the ${maxSize}MB limit`);
     }
 
     setFiles(validFiles);
@@ -105,6 +107,10 @@ export default function FileUpload({
           </p>
         </CardContent>
       </Card>
+
+        {uploadError && (
+            <div className="text-red-500 mt-2">{uploadError}</div>
+        )}
 
       {files.length > 0 && (
         <Card className="mt-4">
