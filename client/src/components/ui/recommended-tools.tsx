@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent } from './card';
 import { Button } from './button';
-import Link from 'next/link';
+import { Link } from 'wouter';
 import { getFeaturedTools, toolkits } from '../../lib/tools';
 
 interface RecommendedToolsProps {
