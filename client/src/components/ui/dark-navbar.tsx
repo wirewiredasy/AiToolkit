@@ -5,13 +5,13 @@ import { Button } from '@/components/ui/button';
 import SuntynAnimatedLogo from '@/components/ui/suntyn-animated-logo';
 
 const navigationItems = [
-  { href: '/', label: 'AI FULL ON', active: true },
-  { href: '/pdf', label: 'PDF' },
-  { href: '/media', label: 'MUSIC VIDEO' },
-  { href: '/government', label: 'GOVERNMENT TOOLS' },
-  { href: '/all-tools', label: 'EK SATH BUNDLE' },
-  { href: '/apps', label: 'APPS' },
-  { href: '/my-website', label: 'MY WEBSITE' },
+  { href: '/', label: 'HOME' },
+  { href: '/all-tools', label: 'ALL TOOLS' }, 
+  { href: '/toolkit/pdf', label: 'PDF' },
+  { href: '/toolkit/image', label: 'IMAGE' },
+  { href: '/toolkit/media', label: 'MUSIC/VIDEO' },
+  { href: '/toolkit/government', label: 'GOVT' },
+  { href: '/toolkit/developer', label: 'DEV' },
 ];
 
 export default function DarkNavbar() {
@@ -39,8 +39,9 @@ export default function DarkNavbar() {
           <Link href="/">
             <div className="flex items-center space-x-3 hover:opacity-80 transition-opacity duration-200">
               <div className="w-8 h-8 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-lg flex items-center justify-center">
-                <span className="text-black font-bold text-sm">AI</span>
+                <span className="text-black font-bold text-sm">S</span>
               </div>
+              <span className="text-white font-bold text-xl tracking-wide">SUNTYN AI</span>
             </div>
           </Link>
 
@@ -62,13 +63,13 @@ export default function DarkNavbar() {
             })}
           </div>
 
-          {/* Download Button */}
+          {/* Sign Up Button */}
           <Button 
             className="hidden lg:flex bg-cyan-500 hover:bg-cyan-600 text-black font-semibold px-6 py-2 rounded-full transition-all duration-300"
             asChild
           >
-            <Link href="/all-tools">
-              Download Now
+            <Link href="/signup">
+              Sign Up
             </Link>
           </Button>
 

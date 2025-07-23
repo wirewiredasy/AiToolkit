@@ -21,7 +21,7 @@ export default function DeveloperHero() {
 
         {/* Main heading - exact same style */}
         <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-16 tracking-tight">
-          Developer Tool Suite
+          AI Tool Suite
         </h1>
 
         {/* 3D Isometric illustration - using CSS to create similar effect */}
@@ -84,70 +84,86 @@ export default function DeveloperHero() {
         {/* Tool grid - 2x4 layout exactly like reference */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto mb-16">
           {/* Row 1 */}
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:bg-gray-700/50 transition-all duration-300">
-            <div className="w-12 h-12 bg-yellow-500 rounded-xl mb-4 flex items-center justify-center">
-              <span className="text-black font-bold">$</span>
+          <Link href="/toolkit/pdf">
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:bg-gray-700/50 transition-all duration-300 cursor-pointer">
+              <div className="w-12 h-12 bg-red-500 rounded-xl mb-4 flex items-center justify-center">
+                <span className="text-white font-bold">📄</span>
+              </div>
+              <h3 className="text-white font-semibold mb-2">PDF Toolkit</h3>
+              <p className="text-gray-400 text-sm">25 tools available</p>
             </div>
-            <h3 className="text-white font-semibold mb-2">Fingle Tool</h3>
-            <p className="text-gray-400 text-sm">Kainga spongerent Frobnit.</p>
-          </div>
+          </Link>
           
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:bg-gray-700/50 transition-all duration-300">
-            <div className="w-12 h-12 bg-purple-500 rounded-xl mb-4 flex items-center justify-center">
-              <span className="text-white font-bold">UI</span>
+          <Link href="/toolkit/image">
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:bg-gray-700/50 transition-all duration-300 cursor-pointer">
+              <div className="w-12 h-12 bg-purple-500 rounded-xl mb-4 flex items-center justify-center">
+                <span className="text-white font-bold">🖼️</span>
+              </div>
+              <h3 className="text-white font-semibold mb-2">Image Toolkit</h3>
+              <p className="text-gray-400 text-sm">20 tools available</p>
             </div>
-            <h3 className="text-white font-semibold mb-2">Mui Galt Vihe</h3>
-            <p className="text-gray-400 text-sm">Pushahuge of neor Nulioih.</p>
-          </div>
+          </Link>
           
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:bg-gray-700/50 transition-all duration-300">
-            <div className="w-12 h-12 bg-cyan-500 rounded-xl mb-4 flex items-center justify-center">
-              <span className="text-white font-bold">@</span>
+          <Link href="/toolkit/media">
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:bg-gray-700/50 transition-all duration-300 cursor-pointer">
+              <div className="w-12 h-12 bg-cyan-500 rounded-xl mb-4 flex items-center justify-center">
+                <span className="text-white font-bold">🎵</span>
+              </div>
+              <h3 className="text-white font-semibold mb-2">Media Toolkit</h3>
+              <p className="text-gray-400 text-sm">20 tools available</p>
             </div>
-            <h3 className="text-white font-semibold mb-2">Esk Socat Satthes</h3>
-            <p className="text-gray-400 text-sm">Kimnathoridange Frotnit.</p>
-          </div>
+          </Link>
           
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:bg-gray-700/50 transition-all duration-300">
-            <div className="w-12 h-12 bg-blue-500 rounded-xl mb-4 flex items-center justify-center">
-              <span className="text-white font-bold">⚡</span>
+          <Link href="/toolkit/government">
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:bg-gray-700/50 transition-all duration-300 cursor-pointer">
+              <div className="w-12 h-12 bg-blue-500 rounded-xl mb-4 flex items-center justify-center">
+                <span className="text-white font-bold">🏛️</span>
+              </div>
+              <h3 className="text-white font-semibold mb-2">Govt Documents</h3>
+              <p className="text-gray-400 text-sm">15 tools available</p>
             </div>
-            <h3 className="text-white font-semibold mb-2">Fide YElory Tool</h3>
-            <p className="text-gray-400 text-sm">Plamlabigerrtul ineor Poibolik.</p>
-          </div>
+          </Link>
           
           {/* Row 2 */}
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:bg-gray-700/50 transition-all duration-300">
-            <div className="w-12 h-12 bg-gray-500 rounded-xl mb-4 flex items-center justify-center">
-              <span className="text-white font-bold">⚙</span>
+          <Link href="/toolkit/developer">
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:bg-gray-700/50 transition-all duration-300 cursor-pointer">
+              <div className="w-12 h-12 bg-green-500 rounded-xl mb-4 flex items-center justify-center">
+                <span className="text-white font-bold">💻</span>
+              </div>
+              <h3 className="text-white font-semibold mb-2">Developer Toolkit</h3>
+              <p className="text-gray-400 text-sm">28 tools available</p>
             </div>
-            <h3 className="text-white font-semibold mb-2">Aasth Vuul Tocols</h3>
-            <p className="text-gray-400 text-sm">Phakealthangandet ar Frobnit.</p>
-          </div>
+          </Link>
           
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:bg-gray-700/50 transition-all duration-300">
-            <div className="w-12 h-12 bg-teal-500 rounded-xl mb-4 flex items-center justify-center">
-              <span className="text-white font-bold">◢</span>
+          <Link href="/all-tools">
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:bg-gray-700/50 transition-all duration-300 cursor-pointer">
+              <div className="w-12 h-12 bg-yellow-500 rounded-xl mb-4 flex items-center justify-center">
+                <span className="text-black font-bold">⭐</span>
+              </div>
+              <h3 className="text-white font-semibold mb-2">All Tools</h3>
+              <p className="text-gray-400 text-sm">108+ tools total</p>
             </div>
-            <h3 className="text-white font-semibold mb-2">Aeqhe Vriten</h3>
-            <p className="text-gray-400 text-sm">Basalntwer synar Fronit.</p>
-          </div>
+          </Link>
           
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:bg-gray-700/50 transition-all duration-300">
-            <div className="w-12 h-12 bg-cyan-400 rounded-xl mb-4 flex items-center justify-center">
-              <span className="text-white font-bold">◐</span>
+          <Link href="/pricing">
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:bg-gray-700/50 transition-all duration-300 cursor-pointer">
+              <div className="w-12 h-12 bg-orange-500 rounded-xl mb-4 flex items-center justify-center">
+                <span className="text-white font-bold">💎</span>
+              </div>
+              <h3 className="text-white font-semibold mb-2">Premium</h3>
+              <p className="text-gray-400 text-sm">Unlock all features</p>
             </div>
-            <h3 className="text-white font-semibold mb-2">Muebe Toli</h3>
-            <p className="text-gray-400 text-sm">Nimuvamirr exaei neor Frostnit.</p>
-          </div>
+          </Link>
           
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:bg-gray-700/50 transition-all duration-300">
-            <div className="w-12 h-12 bg-purple-400 rounded-xl mb-4 flex items-center justify-center">
-              <span className="text-white font-bold">◈</span>
+          <Link href="/about">
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:bg-gray-700/50 transition-all duration-300 cursor-pointer">
+              <div className="w-12 h-12 bg-pink-500 rounded-xl mb-4 flex items-center justify-center">
+                <span className="text-white font-bold">ℹ️</span>
+              </div>
+              <h3 className="text-white font-semibold mb-2">About Us</h3>
+              <p className="text-gray-400 text-sm">Learn more about Suntyn</p>
             </div>
-            <h3 className="text-white font-semibold mb-2">My Too Belilog</h3>
-            <p className="text-gray-400 text-sm">Frontrulcosenter neor Poibolik.</p>
-          </div>
+          </Link>
         </div>
 
         {/* Bottom section */}
