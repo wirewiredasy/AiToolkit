@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import SuntynAnimatedLogo from '@/components/ui/suntyn-animated-logo';
+import GeometricLogo from '@/components/ui/geometric-logo';
 
 const navigationItems = [
   { href: '/', label: 'HOME' },
@@ -37,11 +37,8 @@ export default function DarkNavbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/">
-            <div className="flex items-center space-x-3 hover:opacity-80 transition-opacity duration-200">
-              <div className="w-8 h-8 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-lg flex items-center justify-center">
-                <span className="text-black font-bold text-sm">S</span>
-              </div>
-              <span className="text-white font-bold text-xl tracking-wide">SUNTYN AI</span>
+            <div className="hover:opacity-80 transition-opacity duration-200">
+              <GeometricLogo size="md" showText={true} />
             </div>
           </Link>
 

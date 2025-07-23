@@ -2,7 +2,7 @@ import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
-import NewSuntynLogo from '@/components/ui/new-suntyn-logo';
+import GeometricLogo from '@/components/ui/geometric-logo';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -42,7 +42,7 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="lg:col-span-2">
             <div className="mb-6">
-              <NewSuntynLogo size="lg" showText={true} />
+              <GeometricLogo size="lg" showText={true} />
             </div>
             <p className="text-gray-400 mb-8 leading-relaxed">
               Professional AI-powered tools for document processing, image editing, 
@@ -124,6 +124,23 @@ export default function Footer() {
               ))}
             </ul>
 
+            {/* Action Buttons */}
+            <div className="mt-8">
+              <h4 className="text-white font-medium mb-4">Get Started</h4>
+              <div className="flex flex-col space-y-3">
+                <Link href="/auth/login">
+                  <Button variant="ghost" size="sm" className="w-full text-gray-300 hover:text-white justify-start">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link href="/auth/login">
+                  <Button size="sm" className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transform hover:scale-105 transition-all duration-300">
+                    Get Now
+                  </Button>
+                </Link>
+              </div>
+            </div>
+
             {/* Social Media */}
             <div className="mt-8">
               <h4 className="text-white font-medium mb-4">Follow Us</h4>
@@ -153,7 +170,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
             <div className="mb-8 md:mb-0">
               <div className="mb-4">
-                <NewSuntynLogo size="md" showText={true} />
+                <GeometricLogo size="md" showText={true} />
               </div>
               <p className="text-slate-400 max-w-md">
                 Professional AI-powered tools for document processing, image editing, 
