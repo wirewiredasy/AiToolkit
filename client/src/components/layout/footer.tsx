@@ -37,46 +37,30 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-gray-900 border-t border-gray-800">
+    <footer className="bg-gradient-to-br from-gray-900 via-slate-900 to-amber-900 border-t border-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid lg:grid-cols-5 md:grid-cols-3 gap-8">
-          {/* Brand Section */}
+          {/* Enhanced Brand Section */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-white">
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-              </div>
-              <div>
-                <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  Suntyn AI
-                </span>
-                <p className="text-xs text-gray-400 uppercase tracking-wider font-medium">
-                  Neural Intelligence
-                </p>
-              </div>
+              <SuntynLogo size="md" animated={true} showText={true} />
             </div>
             <p className="text-gray-300 mb-8 leading-relaxed max-w-md">
-              Professional AI-powered tools for document processing, image editing, and data validation. 
-              Transform your workflow with cutting-edge technology.
+              Revolutionary neural intelligence platform with 108+ AI-powered tools for document processing, 
+              image editing, and data validation. Transform your workflow with cutting-edge AI technology.
             </p>
             
-            {/* Social Media Icons */}
+            {/* Enhanced Social Media Icons */}
             <div className="flex items-center gap-3 mb-8">
               <a href="#" className="group">
-                <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-500 transition-all duration-300 group-hover:scale-110">
+                <div className="w-10 h-10 bg-gradient-to-br from-gray-800 to-slate-700 rounded-lg flex items-center justify-center hover:from-yellow-500 hover:to-amber-600 transition-all duration-300 group-hover:scale-110 shadow-lg">
                   <svg className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
                   </svg>
                 </div>
               </a>
               <a href="#" className="group">
-                <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-700 transition-all duration-300 group-hover:scale-110">
+                <div className="w-10 h-10 bg-gradient-to-br from-gray-800 to-slate-700 rounded-lg flex items-center justify-center hover:from-blue-500 hover:to-blue-700 transition-all duration-300 group-hover:scale-110 shadow-lg">
                   <svg className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
                     <circle cx="4" cy="4" r="2"/>
@@ -84,34 +68,34 @@ export default function Footer() {
                 </div>
               </a>
               <a href="#" className="group">
-                <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-600 transition-all duration-300 group-hover:scale-110">
+                <div className="w-10 h-10 bg-gradient-to-br from-gray-800 to-slate-700 rounded-lg flex items-center justify-center hover:from-gray-600 hover:to-gray-500 transition-all duration-300 group-hover:scale-110 shadow-lg">
                   <svg className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/>
                   </svg>
                 </div>
               </a>
               <a href="#" className="group">
-                <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-red-600 transition-all duration-300 group-hover:scale-110">
-                  <svg className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23 12s-1.5-3-7-3-7 3-7 3 1.5 3 7 3 7-3 7-3zM12 10.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
-                    <path d="M23 12l-10.5 6L1 12l11.5-6L23 12z"/>
-                  </svg>
+                <div className="w-10 h-10 bg-gradient-to-br from-gray-800 to-slate-700 rounded-lg flex items-center justify-center hover:from-red-500 hover:to-red-600 transition-all duration-300 group-hover:scale-110 shadow-lg">
+                  <i className="fab fa-youtube text-gray-300 group-hover:text-white transition-colors"></i>
                 </div>
               </a>
               <a href="#" className="group">
-                <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-all duration-300 group-hover:scale-110">
-                  <svg className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M18.77 7.46H14.5v-1.9c0-.9.6-1.1 1-1.1h3V.5h-4.33C10.24.5 9.5 3.44 9.5 5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4z"/>
-                  </svg>
+                <div className="w-10 h-10 bg-gradient-to-br from-gray-800 to-slate-700 rounded-lg flex items-center justify-center hover:from-pink-500 hover:to-pink-600 transition-all duration-300 group-hover:scale-110 shadow-lg">
+                  <i className="fab fa-instagram text-gray-300 group-hover:text-white transition-colors"></i>
                 </div>
               </a>
             </div>
 
-            {/* Newsletter Signup */}
-            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-              <h3 className="text-lg font-semibold mb-3 text-white">Stay Updated</h3>
+            {/* Enhanced Newsletter Signup */}
+            <div className="bg-gradient-to-br from-gray-800 to-slate-800 rounded-xl p-6 border border-yellow-400/20 shadow-2xl">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-lg flex items-center justify-center">
+                  <i className="fas fa-envelope text-white text-sm"></i>
+                </div>
+                <h3 className="text-lg font-semibold text-white">Stay Updated</h3>
+              </div>
               <p className="text-gray-300 text-sm mb-4">
-                Get the latest AI tools and updates delivered to your inbox.
+                Get the latest AI tools, neural intelligence updates, and exclusive features delivered to your inbox.
               </p>
               <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
                 <Input
@@ -119,12 +103,12 @@ export default function Footer() {
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="flex-1 bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-blue-500"
+                  className="flex-1 bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-yellow-500"
                   required
                 />
                 <Button 
                   type="submit" 
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6"
+                  className="bg-gradient-to-r from-yellow-600 to-amber-600 hover:from-yellow-700 hover:to-amber-700 text-white px-6 shadow-lg"
                 >
                   {isSubscribed ? (
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,8 +120,9 @@ export default function Footer() {
                 </Button>
               </form>
               {isSubscribed && (
-                <p className="text-green-400 text-sm mt-2">
-                  ✓ Successfully subscribed to our newsletter!
+                <p className="text-yellow-400 text-sm mt-2 flex items-center">
+                  <i className="fas fa-check-circle mr-2"></i>
+                  Successfully subscribed to our newsletter!
                 </p>
               )}
             </div>
@@ -145,13 +130,16 @@ export default function Footer() {
 
           {/* Tools */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 text-white">Tools</h3>
+            <h3 className="text-lg font-semibold mb-6 text-white flex items-center">
+              <i className="fas fa-tools text-yellow-400 mr-2"></i>
+              AI Tools
+            </h3>
             <ul className="space-y-3">
               {toolkitLinks.map((link) => (
                 <li key={link.name}>
                   <Link href={link.href}>
-                    <span className="text-gray-300 hover:text-white transition-colors cursor-pointer flex items-center group">
-                      <svg className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <span className="text-gray-300 hover:text-yellow-400 transition-colors cursor-pointer flex items-center group">
+                      <svg className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity mr-2 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                       {link.name}
@@ -164,13 +152,16 @@ export default function Footer() {
 
           {/* Support */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 text-white">Support</h3>
+            <h3 className="text-lg font-semibold mb-6 text-white flex items-center">
+              <i className="fas fa-headset text-yellow-400 mr-2"></i>
+              Support
+            </h3>
             <ul className="space-y-3">
               {supportLinks.map((link) => (
                 <li key={link.name}>
                   <Link href={link.href}>
-                    <span className="text-gray-300 hover:text-white transition-colors flex items-center group cursor-pointer">
-                      <svg className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <span className="text-gray-300 hover:text-yellow-400 transition-colors flex items-center group cursor-pointer">
+                      <svg className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity mr-2 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                       {link.name}
@@ -183,7 +174,7 @@ export default function Footer() {
                   <svg className="w-3 h-3 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  Blog - Coming Soon
+                  AI Blog - Coming Soon
                 </span>
               </li>
             </ul>
@@ -191,13 +182,16 @@ export default function Footer() {
 
           {/* Legal */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 text-white">Legal</h3>
+            <h3 className="text-lg font-semibold mb-6 text-white flex items-center">
+              <i className="fas fa-balance-scale text-yellow-400 mr-2"></i>
+              Legal
+            </h3>
             <ul className="space-y-3">
               {legalLinks.map((link) => (
                 <li key={link.name}>
                   <Link href={link.href}>
-                    <span className="text-gray-300 hover:text-white transition-colors flex items-center group cursor-pointer">
-                      <svg className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <span className="text-gray-300 hover:text-yellow-400 transition-colors flex items-center group cursor-pointer">
+                      <svg className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity mr-2 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                       {link.name}
@@ -209,11 +203,22 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Section */}
+        {/* Enhanced Bottom Section */}
         <div className="border-t border-gray-700 pt-8 mt-12">
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-            <div className="text-gray-400 text-sm text-center">
-              © 2025 Suntyn AI. All rights reserved.
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="text-gray-400 text-sm text-center md:text-left flex items-center">
+              <SuntynLogo size="sm" animated={false} showText={false} className="mr-3" />
+              © 2025 Suntyn AI Neural Intelligence. All rights reserved.
+            </div>
+            <div className="flex items-center gap-4 text-sm text-gray-400">
+              <span className="flex items-center">
+                <i className="fas fa-brain text-yellow-400 mr-2"></i>
+                Powered by Neural Intelligence
+              </span>
+              <span className="flex items-center">
+                <i className="fas fa-shield-alt text-green-400 mr-2"></i>
+                100% Secure
+              </span>
             </div>
           </div>
         </div>
