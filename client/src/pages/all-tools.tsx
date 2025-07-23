@@ -19,7 +19,7 @@ export default function AllTools() {
           <div className="flex items-center justify-center mb-6">
             <i className="fas fa-tools text-4xl text-blue-400 mr-4"></i>
             <h1 className="text-4xl md:text-6xl font-bold text-white">
-              All <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">80 Tools</span>
+              All <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">108 Tools</span>
             </h1>
           </div>
           <p className="text-xl text-slate-300 mb-8 max-w-3xl mx-auto">
@@ -201,12 +201,12 @@ export default function AllTools() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/20">
               <i className="fas fa-tools text-4xl text-blue-400 mb-4"></i>
-              <div className="text-4xl font-bold text-white mb-2">80+</div>
+              <div className="text-4xl font-bold text-white mb-2">108+</div>
               <div className="text-slate-300">Total Tools</div>
             </div>
             <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/20">
               <i className="fas fa-th-large text-4xl text-purple-400 mb-4"></i>
-              <div className="text-4xl font-bold text-white mb-2">4</div>
+              <div className="text-4xl font-bold text-white mb-2">5</div>
               <div className="text-slate-300">Categories</div>
             </div>
             <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/20">

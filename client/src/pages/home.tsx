@@ -99,7 +99,13 @@ export default function Home() {
               <div key={toolkit.id} className="group">
                 <Link href={toolkit.route}>
                   <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-slate-200">
-                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 ${toolkit.color} shadow-lg`}>
+                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 ${
+                      toolkit.color === 'red' ? 'bg-gradient-to-br from-red-500 to-red-600' :
+                      toolkit.color === 'purple' ? 'bg-gradient-to-br from-purple-500 to-purple-600' :
+                      toolkit.color === 'green' ? 'bg-gradient-to-br from-green-500 to-green-600' :
+                      toolkit.color === 'orange' ? 'bg-gradient-to-br from-orange-500 to-orange-600' :
+                      'bg-gradient-to-br from-blue-500 to-blue-600'
+                    } shadow-lg`}>
                       <i className={`${toolkit.icon} text-2xl text-white`}></i>
                     </div>
                     <h3 className="text-xl font-bold text-slate-900 mb-3">{toolkit.name}</h3>

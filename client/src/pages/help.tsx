@@ -50,6 +50,12 @@ export default function HelpCenter() {
       icon: "fas fa-id-card",
       color: "text-green-500", 
       tools: ["PAN Validator", "GST Validator", "Aadhaar Validator", "QR Generator", "Barcode Generator"]
+    },
+    {
+      title: "Developer Tools",
+      icon: "fas fa-code",
+      color: "text-blue-500",
+      tools: ["JSON Formatter", "Base64 Encoder", "Password Generator", "CSS Minifier", "Hash Generator", "Regex Tester"]
     }
   ];
 
