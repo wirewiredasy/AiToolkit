@@ -2,6 +2,7 @@ import { Link } from 'wouter';
 import { Card, CardContent } from '@/components/ui/card';
 import BreadcrumbNav from '@/components/ui/breadcrumb-nav';
 import { getToolkitById } from '@/lib/tools';
+import ToolIcon from '@/components/ui/tool-icon';
 
 export default function ImageToolkit() {
   const toolkit = getToolkitById('image');
@@ -47,7 +48,7 @@ export default function ImageToolkit() {
         {/* Toolkit Header */}
         <div className="text-center mb-12">
           <div className="w-20 h-20 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <i className="fas fa-image text-3xl text-purple-600"></i>
+            <ToolIcon toolId="image-resizer" className="w-8 h-8 text-purple-600" />
           </div>
           <h1 className="text-4xl font-bold text-neutral-800 mb-4">{toolkit.name}</h1>
           <p className="text-xl text-neutral-600 max-w-3xl mx-auto mb-8">
@@ -69,7 +70,7 @@ export default function ImageToolkit() {
               <CardContent className="p-6">
                 <Link href={tool.route}>
                   <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                    <i className={`${tool.icon} text-purple-600`}></i>
+                    <ToolIcon toolId={tool.id} className="w-6 h-6 text-purple-600" />
                   </div>
                   <h3 className="font-semibold text-neutral-800 mb-2">{tool.name}</h3>
                   <p className="text-sm text-neutral-600 mb-4">{tool.description}</p>
