@@ -148,6 +148,7 @@ import About from "@/pages/about";
 import Privacy from "@/pages/privacy";
 import Terms from "@/pages/terms";
 import AllTools from "@/pages/all-tools";
+import AnimatedIconsDemo from "@/pages/animated-icons-demo";
 
 
 
@@ -317,6 +318,7 @@ function Router() {
       <Route path="/about" component={About} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />
+      <Route path="/animated-icons-demo" component={AnimatedIconsDemo} />
 
       <Route component={NotFound} />
     </Switch>
