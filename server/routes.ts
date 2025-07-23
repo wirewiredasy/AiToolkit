@@ -1253,20 +1253,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     return reasonMap[endpoint] || 'Invalid format';
   }
 
-  // Cleanup expired files periodically
-  setInterval(async () => {
-    try {
-      await storage.deleteExpiredFiles();
-    } catch (error) {
-      console.error("Error cleaning up expired files:", error);
-    }
-  }, 60000); // Run every minute
-
-  const httpServer = createServer(app);
-  return httpServer;
-}
-
-// Enhanced error handling middleware
+  // Enhanced error handling middleware
   app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     let message = err.message || "Internal Server Error";
@@ -1303,3 +1290,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       ...(shouldExposeStack && { stack: err.stack })
     });
   });
+
+  // Cleanup expired files periodically
+  setInterval(async () => {
+    try {
+      await storage.deleteExpiredFiles();
+    } catch (error) {
+      console.error("Error cleaning up expired files:", error);
+    }
+  }, 60000); // Run every minute
+
+  const httpServer = createServer(app);
+  return httpServer;
+}
