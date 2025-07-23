@@ -171,6 +171,8 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
+      <Route path="/auth/login" component={Login} />
+      <Route path="/auth/signup" component={Signup} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/all-tools" component={AllTools} />
 

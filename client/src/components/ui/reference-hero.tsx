@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FileText, Music, ImageIcon, Play, User, Settings } from 'lucide-react';
 import { toolkits } from '@/lib/tools';
+import { Link } from 'wouter';
 
 const ReferenceHero: React.FC = () => {
   return (
@@ -88,12 +89,11 @@ const ReferenceHero: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
             >
-              <button
-                onClick={() => window.location.href = '/auth/login'}
-                className="px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-full text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl animate-bounce"
-              >
-                Get Now
-              </button>
+              <Link href="/auth/login">
+                <button className="px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-full text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl animate-bounce">
+                  Get Now
+                </button>
+              </Link>
             </motion.div>
           </div>
 

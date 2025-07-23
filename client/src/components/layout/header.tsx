@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Menu, X, Search, User, Bell } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
-import GeometricLogo from '@/components/ui/geometric-logo';
+import SIconLogo from '@/components/ui/s-icon-logo';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -24,7 +24,7 @@ export default function Header() {
       <div className="container flex h-14 max-w-screen-2xl items-center">
         {/* Logo */}
         <Link href="/" className="flex items-center">
-          <GeometricLogo size="md" showText={true} />
+          <SIconLogo size="md" showText={true} />
         </Link>
 
         {/* Desktop Navigation */}
