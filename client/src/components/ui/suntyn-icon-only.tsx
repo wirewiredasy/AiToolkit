@@ -23,12 +23,12 @@ export function SuntynIconOnly({
 
   return (
     <div className={cn("relative", sizeClasses[size], className)}>
-      {/* Outer energy ring */}
+      {/* Outer glow ring */}
       <motion.div 
-        className="absolute inset-0 rounded-full bg-gradient-to-r from-orange-400 via-yellow-400 to-orange-500 opacity-20"
+        className="absolute inset-0 rounded-full bg-gradient-to-r from-orange-400/30 via-yellow-400/30 to-pink-400/30 blur-sm"
         animate={animated ? {
-          scale: [1, 1.1, 1],
-          opacity: [0.2, 0.3, 0.2]
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3]
         } : {}}
         transition={{
           duration: 4,
@@ -37,85 +37,110 @@ export function SuntynIconOnly({
         }}
       />
       
-      {/* Neural network rays */}
-      {animated && [...Array(8)].map((_, i) => {
-        const angle = (i * 45) * (Math.PI / 180);
-        const length = size === 'hero' ? 20 : size === 'xl' ? 16 : size === 'lg' ? 12 : 8;
+      {/* Geometric neural rays - 12 rays like in the reference */}
+      {[...Array(12)].map((_, i) => {
+        const angle = (i * 30) * (Math.PI / 180);
+        const rayLength = size === 'hero' ? 24 : size === 'xl' ? 20 : size === 'lg' ? 16 : size === 'md' ? 12 : 10;
+        const nodeDistance = rayLength * 0.7;
         
         return (
-          <motion.div
-            key={`ray-${i}`}
-            className="absolute bg-gradient-to-r from-orange-400 to-yellow-400 opacity-60"
-            style={{
-              width: '2px',
-              height: `${length}px`,
-              left: '50%',
-              top: '50%',
-              transform: `translate(-50%, -50%) rotate(${i * 45}deg)`,
-              transformOrigin: `center ${length/2}px`
-            }}
-            animate={{
-              opacity: [0.3, 0.8, 0.3],
-              scaleY: [0.6, 1, 0.6]
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              delay: i * 0.2,
-              ease: "easeInOut"
-            }}
-          />
+          <motion.g key={`ray-${i}`}>
+            {/* Main ray line */}
+            <motion.div
+              className="absolute bg-gradient-to-r from-orange-400 via-yellow-400 to-pink-400 opacity-80"
+              style={{
+                width: '1.5px',
+                height: `${rayLength}px`,
+                left: '50%',
+                top: '50%',
+                transform: `translate(-50%, -50%) rotate(${i * 30}deg)`,
+                transformOrigin: `center ${rayLength/2}px`
+              }}
+              animate={animated ? {
+                opacity: [0.6, 1, 0.6],
+                scaleY: [0.8, 1, 0.8]
+              } : {}}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                delay: i * 0.1,
+                ease: "easeInOut"
+              }}
+            />
+            
+            {/* Geometric node at ray tip */}
+            <motion.div
+              className="absolute w-2 h-2 border border-yellow-300 bg-gradient-to-br from-orange-300 to-yellow-400"
+              style={{
+                left: '50%',
+                top: '50%',
+                transform: `translate(-50%, -50%) translate(${Math.cos(angle) * nodeDistance}px, ${Math.sin(angle) * nodeDistance}px) rotate(45deg)`,
+                clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)'
+              }}
+              animate={animated ? {
+                scale: [0.8, 1.2, 0.8],
+                rotate: [45, 90, 45],
+                opacity: [0.7, 1, 0.7]
+              } : {}}
+              transition={{
+                duration: 2.5,
+                repeat: Infinity,
+                delay: i * 0.15,
+                ease: "easeInOut"
+              }}
+            />
+          </motion.g>
         );
       })}
       
-      {/* Central sun core with neural pattern */}
-      <div className="absolute inset-2 rounded-full bg-gradient-to-br from-orange-400 via-yellow-400 to-orange-500 shadow-xl overflow-hidden">
-        {/* Inner glow */}
-        <div className="absolute inset-1 rounded-full bg-gradient-to-br from-orange-300 to-yellow-300 opacity-80" />
+      {/* Central sun core with gradient */}
+      <div className="absolute inset-3 rounded-full bg-gradient-to-br from-orange-400 via-yellow-400 via-yellow-300 to-pink-400 shadow-2xl overflow-hidden">
+        {/* Inner radial gradient */}
+        <div className="absolute inset-1 rounded-full bg-gradient-radial from-yellow-200 via-orange-300 to-pink-300 opacity-90" />
         
-        {/* Neural network nodes */}
+        {/* Neural network center */}
         <div className="absolute inset-0 flex items-center justify-center">
-          {/* Center node */}
+          {/* Central processing node */}
           <motion.div 
-            className="absolute w-2 h-2 bg-white rounded-full shadow-lg z-10"
+            className="absolute w-3 h-3 bg-white rounded-full shadow-lg z-20 border-2 border-yellow-200"
             animate={animated ? {
               boxShadow: [
                 "0 0 0 0 rgba(255, 255, 255, 0.8)",
-                "0 0 0 6px rgba(255, 255, 255, 0.2)",
+                "0 0 0 8px rgba(255, 255, 255, 0.1)",
                 "0 0 0 0 rgba(255, 255, 255, 0)"
               ]
             } : {}}
             transition={{
-              duration: 2.5,
+              duration: 2,
               repeat: Infinity,
               ease: "easeOut"
             }}
           />
           
-          {/* Surrounding neural nodes */}
+          {/* Inner neural ring - 6 nodes */}
           {[...Array(6)].map((_, i) => {
             const nodeAngle = (i * 60) * (Math.PI / 180);
-            const radius = size === 'hero' ? 12 : size === 'xl' ? 10 : size === 'lg' ? 8 : 6;
+            const radius = size === 'hero' ? 8 : size === 'xl' ? 7 : size === 'lg' ? 6 : 5;
             const x = Math.cos(nodeAngle) * radius;
             const y = Math.sin(nodeAngle) * radius;
             
             return (
               <motion.div
-                key={`node-${i}`}
-                className="absolute w-1 h-1 bg-white rounded-full opacity-90"
+                key={`inner-node-${i}`}
+                className="absolute w-1.5 h-1.5 bg-white rounded-full opacity-90 border border-yellow-200"
                 style={{
                   left: `calc(50% + ${x}px)`,
                   top: `calc(50% + ${y}px)`,
                   transform: 'translate(-50%, -50%)'
                 }}
                 animate={animated ? {
-                  opacity: [0.5, 1, 0.5],
-                  scale: [0.8, 1.2, 0.8]
+                  opacity: [0.6, 1, 0.6],
+                  scale: [0.8, 1.3, 0.8]
                 } : {}}
                 transition={{
-                  duration: 2,
+                  duration: 2.2,
                   repeat: Infinity,
-                  delay: i * 0.3,
+                  delay: i * 0.2,
                   ease: "easeInOut"
                 }}
               />
@@ -126,59 +151,63 @@ export function SuntynIconOnly({
           {animated && [...Array(6)].map((_, i) => (
             <motion.div
               key={`connection-${i}`}
-              className="absolute w-px bg-white/40 origin-center"
+              className="absolute w-px bg-white/50 origin-center"
               style={{
-                height: '12px',
+                height: '10px',
                 left: '50%',
                 top: '50%',
                 transform: `translate(-50%, -50%) rotate(${i * 60}deg)`
               }}
               animate={{
-                opacity: [0, 0.6, 0],
-                scaleY: [0.5, 1, 0.5]
+                opacity: [0, 0.8, 0],
+                scaleY: [0.3, 1, 0.3]
               }}
               transition={{
-                duration: 2,
+                duration: 1.8,
                 repeat: Infinity,
-                delay: i * 0.2,
+                delay: i * 0.15,
                 ease: "easeInOut"
               }}
             />
           ))}
         </div>
         
-        {/* Energy particles */}
-        {animated && [...Array(4)].map((_, i) => (
+        {/* Floating energy particles */}
+        {animated && [...Array(6)].map((_, i) => (
           <motion.div
             key={`particle-${i}`}
-            className="absolute w-0.5 h-0.5 bg-yellow-200 rounded-full"
+            className="absolute w-1 h-1 bg-yellow-100 rounded-full opacity-80"
             style={{
-              left: `${25 + (i * 15)}%`,
-              top: `${35 + ((i % 2) * 30)}%`
+              left: `${20 + (i * 10)}%`,
+              top: `${25 + ((i % 3) * 20)}%`
             }}
             animate={{
+              x: [-2, 2, -2],
               y: [-1, 1, -1],
               opacity: [0.4, 1, 0.4],
-              scale: [0.8, 1.2, 0.8]
+              scale: [0.6, 1.2, 0.6]
             }}
             transition={{
-              duration: 1.8,
+              duration: 2.5,
               repeat: Infinity,
-              delay: i * 0.15,
+              delay: i * 0.3,
               ease: "easeInOut"
             }}
           />
         ))}
       </div>
 
-      {/* Floating intelligence orbs */}
+      {/* Orbiting intelligence indicators */}
       {animated && [...Array(3)].map((_, i) => {
-        const orbitRadius = size === 'hero' ? 45 : size === 'xl' ? 35 : size === 'lg' ? 28 : 22;
+        const orbitRadius = size === 'hero' ? 50 : size === 'xl' ? 40 : size === 'lg' ? 32 : 26;
         
         return (
           <motion.div
-            key={`orb-${i}`}
-            className="absolute w-1.5 h-1.5 bg-gradient-to-r from-orange-300 to-yellow-300 rounded-full opacity-70"
+            key={`orbit-${i}`}
+            className="absolute w-2 h-2 bg-gradient-to-r from-orange-400 to-pink-400 rounded-sm opacity-70 shadow-lg"
+            style={{
+              clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)'
+            }}
             animate={{
               x: [
                 Math.cos((i * 120) * (Math.PI / 180)) * orbitRadius,
@@ -191,13 +220,14 @@ export function SuntynIconOnly({
                 Math.sin((i * 120 + 120) * (Math.PI / 180)) * orbitRadius,
                 Math.sin((i * 120 + 240) * (Math.PI / 180)) * orbitRadius,
                 Math.sin((i * 120) * (Math.PI / 180)) * orbitRadius
-              ]
+              ],
+              rotate: [0, 360]
             }}
             transition={{
-              duration: 8,
+              duration: 10,
               repeat: Infinity,
               ease: "linear",
-              delay: i * 0.7
+              delay: i * 1.2
             }}
             style={{
               left: '50%',
