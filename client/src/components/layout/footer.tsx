@@ -1,10 +1,8 @@
-
 import { Link } from 'wouter';
-import SuntynLogo from '@/components/ui/suntyn-logo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
-import SuntynAnimatedLogo from '../ui/suntyn-animated-logo';
+import SuntynIconOnly from '@/components/ui/suntyn-icon-only';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -44,17 +42,9 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-white">
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-              </div>
+              <SuntynIconOnly size="lg" animated={true} />
               <div>
-                <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                <span className="text-2xl font-bold bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">
                   Suntyn AI
                 </span>
                 <p className="text-xs text-gray-400 uppercase tracking-wider font-medium">
@@ -62,57 +52,16 @@ export default function Footer() {
                 </p>
               </div>
             </div>
-            <p className="text-gray-300 mb-8 leading-relaxed max-w-md">
-              Professional AI-powered tools for document processing, image editing, and data validation. 
-              Transform your workflow with cutting-edge technology.
+            <p className="text-gray-400 mb-8 leading-relaxed">
+              Professional AI-powered tools for document processing, image editing, 
+              and data validation. Fast, secure, and completely free.
             </p>
 
-            {/* Social Media Icons */}
-            <div className="flex items-center gap-3 mb-8">
-              <a href="#" className="group">
-                <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-500 transition-all duration-300 group-hover:scale-110">
-                  <svg className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
-                  </svg>
-                </div>
-              </a>
-              <a href="#" className="group">
-                <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-700 transition-all duration-300 group-hover:scale-110">
-                  <svg className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
-                    <circle cx="4" cy="4" r="2"/>
-                  </svg>
-                </div>
-              </a>
-              <a href="#" className="group">
-                <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-600 transition-all duration-300 group-hover:scale-110">
-                  <svg className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/>
-                  </svg>
-                </div>
-              </a>
-              <a href="#" className="group">
-                <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-red-600 transition-all duration-300 group-hover:scale-110">
-                  <svg className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23 12s-1.5-3-7-3-7 3-7 3 1.5 3 7 3 7-3 7-3zM12 10.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
-                    <path d="M23 12l-10.5 6L1 12l11.5-6L23 12z"/>
-                  </svg>
-                </div>
-              </a>
-              <a href="#" className="group">
-                <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-all duration-300 group-hover:scale-110">
-                  <svg className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M18.77 7.46H14.5v-1.9c0-.9.6-1.1 1-1.1h3V.5h-4.33C10.24.5 9.5 3.44 9.5 5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4z"/>
-                  </svg>
-                </div>
-              </a>
-            </div>
-
             {/* Newsletter Signup */}
-            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-              <h3 className="text-lg font-semibold mb-3 text-white">Stay Updated</h3>
-              <p className="text-gray-300 text-sm mb-4">
-                Get the latest AI tools and updates delivered to your inbox.
+            <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+              <h3 className="text-white font-semibold mb-3">Stay Updated</h3>
+              <p className="text-gray-400 text-sm mb-4">
+                Get notified about new tools and features
               </p>
               <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
                 <Input
@@ -120,43 +69,30 @@ export default function Footer() {
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="flex-1 bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-blue-500"
-                  required
+                  className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
                 />
                 <Button 
                   type="submit" 
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6"
+                  size="sm"
+                  className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600"
                 >
-                  {isSubscribed ? (
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  ) : (
-                    'Subscribe'
-                  )}
+                  {isSubscribed ? '✓' : 'Subscribe'}
                 </Button>
               </form>
-              {isSubscribed && (
-                <p className="text-green-400 text-sm mt-2">
-                  ✓ Successfully subscribed to our newsletter!
-                </p>
-              )}
             </div>
           </div>
 
-          {/* Tools */}
+          {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 text-white">Tools</h3>
+            <h3 className="text-white font-semibold mb-6">Toolkit</h3>
             <ul className="space-y-3">
               {toolkitLinks.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href}>
-                    <span className="text-gray-300 hover:text-white transition-colors cursor-pointer flex items-center group">
-                      <svg className="w-4 h-4 opacity-70 group-hover:opacity-100 transition-all mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                      {link.name}
-                    </span>
+                  <Link 
+                    href={link.href}
+                    className="text-gray-400 hover:text-white transition-colors duration-200"
+                  >
+                    {link.name}
                   </Link>
                 </li>
               ))}
@@ -165,48 +101,58 @@ export default function Footer() {
 
           {/* Support */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 text-white">Support</h3>
+            <h3 className="text-white font-semibold mb-6">Support</h3>
             <ul className="space-y-3">
               {supportLinks.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href}>
-                    <span className="text-gray-300 hover:text-white transition-colors flex items-center group cursor-pointer">
-                      <svg className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                      {link.name}
-                    </span>
+                  <Link 
+                    href={link.href}
+                    className="text-gray-400 hover:text-white transition-colors duration-200"
+                  >
+                    {link.name}
                   </Link>
                 </li>
               ))}
-              <li>
-                <span className="text-gray-400 text-sm flex items-center">
-                  <svg className="w-3 h-3 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  Blog - Coming Soon
-                </span>
-              </li>
             </ul>
           </div>
 
           {/* Legal */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 text-white">Legal</h3>
+            <h3 className="text-white font-semibold mb-6">Legal</h3>
             <ul className="space-y-3">
               {legalLinks.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href}>
-                    <span className="text-gray-300 hover:text-white transition-colors flex items-center group cursor-pointer">
-                      <svg className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                      {link.name}
-                    </span>
+                  <Link 
+                    href={link.href}
+                    className="text-gray-400 hover:text-white transition-colors duration-200"
+                  >
+                    {link.name}
                   </Link>
                 </li>
               ))}
             </ul>
+
+            {/* Social Media */}
+            <div className="mt-8">
+              <h4 className="text-white font-medium mb-4">Follow Us</h4>
+              <div className="flex space-x-4">
+                <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white p-2">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"/>
+                  </svg>
+                </Button>
+                <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white p-2">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fillRule="evenodd" d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.347-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001 12.017.001z" clipRule="evenodd"/>
+                  </svg>
+                </Button>
+                <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white p-2">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd"/>
+                  </svg>
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -214,8 +160,13 @@ export default function Footer() {
         <div className="border-t border-gray-700 pt-8 mt-12">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
             <div className="mb-8 md:mb-0">
-              <SuntynAnimatedLogo size="lg" animated={true} showText={true} />
-              <p className="text-slate-400 mt-4 max-w-md">
+              <div className="flex items-center gap-3 mb-4">
+                <SuntynIconOnly size="md" animated={true} />
+                <span className="text-lg font-bold bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">
+                  Suntyn AI
+                </span>
+              </div>
+              <p className="text-slate-400 max-w-md">
                 Professional AI-powered tools for document processing, image editing, 
                 and data validation. Fast, secure, and completely free.
               </p>

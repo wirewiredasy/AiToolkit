@@ -1,126 +1,115 @@
-import { useState } from 'react';
-import { Link, useLocation } from 'wouter';
+
+import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
+import { Menu, X, Search, User, Bell } from 'lucide-react';
+import { useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
-import SuntynLogo from '@/components/ui/suntyn-logo';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger,
-  DropdownMenuSeparator
-} from '@/components/ui/dropdown-menu';
+import SuntynIconOnly from '@/components/ui/suntyn-icon-only';
 
 export default function Header() {
-  const { user, logout } = useAuth();
-  const [location] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
 
-  const navigation = [
-    { name: 'Home', href: '/' },
+  const navLinks = [
     { name: 'All Tools', href: '/all-tools' },
     { name: 'PDF Tools', href: '/toolkit/pdf' },
     { name: 'Image Tools', href: '/toolkit/image' },
-    { name: 'Audio/Video', href: '/toolkit/media' },
+    { name: 'Media Tools', href: '/toolkit/media' },
     { name: 'Gov Tools', href: '/toolkit/government' },
+    { name: 'Dev Tools', href: '/toolkit/developer' },
   ];
 
   return (
-    <header className="bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3">
-            <SuntynLogo size="sm" animated={false} showText={true} />
-          </Link>
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-14 max-w-screen-2xl items-center">
+        {/* Logo */}
+        <Link href="/" className="flex items-center space-x-2">
+          <SuntynIconOnly size="md" animated={false} />
+          <span className="hidden font-bold sm:inline-block bg-gradient-to-r from-orange-600 to-yellow-600 bg-clip-text text-transparent">
+            Suntyn AI
+          </span>
+        </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navigation.map((item) => (
-              <Link key={item.name} href={item.href}>
-                <span className={`text-sm font-medium transition-colors hover:text-blue-600 ${
-                  location === item.href ? 'text-blue-600' : 'text-slate-700'
-                }`}>
-                  {item.name}
-                </span>
+        {/* Desktop Navigation */}
+        <nav className="mx-6 hidden md:flex items-center space-x-6 text-sm font-medium">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              className="transition-colors hover:text-foreground/80 text-foreground/60"
+            >
+              {link.name}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Right side actions */}
+        <div className="flex flex-1 items-center justify-end space-x-2">
+          {/* Search */}
+          <Button variant="ghost" size="sm" className="h-8 w-8 px-0">
+            <Search className="h-4 w-4" />
+            <span className="sr-only">Search</span>
+          </Button>
+
+          {/* User menu */}
+          {user ? (
+            <div className="flex items-center space-x-2">
+              <Button variant="ghost" size="sm" className="h-8 w-8 px-0">
+                <Bell className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="sm" onClick={signOut}>
+                Sign Out
+              </Button>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-2">
+              <Link href="/auth/login">
+                <Button variant="ghost" size="sm">
+                  Sign In
+                </Button>
+              </Link>
+              <Link href="/auth/signup">
+                <Button size="sm">
+                  Sign Up
+                </Button>
+              </Link>
+            </div>
+          )}
+
+          {/* Mobile menu button */}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 px-0 md:hidden"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <Menu className="h-4 w-4" />
+            )}
+            <span className="sr-only">Toggle menu</span>
+          </Button>
+        </div>
+      </div>
+
+      {/* Mobile Navigation */}
+      {isMobileMenuOpen && (
+        <div className="border-t md:hidden">
+          <nav className="container flex flex-col space-y-3 py-4">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-foreground/60 transition-colors hover:text-foreground/80"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {link.name}
               </Link>
             ))}
-          </div>
-
-          {/* User Menu */}
-          <div className="flex items-center space-x-4">
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                    <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
-                      <span className="text-sm font-medium text-blue-600">
-                        {user.name.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end">
-                  <div className="flex items-center justify-start gap-2 p-2">
-                    <div className="flex flex-col space-y-1 leading-none">
-                      <p className="font-medium">{user.name}</p>
-                      <p className="w-[200px] truncate text-sm text-muted-foreground">
-                        {user.email}
-                      </p>
-                    </div>
-                  </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard">Dashboard</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    className="text-red-600"
-                    onClick={logout}
-                  >
-                    Log out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <div className="flex items-center space-x-3">
-                <Button variant="ghost" asChild className="text-slate-700 hover:text-blue-600">
-                  <Link href="/login">Sign In</Link>
-                </Button>
-                <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white px-6">
-                  <Link href="/signup">Get Started</Link>
-                </Button>
-              </div>
-            )}
-
-            {/* Mobile menu button */}
-            <Button
-              variant="ghost"
-              className="md:hidden"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-lg`}></i>
-            </Button>
-          </div>
+          </nav>
         </div>
-
-        {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-slate-200">
-            <div className="flex flex-col space-y-2">
-              {navigation.map((item) => (
-                <Link key={item.name} href={item.href}>
-                  <span className={`block px-3 py-2 text-base font-medium transition-colors hover:text-blue-600 hover:bg-blue-50 rounded-md ${
-                    location === item.href ? 'text-blue-600 bg-blue-50' : 'text-slate-700'
-                  }`}>
-                    {item.name}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-      </nav>
+      )}
     </header>
   );
 }

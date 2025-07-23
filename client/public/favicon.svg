@@ -1,12 +1,13 @@
+
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
     <linearGradient id="sunGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#fb923c;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fb923c;stop-opacity:1" />
     </linearGradient>
     <filter id="glow">
-      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
       <feMerge> 
         <feMergeNode in="coloredBlur"/>
         <feMergeNode in="SourceGraphic"/>
@@ -14,25 +15,36 @@
     </filter>
   </defs>
   
-  <!-- Outer circle -->
-  <circle cx="32" cy="32" r="28" fill="none" stroke="url(#sunGradient)" stroke-width="2" opacity="0.3"/>
+  <!-- Outer energy ring -->
+  <circle cx="32" cy="32" r="30" fill="none" stroke="url(#sunGradient)" stroke-width="1" opacity="0.2"/>
   
-  <!-- AI neural network dots -->
-  <circle cx="32" cy="20" r="3" fill="url(#sunGradient)" filter="url(#glow)"/>
-  <circle cx="44" cy="32" r="3" fill="url(#sunGradient)" filter="url(#glow)"/>
-  <circle cx="32" cy="44" r="3" fill="url(#sunGradient)" filter="url(#glow)"/>
-  <circle cx="20" cy="32" r="3" fill="url(#sunGradient)" filter="url(#glow)"/>
-  
-  <!-- Diagonal dots -->
-  <circle cx="41" cy="23" r="2" fill="url(#sunGradient)" opacity="0.8"/>
-  <circle cx="23" cy="23" r="2" fill="url(#sunGradient)" opacity="0.8"/>
-  <circle cx="41" cy="41" r="2" fill="url(#sunGradient)" opacity="0.8"/>
-  <circle cx="23" cy="41" r="2" fill="url(#sunGradient)" opacity="0.8"/>
+  <!-- Neural network rays -->
+  <g stroke="url(#sunGradient)" stroke-width="2" opacity="0.6">
+    <line x1="32" y1="8" x2="32" y2="18" />
+    <line x1="47.3" y1="16.7" x2="41.8" y2="22.2" />
+    <line x1="56" y1="32" x2="46" y2="32" />
+    <line x1="47.3" y1="47.3" x2="41.8" y2="41.8" />
+    <line x1="32" y1="56" x2="32" y2="46" />
+    <line x1="16.7" y1="47.3" x2="22.2" y2="41.8" />
+    <line x1="8" y1="32" x2="18" y2="32" />
+    <line x1="16.7" y1="16.7" x2="22.2" y2="22.2" />
+  </g>
   
   <!-- Central sun core -->
-  <circle cx="32" cy="32" r="8" fill="url(#sunGradient)" filter="url(#glow)"/>
+  <circle cx="32" cy="32" r="12" fill="url(#sunGradient)" filter="url(#glow)"/>
   
-  <!-- Inner AI pattern -->
-  <circle cx="32" cy="32" r="4" fill="#ffffff" opacity="0.9"/>
-  <circle cx="32" cy="32" r="2" fill="url(#sunGradient)"/>
+  <!-- Neural network pattern -->
+  <circle cx="32" cy="32" r="3" fill="#ffffff" opacity="0.9"/>
+  
+  <!-- Surrounding neural nodes -->
+  <circle cx="32" cy="22" r="2" fill="#ffffff" opacity="0.8"/>
+  <circle cx="42" cy="32" r="2" fill="#ffffff" opacity="0.8"/>
+  <circle cx="32" cy="42" r="2" fill="#ffffff" opacity="0.8"/>
+  <circle cx="22" cy="32" r="2" fill="#ffffff" opacity="0.8"/>
+  
+  <!-- Diagonal nodes -->
+  <circle cx="39" cy="25" r="1.5" fill="#ffffff" opacity="0.7"/>
+  <circle cx="25" y="25" r="1.5" fill="#ffffff" opacity="0.7"/>
+  <circle cx="39" cy="39" r="1.5" fill="#ffffff" opacity="0.7"/>
+  <circle cx="25" cy="39" r="1.5" fill="#ffffff" opacity="0.7"/>
 </svg>
