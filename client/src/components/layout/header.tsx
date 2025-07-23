@@ -20,7 +20,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-800 bg-gray-900/95 backdrop-blur supports-[backdrop-filter]:bg-gray-900/60">
       <div className="container flex h-14 max-w-screen-2xl items-center">
         {/* Logo */}
         <Link href="/" className="flex items-center">
@@ -33,7 +33,7 @@ export default function Header() {
             <Link
               key={link.name}
               href={link.href}
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
+              className="transition-colors hover:text-white text-gray-300"
             >
               {link.name}
             </Link>
@@ -43,7 +43,7 @@ export default function Header() {
         {/* Right side actions */}
         <div className="flex flex-1 items-center justify-end space-x-2">
           {/* Search */}
-          <Button variant="ghost" size="sm" className="h-8 w-8 px-0">
+          <Button variant="ghost" size="sm" className="h-8 w-8 px-0 text-gray-300 hover:text-white">
             <Search className="h-4 w-4" />
             <span className="sr-only">Search</span>
           </Button>
@@ -51,22 +51,22 @@ export default function Header() {
           {/* User menu */}
           {user ? (
             <div className="flex items-center space-x-2">
-              <Button variant="ghost" size="sm" className="h-8 w-8 px-0">
+              <Button variant="ghost" size="sm" className="h-8 w-8 px-0 text-gray-300 hover:text-white">
                 <Bell className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="sm" onClick={logout}>
+              <Button variant="ghost" size="sm" onClick={logout} className="text-gray-300 hover:text-white">
                 Sign Out
               </Button>
             </div>
           ) : (
             <div className="flex items-center space-x-2">
               <Link href="/auth/login">
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white">
                   Sign In
                 </Button>
               </Link>
-              <Link href="/auth/signup">
-                <Button size="sm" className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600">
+              <Link href="/auth/login">
+                <Button size="sm" className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transform hover:scale-105 transition-all duration-300 animate-pulse">
                   Get Now
                 </Button>
               </Link>
@@ -77,7 +77,7 @@ export default function Header() {
           <Button
             variant="ghost"
             size="sm"
-            className="h-8 w-8 px-0 md:hidden"
+            className="h-8 w-8 px-0 md:hidden text-gray-300 hover:text-white"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? (
@@ -92,13 +92,13 @@ export default function Header() {
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="border-t md:hidden">
+        <div className="border-t border-gray-800 md:hidden bg-gray-900">
           <nav className="container flex flex-col space-y-3 py-4">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-foreground/60 transition-colors hover:text-foreground/80"
+                className="text-gray-400 transition-colors hover:text-white"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.name}

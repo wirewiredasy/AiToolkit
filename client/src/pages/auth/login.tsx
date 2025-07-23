@@ -46,22 +46,22 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-neutral-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <div className="flex justify-center mb-4">
             <GeometricLogo size="lg" showText={false} />
           </div>
-          <h2 className="text-3xl font-bold text-neutral-800">Welcome back</h2>
-          <p className="mt-2 text-neutral-600">Sign in to your account</p>
+          <h2 className="text-3xl font-bold text-white">Welcome back</h2>
+          <p className="mt-2 text-gray-400">Sign in to your account</p>
         </div>
 
-        <Card>
+        <Card className="bg-gray-800 border-gray-700">
           <CardHeader>
             <div className="flex justify-center mb-6">
               <GeometricLogo size="lg" showText={false} />
             </div>
-            <CardTitle>Sign In</CardTitle>
+            <CardTitle className="text-white text-center">Sign In</CardTitle>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -71,9 +71,9 @@ export default function Login() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel className="text-gray-300">Email</FormLabel>
                       <FormControl>
-                        <Input {...field} type="email" placeholder="Enter your email" />
+                        <Input {...field} type="email" placeholder="Enter your email" className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -85,32 +85,25 @@ export default function Login() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel className="text-gray-300">Password</FormLabel>
                       <FormControl>
-                        <Input {...field} type="password" placeholder="Enter your password" />
+                        <Input {...field} type="password" placeholder="Enter your password" className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? (
-                    <>
-                      <i className="fas fa-spinner fa-spin mr-2"></i>
-                      Signing in...
-                    </>
-                  ) : (
-                    'Sign In'
-                  )}
+                <Button type="submit" className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold" disabled={isLoading}>
+                  {isLoading ? 'Signing in...' : 'Sign In'}
                 </Button>
               </form>
             </Form>
 
             <div className="mt-6 text-center">
-              <p className="text-sm text-neutral-600">
+              <p className="text-sm text-gray-400">
                 Don't have an account?{' '}
-                <Link href="/signup" className="text-primary hover:text-primary/80 font-medium">
+                <Link href="/auth/signup" className="text-blue-400 hover:text-blue-300 font-medium">
                   Sign up
                 </Link>
               </p>

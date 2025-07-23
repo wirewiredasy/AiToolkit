@@ -90,7 +90,7 @@ const ReferenceHero: React.FC = () => {
             >
               <button
                 onClick={() => window.location.href = '/auth/login'}
-                className="px-8 py-4 bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white font-semibold rounded-full text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-full text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl animate-bounce"
               >
                 Get Now
               </button>

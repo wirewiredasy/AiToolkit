@@ -1,50 +1,23 @@
-
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Teal curved shape - top left -->
+  <path d="M0 8C0 3.58172 3.58172 0 8 0H16V24C16 26.2091 14.2091 28 12 28H8C3.58172 28 0 24.4183 0 20V8Z" fill="url(#gradient1)"/>
+  <!-- Beige curved shape - top right -->
+  <path d="M16 0H24C28.4183 0 32 3.58172 32 8V16H20C17.7909 16 16 14.2091 16 12V0Z" fill="url(#gradient2)"/>
+  <!-- Bottom beige shape - bottom right -->
+  <path d="M16 16H28C30.2091 16 32 17.7909 32 20V24C32 28.4183 28.4183 32 24 32H16V16Z" fill="url(#gradient3)"/>
+  
   <defs>
-    <linearGradient id="sunGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#fb923c;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#fbbf24;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#fb923c;stop-opacity:1" />
+    <linearGradient id="gradient1" x1="0" y1="0" x2="16" y2="28" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#14B8A6"/>
+      <stop offset="1" stop-color="#0D9488"/>
     </linearGradient>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-      <feMerge> 
-        <feMergeNode in="coloredBlur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
+    <linearGradient id="gradient2" x1="16" y1="0" x2="32" y2="16" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FDE047"/>
+      <stop offset="1" stop-color="#F97316"/>
+    </linearGradient>
+    <linearGradient id="gradient3" x1="16" y1="16" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F97316"/>
+      <stop offset="1" stop-color="#FDE047"/>
+    </linearGradient>
   </defs>
-  
-  <!-- Outer energy ring -->
-  <circle cx="32" cy="32" r="30" fill="none" stroke="url(#sunGradient)" stroke-width="1" opacity="0.2"/>
-  
-  <!-- Neural network rays -->
-  <g stroke="url(#sunGradient)" stroke-width="2" opacity="0.6">
-    <line x1="32" y1="8" x2="32" y2="18" />
-    <line x1="47.3" y1="16.7" x2="41.8" y2="22.2" />
-    <line x1="56" y1="32" x2="46" y2="32" />
-    <line x1="47.3" y1="47.3" x2="41.8" y2="41.8" />
-    <line x1="32" y1="56" x2="32" y2="46" />
-    <line x1="16.7" y1="47.3" x2="22.2" y2="41.8" />
-    <line x1="8" y1="32" x2="18" y2="32" />
-    <line x1="16.7" y1="16.7" x2="22.2" y2="22.2" />
-  </g>
-  
-  <!-- Central sun core -->
-  <circle cx="32" cy="32" r="12" fill="url(#sunGradient)" filter="url(#glow)"/>
-  
-  <!-- Neural network pattern -->
-  <circle cx="32" cy="32" r="3" fill="#ffffff" opacity="0.9"/>
-  
-  <!-- Surrounding neural nodes -->
-  <circle cx="32" cy="22" r="2" fill="#ffffff" opacity="0.8"/>
-  <circle cx="42" cy="32" r="2" fill="#ffffff" opacity="0.8"/>
-  <circle cx="32" cy="42" r="2" fill="#ffffff" opacity="0.8"/>
-  <circle cx="22" cy="32" r="2" fill="#ffffff" opacity="0.8"/>
-  
-  <!-- Diagonal nodes -->
-  <circle cx="39" cy="25" r="1.5" fill="#ffffff" opacity="0.7"/>
-  <circle cx="25" y="25" r="1.5" fill="#ffffff" opacity="0.7"/>
-  <circle cx="39" cy="39" r="1.5" fill="#ffffff" opacity="0.7"/>
-  <circle cx="25" cy="39" r="1.5" fill="#ffffff" opacity="0.7"/>
 </svg>
