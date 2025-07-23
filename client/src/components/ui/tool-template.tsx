@@ -418,12 +418,13 @@ export function ToolTemplate({
           )}
         </div>
 
-      {/* Recommended Tools Section */}
-      <RecommendedTools 
-        currentToolId={toolName?.toLowerCase().replace(/\s+/g, '-')} 
-        category={toolName?.split(' ')[0]} 
-        limit={6} 
-      />
+        {/* Recommended Tools Section */}
+        <RecommendedTools 
+          currentToolId={toolName?.toLowerCase().replace(/\s+/g, '-')} 
+          category={toolName?.split(' ')[0]} 
+          limit={6} 
+        />
+      </div>
     </div>
   );
 }
