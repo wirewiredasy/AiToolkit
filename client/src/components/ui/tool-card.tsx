@@ -1,6 +1,8 @@
 import { Link } from 'wouter';
 import { Card, CardContent } from './card';
 import { getColorClasses } from '@/lib/tools';
+import ToolIcon from './tool-icon';
+import { ArrowRight } from 'lucide-react';
 
 interface ToolCardProps {
   id: string;
@@ -34,7 +36,7 @@ export default function ToolCard({
       <Card className={`tool-card cursor-pointer border-2 border-neutral-200 ${colorClasses.hover} h-full`}>
         <CardContent className="p-6">
           <div className={`w-16 h-16 ${colorClasses.bg} rounded-xl flex items-center justify-center mb-6`}>
-            <i className={`${icon} text-2xl ${colorClasses.text}`}></i>
+            <ToolIcon toolId={id} className={`${colorClasses.text}`} size="lg" />
           </div>
           
           <h3 className="text-xl font-bold text-neutral-800 mb-3">{name}</h3>
@@ -44,7 +46,7 @@ export default function ToolCard({
             <span className="text-sm font-medium text-neutral-500">
               {isToolkit ? `${toolCount} Tools` : usageCount}
             </span>
-            <i className={`fas fa-arrow-right ${colorClasses.text}`}></i>
+            <ArrowRight className={`w-5 h-5 ${colorClasses.text}`} />
           </div>
           
           {isToolkit && popularTools.length > 0 && (

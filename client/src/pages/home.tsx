@@ -1,6 +1,7 @@
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import ToolCard from '@/components/ui/tool-card';
+import ToolIcon from '@/components/ui/tool-icon';
 import SuntynLogo from '@/components/ui/suntyn-logo';
 import SearchBar from '@/components/ui/search-bar';
 import { StatCardSkeleton } from '@/components/ui/loading-skeleton';

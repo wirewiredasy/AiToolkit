@@ -6,6 +6,7 @@ import { ToolCardSkeleton } from '@/components/ui/loading-skeleton';
 import { toolkits, getFeaturedTools } from '@/lib/tools';
 import { useState, useMemo, useEffect, Suspense } from 'react';
 import { Search, Grid, List, Layers, Star, ArrowRight } from 'lucide-react';
+import ToolIcon from '@/components/ui/tool-icon';
 
 export default function AllTools() {
   const featuredTools = getFeaturedTools();
@@ -181,7 +182,7 @@ export default function AllTools() {
                           <div className={`${viewMode === 'list' ? 'flex items-center space-x-4' : ''}`}>
                             <div className={`${viewMode === 'list' ? 'flex-shrink-0' : 'mb-4'}`}>
                               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                                <Layers className="w-6 h-6 text-blue-600" />
+                                <ToolIcon toolId={tool.id} className="text-blue-600" size="md" />
                               </div>
                             </div>
                             <div className="flex-1">
@@ -248,7 +249,7 @@ export default function AllTools() {
                     <Link href={tool.route}>
                       <div className="flex items-center mb-4">
                         <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                          <Layers className="w-5 h-5 text-blue-600" />
+                          <ToolIcon toolId={tool.id} className="text-blue-600" size="sm" />
                         </div>
                         <div className="flex-1">
                           <h3 className="font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">
