@@ -6,7 +6,7 @@ interface LoadingScreenProps {
   minLoadTime?: number;
 }
 
-export function LoadingScreen({ onLoadingComplete, minLoadTime = 800 }: LoadingScreenProps) {
+export function LoadingScreen({ onLoadingComplete, minLoadTime = 300 }: LoadingScreenProps) {
   const [progress, setProgress] = useState(0);
   const [loadingText, setLoadingText] = useState("Loading Suntyn AI...");
 
@@ -33,9 +33,9 @@ export function LoadingScreen({ onLoadingComplete, minLoadTime = 800 }: LoadingS
           }
           return 100;
         }
-        return prev + Math.random() * 8 + 4; // Faster progress
+        return prev + Math.random() * 15 + 8; // Much faster progress
       });
-    }, 50); // More frequent updates
+    }, 30); // More frequent updates
 
     // Loading text animation - faster
     const textInterval = setInterval(() => {
@@ -66,16 +66,14 @@ export function LoadingScreen({ onLoadingComplete, minLoadTime = 800 }: LoadingS
         />
       </div>
 
-      {/* Floating particles - reduced for better performance */}
-      {[...Array(6)].map((_, i) => (
+      {/* Simple particles for performance */}
+      {[...Array(3)].map((_, i) => (
         <div
           key={i}
-          className="absolute w-2 h-2 bg-teal-400/30 rounded-full animate-pulse"
+          className="absolute w-1 h-1 bg-teal-400/20 rounded-full"
           style={{
-            left: `${10 + (i * 7)}%`,
-            top: `${20 + (i * 5) % 60}%`,
-            animationDelay: `${i * 0.5}s`,
-            animationDuration: `${2 + (i % 3)}s`
+            left: `${20 + (i * 30)}%`,
+            top: `${30 + (i * 20)}%`,
           }}
         />
       ))}

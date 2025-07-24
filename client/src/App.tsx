@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/use-auth";
 import { LoadingScreen, useAppLoading } from "@/components/ui/loading-screen";
 import Layout from "@/components/layout/layout";
+import ErrorBoundary from "@/components/ui/error-boundary";
 
 // Lazy load components for better performance
 const Home = lazy(() => import("@/pages/home"));
@@ -392,16 +393,18 @@ function App() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <AuthProvider>
-          <Layout>
-            <Router />
-          </Layout>
-          <Toaster />
-        </AuthProvider>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <AuthProvider>
+            <Layout>
+              <Router />
+            </Layout>
+            <Toaster />
+          </AuthProvider>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 
