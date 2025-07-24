@@ -1,35 +1,63 @@
+
 #!/usr/bin/env python3
-"""Script to start FastAPI service in background"""
+"""
+Production-ready FastAPI service launcher
+Fixed for Replit deployment environment
+"""
 
 import os
 import sys
 import subprocess
+import signal
 import time
+from pathlib import Path
 
-# Change to server directory
-os.chdir('server')
-
-# Start FastAPI service
-try:
-    process = subprocess.Popen(
-        [sys.executable, 'fastapi-service.py'],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True
-    )
+def start_fastapi_service():
+    """Start FastAPI service with proper production configuration"""
     
-    print(f"FastAPI service started with PID: {process.pid}")
+    # Set working directory to server
+    server_dir = Path(__file__).parent / "server"
+    if server_dir.exists():
+        os.chdir(server_dir)
     
-    # Wait a bit to check if it started successfully
-    time.sleep(3)
+    # Production environment variables
+    os.environ.update({
+        'PYTHONPATH': str(Path(__file__).parent),
+        'HOST': '0.0.0.0',
+        'PORT': '8000',
+        'ENV': 'production'
+    })
     
-    if process.poll() is None:
-        print("✅ FastAPI service is running on port 8000")
-    else:
-        stdout, stderr = process.communicate()
-        print(f"❌ FastAPI service failed to start")
-        print(f"stdout: {stdout}")
-        print(f"stderr: {stderr}")
+    try:
+        print("🚀 Starting Suntyn AI FastAPI Service (Production Mode)")
+        print(f"📁 Working directory: {os.getcwd()}")
+        print(f"🌐 Service will be available at: http://0.0.0.0:8000")
         
-except Exception as e:
-    print(f"Error starting FastAPI service: {e}")
+        # Direct uvicorn command for production
+        cmd = [
+            sys.executable, 
+            "-m", "uvicorn", 
+            "fastapi-service:app",
+            "--host", "0.0.0.0",
+            "--port", "8000",
+            "--workers", "1",
+            "--log-level", "info"
+        ]
+        
+        print(f"🔧 Command: {' '.join(cmd)}")
+        
+        # Start the service
+        process = subprocess.run(cmd, check=True)
+        
+    except KeyboardInterrupt:
+        print("\n⚠️ Service interrupted by user")
+        sys.exit(0)
+    except subprocess.CalledProcessError as e:
+        print(f"❌ FastAPI service failed to start: {e}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"❌ Unexpected error: {e}")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    start_fastapi_service()

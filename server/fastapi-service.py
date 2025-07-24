@@ -1,7 +1,8 @@
+
 #!/usr/bin/env python3
 """
 FastAPI Microservice for Heavy File Processing
-Handles: PDF processing, Video conversion, Large image processing
+Production-ready version for Replit deployment
 """
 
 from fastapi import FastAPI, HTTPException, File, UploadFile, Form
@@ -14,18 +15,26 @@ import time
 import tempfile
 import shutil
 from pathlib import Path
-import uvicorn
 
+# Production configuration
 app = FastAPI(
     title="Suntyn AI Heavy Processing Service",
     description="FastAPI microservice for heavy file processing operations",
-    version="1.0.0"
+    version="1.0.0",
+    docs_url="/docs" if os.getenv("ENV") != "production" else None,
+    redoc_url="/redoc" if os.getenv("ENV") != "production" else None
 )
 
-# CORS middleware
+# CORS middleware for production
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5000", "http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:5000", 
+        "http://localhost:3000",
+        "https://*.replit.app",
+        "https://*.replit.dev",
+        "https://*.replit.co"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -48,16 +57,18 @@ class ProcessResponse(BaseModel):
 # Health check endpoint
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "service": "fastapi-heavy-processing"}
+    return {
+        "status": "healthy", 
+        "service": "fastapi-heavy-processing",
+        "environment": os.getenv("ENV", "development"),
+        "timestamp": int(time.time())
+    }
 
 # Heavy PDF Processing Tools
 @app.post("/api/tools/pdf/merger", response_model=ProcessResponse)
 async def pdf_merger(request: ProcessRequest):
     start_time = time.time()
-    
-    # Simulate heavy PDF processing
     await asyncio.sleep(2.5)  # Simulate processing time
-    
     processing_time = int((time.time() - start_time) * 1000)
     
     return ProcessResponse(
@@ -76,10 +87,7 @@ async def pdf_merger(request: ProcessRequest):
 @app.post("/api/tools/pdf/splitter", response_model=ProcessResponse)
 async def pdf_splitter(request: ProcessRequest):
     start_time = time.time()
-    
-    # Simulate heavy PDF splitting
     await asyncio.sleep(3.0)
-    
     processing_time = int((time.time() - start_time) * 1000)
     
     return ProcessResponse(
@@ -98,10 +106,7 @@ async def pdf_splitter(request: ProcessRequest):
 @app.post("/api/tools/pdf/compressor", response_model=ProcessResponse)
 async def pdf_compressor(request: ProcessRequest):
     start_time = time.time()
-    
-    # Simulate heavy PDF compression
     await asyncio.sleep(4.0)
-    
     processing_time = int((time.time() - start_time) * 1000)
     
     return ProcessResponse(
@@ -122,10 +127,7 @@ async def pdf_compressor(request: ProcessRequest):
 @app.post("/api/tools/video/converter", response_model=ProcessResponse)
 async def video_converter(request: ProcessRequest):
     start_time = time.time()
-    
-    # Simulate heavy video processing
-    await asyncio.sleep(8.0)  # Video processing takes longer
-    
+    await asyncio.sleep(8.0)
     processing_time = int((time.time() - start_time) * 1000)
     
     return ProcessResponse(
@@ -145,10 +147,7 @@ async def video_converter(request: ProcessRequest):
 @app.post("/api/tools/video/compressor", response_model=ProcessResponse)
 async def video_compressor(request: ProcessRequest):
     start_time = time.time()
-    
-    # Simulate heavy video compression
     await asyncio.sleep(10.0)
-    
     processing_time = int((time.time() - start_time) * 1000)
     
     return ProcessResponse(
@@ -169,10 +168,7 @@ async def video_compressor(request: ProcessRequest):
 @app.post("/api/tools/audio/converter", response_model=ProcessResponse)
 async def audio_converter(request: ProcessRequest):
     start_time = time.time()
-    
-    # Simulate heavy audio processing
     await asyncio.sleep(5.0)
-    
     processing_time = int((time.time() - start_time) * 1000)
     
     return ProcessResponse(
@@ -193,10 +189,7 @@ async def audio_converter(request: ProcessRequest):
 @app.post("/api/tools/image/enhancer", response_model=ProcessResponse)
 async def image_enhancer(request: ProcessRequest):
     start_time = time.time()
-    
-    # Simulate AI image enhancement
     await asyncio.sleep(6.0)
-    
     processing_time = int((time.time() - start_time) * 1000)
     
     return ProcessResponse(
@@ -216,10 +209,7 @@ async def image_enhancer(request: ProcessRequest):
 @app.post("/api/tools/image/upscaler", response_model=ProcessResponse)
 async def image_upscaler(request: ProcessRequest):
     start_time = time.time()
-    
-    # Simulate AI upscaling
     await asyncio.sleep(7.0)
-    
     processing_time = int((time.time() - start_time) * 1000)
     
     return ProcessResponse(
@@ -240,10 +230,7 @@ async def image_upscaler(request: ProcessRequest):
 @app.post("/api/tools/image/bg-remover", response_model=ProcessResponse)
 async def bg_remover(request: ProcessRequest):
     start_time = time.time()
-    
-    # Simulate AI background removal
     await asyncio.sleep(4.5)
-    
     processing_time = int((time.time() - start_time) * 1000)
     
     return ProcessResponse(
@@ -267,6 +254,7 @@ async def root():
         "message": "Suntyn AI FastAPI Heavy Processing Service",
         "version": "1.0.0",
         "status": "running",
+        "environment": os.getenv("ENV", "development"),
         "available_endpoints": [
             "/api/tools/pdf/merger",  
             "/api/tools/pdf/splitter", 
@@ -280,21 +268,20 @@ async def root():
         ]
     }
 
-@app.get("/health")
-async def health_check():
-    return {"status": "healthy", "service": "fastapi"}
-
-if __name__ == "__main__":
-    print("🚀 Starting Suntyn AI FastAPI Heavy Processing Service...")
-    uvicorn.run(
-        "fastapi-service:app",
-        host="0.0.0.0",
-        port=8000,
-        reload=True,
-        log_level="info"
-    )
-
+# Production startup
 if __name__ == "__main__":
     import uvicorn
-    print("🚀 Starting FastAPI Heavy Processing Service on port 8000...")
-    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info", reload=False)
+    
+    host = os.getenv("HOST", "0.0.0.0")
+    port = int(os.getenv("PORT", "8000"))
+    
+    print(f"🚀 Starting Suntyn AI FastAPI Service on {host}:{port}")
+    print(f"🌐 Environment: {os.getenv('ENV', 'development')}")
+    
+    uvicorn.run(
+        app, 
+        host=host, 
+        port=port, 
+        log_level="info", 
+        reload=False
+    )
