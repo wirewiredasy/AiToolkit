@@ -1,24 +1,28 @@
-
 {
   "name": "Suntyn AI - Neural Intelligence Platform",
   "short_name": "Suntyn AI",
-  "description": "Professional AI-powered intelligence platform with 108+ tools",
+  "description": "Professional AI-powered intelligence platform with 108+ tools for PDF, Image, Audio/Video processing and Government document validation.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#14B8A6",
   "icons": [
     {
       "src": "/favicon.svg",
       "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "type": "image/svg+xml"
     },
     {
       "src": "/favicon.ico",
-      "sizes": "32x32",
+      "sizes": "48x48",
       "type": "image/x-icon"
     }
   ],
-  "start_url": "/",
-  "display": "standalone",
-  "theme_color": "#14B8A6",
-  "background_color": "#1a1a1a",
-  "orientation": "portrait-primary"
+  "categories": [
+    "productivity",
+    "utilities",
+    "business"
+  ],
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false
 }

@@ -3,6 +3,7 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { sanitizeInput, validateFileUpload, userRateLimit } from "./middleware/validation";
 
 const app = express();
 
@@ -17,6 +18,10 @@ const apiLimiter = rateLimit({
 
 // Apply rate limiting to API routes
 app.use('/api/', apiLimiter);
+app.use('/api/', userRateLimit(100, 15 * 60 * 1000));
+
+// Apply input sanitization to all routes
+app.use(sanitizeInput);
 
 // Enhanced security with Helmet
 app.use(helmet({

@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/use-auth";
 import { LoadingScreen, useAppLoading } from "@/components/ui/loading-screen";
+import { PageLoadingFallback } from "@/components/ui/loading-fallback";
 import Layout from "@/components/layout/layout";
 import ErrorBoundary from "@/components/ui/error-boundary";
 
@@ -14,163 +15,162 @@ const Home = lazy(() => import("@/pages/home"));
 const Dashboard = lazy(() => import("@/pages/dashboard"));
 const Login = lazy(() => import("@/pages/auth/login"));
 const Signup = lazy(() => import("@/pages/auth/signup"));
-// Removed - now using lazy loading above
-import PDFToolkit from "@/pages/toolkit/pdf";
-import ImageToolkit from "@/pages/toolkit/image";
-import MediaToolkit from "@/pages/toolkit/media";
-import GovernmentToolkit from "@/pages/toolkit/government";
-import DeveloperToolkit from "@/pages/toolkit/developer";
-import PDFMerger from "@/pages/tool/pdf-merger";
-import PDFToWordPage from "@/pages/tool/pdf-to-word";
-import PDFSplitterAlternate from "@/pages/tool/pdf-splitter";
-import WordToPDFPage from "@/pages/tool/word-to-pdf";
-import ExcelToPDFPage from "@/pages/tool/excel-to-pdf";
-import PPTToPDFPage from "@/pages/tool/ppt-to-pdf";
-import PDFToExcelPage from "@/pages/tool/pdf-to-excel";
-import QRGeneratorPage from "@/pages/tool/qr-generator";
-import BarcodeGeneratorPage from "@/pages/tool/barcode-generator";
-import ImageCompressorPage from "@/pages/tool/image-compressor";
-import ImageFormatConverterPage from "@/pages/tool/image-format-converter";
-import AudioTrimmerPage from "@/pages/tool/audio-trimmer";
-import VideoToAudioPage from "@/pages/tool/video-to-audio";
-import WatermarkRemoverPage from "@/pages/tool/watermark-remover";
-import PhotoEnhancerPage from "@/pages/tool/photo-enhancer";
-import PDFCompressorPage from "@/pages/tool/pdf-compressor";
+const PDFToolkit = lazy(() => import("@/pages/toolkit/pdf"));
+const ImageToolkit = lazy(() => import("@/pages/toolkit/image"));
+const MediaToolkit = lazy(() => import("@/pages/toolkit/media"));
+const GovernmentToolkit = lazy(() => import("@/pages/toolkit/government"));
+const DeveloperToolkit = lazy(() => import("@/pages/toolkit/developer"));
+const PDFMerger = lazy(() => import("@/pages/tool/pdf-merger"));
+const PDFToWordPage = lazy(() => import("@/pages/tool/pdf-to-word"));
+const PDFSplitterAlternate = lazy(() => import("@/pages/tool/pdf-splitter"));
+const WordToPDFPage = lazy(() => import("@/pages/tool/word-to-pdf"));
+const ExcelToPDFPage = lazy(() => import("@/pages/tool/excel-to-pdf"));
+const PPTToPDFPage = lazy(() => import("@/pages/tool/ppt-to-pdf"));
+const PDFToExcelPage = lazy(() => import("@/pages/tool/pdf-to-excel"));
+const QRGeneratorPage = lazy(() => import("@/pages/tool/qr-generator"));
+const BarcodeGeneratorPage = lazy(() => import("@/pages/tool/barcode-generator"));
+const ImageCompressorPage = lazy(() => import("@/pages/tool/image-compressor"));
+const ImageFormatConverterPage = lazy(() => import("@/pages/tool/image-format-converter"));
+const AudioTrimmerPage = lazy(() => import("@/pages/tool/audio-trimmer"));
+const VideoToAudioPage = lazy(() => import("@/pages/tool/video-to-audio"));
+const WatermarkRemoverPage = lazy(() => import("@/pages/tool/watermark-remover"));
+const PhotoEnhancerPage = lazy(() => import("@/pages/tool/photo-enhancer"));
+const PDFCompressorPage = lazy(() => import("@/pages/tool/pdf-compressor"));
 
-import PANValidator from "@/pages/tool/pan-validator";
-import GSTValidator from "@/pages/tool/gst-validator";
-import AadhaarValidator from "@/pages/tool/aadhaar-validator";
-import PDFOCRPage from "@/pages/tool/pdf-ocr";
-import PDFWatermarkPage from "@/pages/tool/pdf-watermark";
-import PDFPasswordRemoverPage from "@/pages/tool/pdf-password-remover";
-import PDFPasswordProtectorPage from "@/pages/tool/pdf-password-protector";
-import PDFRotatorPage from "@/pages/tool/pdf-rotator";
-import PDFCropperPage from "@/pages/tool/pdf-cropper";
-import PDFMergerPage from "@/pages/tool/pdf-merger";
-import PDFSplitterPage from "@/pages/tool/pdf-splitter";
-import ImageEnhancerPage from "@/pages/tool/image-enhancer";
-import ImageUpscalerPage from "@/pages/tool/image-upscaler";
-import ImageResizerPage from "@/pages/tool/image-resizer";
-import BackgroundRemoverPage from "@/pages/tool/bg-remover";
-import VideoTrimmerPage from "@/pages/tool/video-trimmer";
-import AudioConverterPage from "@/pages/tool/audio-converter";
-import VideoConverterPage from "@/pages/tool/video-converter";
-import VoterIDValidatorPage from "@/pages/tool/voter-id-validator";
-import PassportValidatorPage from "@/pages/tool/passport-validator";
-import DrivingLicenseValidatorPage from "@/pages/tool/driving-license-validator";
-import IFSCValidatorPage from "@/pages/tool/ifsc-validator";
+const PANValidator = lazy(() => import("@/pages/tool/pan-validator"));
+const GSTValidator = lazy(() => import("@/pages/tool/gst-validator"));
+const AadhaarValidator = lazy(() => import("@/pages/tool/aadhaar-validator"));
+const PDFOCRPage = lazy(() => import("@/pages/tool/pdf-ocr"));
+const PDFWatermarkPage = lazy(() => import("@/pages/tool/pdf-watermark"));
+const PDFPasswordRemoverPage = lazy(() => import("@/pages/tool/pdf-password-remover"));
+const PDFPasswordProtectorPage = lazy(() => import("@/pages/tool/pdf-password-protector"));
+const PDFRotatorPage = lazy(() => import("@/pages/tool/pdf-rotator"));
+const PDFCropperPage = lazy(() => import("@/pages/tool/pdf-cropper"));
+const PDFMergerPage = lazy(() => import("@/pages/tool/pdf-merger"));
+const PDFSplitterPage = lazy(() => import("@/pages/tool/pdf-splitter"));
+const ImageEnhancerPage = lazy(() => import("@/pages/tool/image-enhancer"));
+const ImageUpscalerPage = lazy(() => import("@/pages/tool/image-upscaler"));
+const ImageResizerPage = lazy(() => import("@/pages/tool/image-resizer"));
+const BackgroundRemoverPage = lazy(() => import("@/pages/tool/bg-remover"));
+const VideoTrimmerPage = lazy(() => import("@/pages/tool/video-trimmer"));
+const AudioConverterPage = lazy(() => import("@/pages/tool/audio-converter"));
+const VideoConverterPage = lazy(() => import("@/pages/tool/video-converter"));
+const VoterIDValidatorPage = lazy(() => import("@/pages/tool/voter-id-validator"));
+const PassportValidatorPage = lazy(() => import("@/pages/tool/passport-validator"));
+const DrivingLicenseValidatorPage = lazy(() => import("@/pages/tool/driving-license-validator"));
+const IFSCValidatorPage = lazy(() => import("@/pages/tool/ifsc-validator"));
 
-// New tool imports
-import PDFToPowerPointPage from "@/pages/tool/pdf-to-powerpoint";
-import PDFPageExtractorPage from "@/pages/tool/pdf-page-extractor";
-import PDFPageNumbererPage from "@/pages/tool/pdf-page-numberer";
-import ImageConverterPage from "@/pages/tool/image-converter";
-import ImageCropperPage from "@/pages/tool/image-cropper";
-import ImageRotatorPage from "@/pages/tool/image-rotator";
-import ImageColorizerPage from "@/pages/tool/image-colorizer";
-import ImageFlipperPage from "@/pages/tool/image-flipper";
-import ImageFilterPage from "@/pages/tool/image-filter";
-import WatermarkAddPage from "@/pages/tool/watermark-add";
-import ImageBlurPage from "@/pages/tool/image-blur";
-import MemeGeneratorPage from "@/pages/tool/meme-generator";
-import AudioCompressorPage from "@/pages/tool/audio-compressor";
-import AudioMergerPage from "@/pages/tool/audio-merger";
-import AudioExtractorPage from "@/pages/tool/audio-extractor";
-import VolumeChangerPage from "@/pages/tool/volume-changer";
-import SpeedChangerPage from "@/pages/tool/speed-changer";
-import VideoCompressorPage from "@/pages/tool/video-compressor";
-import VideoMergerPage from "@/pages/tool/video-merger";
-import VideoToGifPage from "@/pages/tool/video-to-gif";
-import GifToVideoPage from "@/pages/tool/gif-to-video";
-import AadhaarMaskerPage from "@/pages/tool/aadhaar-masker";
-import IncomeCertificatePage from "@/pages/tool/income-certificate";
-import AudioNormalizerPage from "@/pages/tool/audio-normalizer";
-import ImageSharpenPage from "@/pages/tool/image-sharpen";
-import VideoResizerPage from "@/pages/tool/video-resizer";
-import NoiseReducerPage from "@/pages/tool/noise-reducer";
+// New tool imports - lazy loaded
+const PDFToPowerPointPage = lazy(() => import("@/pages/tool/pdf-to-powerpoint"));
+const PDFPageExtractorPage = lazy(() => import("@/pages/tool/pdf-page-extractor"));
+const PDFPageNumbererPage = lazy(() => import("@/pages/tool/pdf-page-numberer"));
+const ImageConverterPage = lazy(() => import("@/pages/tool/image-converter"));
+const ImageCropperPage = lazy(() => import("@/pages/tool/image-cropper"));
+const ImageRotatorPage = lazy(() => import("@/pages/tool/image-rotator"));
+const ImageColorizerPage = lazy(() => import("@/pages/tool/image-colorizer"));
+const ImageFlipperPage = lazy(() => import("@/pages/tool/image-flipper"));
+const ImageFilterPage = lazy(() => import("@/pages/tool/image-filter"));
+const WatermarkAddPage = lazy(() => import("@/pages/tool/watermark-add"));
+const ImageBlurPage = lazy(() => import("@/pages/tool/image-blur"));
+const MemeGeneratorPage = lazy(() => import("@/pages/tool/meme-generator"));
+const AudioCompressorPage = lazy(() => import("@/pages/tool/audio-compressor"));
+const AudioMergerPage = lazy(() => import("@/pages/tool/audio-merger"));
+const AudioExtractorPage = lazy(() => import("@/pages/tool/audio-extractor"));
+const VolumeChangerPage = lazy(() => import("@/pages/tool/volume-changer"));
+const SpeedChangerPage = lazy(() => import("@/pages/tool/speed-changer"));
+const VideoCompressorPage = lazy(() => import("@/pages/tool/video-compressor"));
+const VideoMergerPage = lazy(() => import("@/pages/tool/video-merger"));
+const VideoToGifPage = lazy(() => import("@/pages/tool/video-to-gif"));
+const GifToVideoPage = lazy(() => import("@/pages/tool/gif-to-video"));
+const AadhaarMaskerPage = lazy(() => import("@/pages/tool/aadhaar-masker"));
+const IncomeCertificatePage = lazy(() => import("@/pages/tool/income-certificate"));
+const AudioNormalizerPage = lazy(() => import("@/pages/tool/audio-normalizer"));
+const ImageSharpenPage = lazy(() => import("@/pages/tool/image-sharpen"));
+const VideoResizerPage = lazy(() => import("@/pages/tool/video-resizer"));
+const NoiseReducerPage = lazy(() => import("@/pages/tool/noise-reducer"));
 
-// Additional Developer and Utility Tools
-import TextToSpeechPage from "@/pages/tool/text-to-speech";
-import SpeechToTextPage from "@/pages/tool/speech-to-text";
-import PasswordGeneratorPage from "@/pages/tool/password-generator";
-import Base64EncoderPage from "@/pages/tool/base64-encoder";
-import HashGeneratorPage from "@/pages/tool/hash-generator";
-import JSONFormatterPage from "@/pages/tool/json-formatter";
-import XMLFormatterPage from "@/pages/tool/xml-formatter";
-import MarkdownToHTMLPage from "@/pages/tool/markdown-to-html";
-import HTMLToPDFPage from "@/pages/tool/html-to-pdf";
-import CSVToJSONPage from "@/pages/tool/csv-to-json";
-import URLShortenerPage from "@/pages/tool/url-shortener";
-import RegexTesterPage from "@/pages/tool/regex-tester";
-import ColorPickerPage from "@/pages/tool/color-picker";
-import ColorPaletteGeneratorPage from "@/pages/tool/color-palette-generator";
-import LogoGeneratorPage from "@/pages/tool/logo-generator";
-import FaviconGeneratorPage from "@/pages/tool/favicon-generator";
-import MetaTagGeneratorPage from "@/pages/tool/meta-tag-generator";
-import CSSMinifierPage from "@/pages/tool/css-minifier";
-import JSMinifierPage from "@/pages/tool/js-minifier";
-import LoremIpsumGeneratorPage from "@/pages/tool/lorem-ipsum-generator";
-import TimestampConverterPage from "@/pages/tool/timestamp-converter";
-import UnicodeConverterPage from "@/pages/tool/unicode-converter";
-import UnitConverterPage from "@/pages/tool/unit-converter";
-import GradientGeneratorPage from "@/pages/tool/gradient-generator";
-import ThumbnailGeneratorPage from "@/pages/tool/thumbnail-generator";
+// Additional Developer and Utility Tools - lazy loaded
+const TextToSpeechPage = lazy(() => import("@/pages/tool/text-to-speech"));
+const SpeechToTextPage = lazy(() => import("@/pages/tool/speech-to-text"));
+const PasswordGeneratorPage = lazy(() => import("@/pages/tool/password-generator"));
+const Base64EncoderPage = lazy(() => import("@/pages/tool/base64-encoder"));
+const HashGeneratorPage = lazy(() => import("@/pages/tool/hash-generator"));
+const JSONFormatterPage = lazy(() => import("@/pages/tool/json-formatter"));
+const XMLFormatterPage = lazy(() => import("@/pages/tool/xml-formatter"));
+const MarkdownToHTMLPage = lazy(() => import("@/pages/tool/markdown-to-html"));
+const HTMLToPDFPage = lazy(() => import("@/pages/tool/html-to-pdf"));
+const CSVToJSONPage = lazy(() => import("@/pages/tool/csv-to-json"));
+const URLShortenerPage = lazy(() => import("@/pages/tool/url-shortener"));
+const RegexTesterPage = lazy(() => import("@/pages/tool/regex-tester"));
+const ColorPickerPage = lazy(() => import("@/pages/tool/color-picker"));
+const ColorPaletteGeneratorPage = lazy(() => import("@/pages/tool/color-palette-generator"));
+const LogoGeneratorPage = lazy(() => import("@/pages/tool/logo-generator"));
+const FaviconGeneratorPage = lazy(() => import("@/pages/tool/favicon-generator"));
+const MetaTagGeneratorPage = lazy(() => import("@/pages/tool/meta-tag-generator"));
+const CSSMinifierPage = lazy(() => import("@/pages/tool/css-minifier"));
+const JSMinifierPage = lazy(() => import("@/pages/tool/js-minifier"));
+const LoremIpsumGeneratorPage = lazy(() => import("@/pages/tool/lorem-ipsum-generator"));
+const TimestampConverterPage = lazy(() => import("@/pages/tool/timestamp-converter"));
+const UnicodeConverterPage = lazy(() => import("@/pages/tool/unicode-converter"));
+const UnitConverterPage = lazy(() => import("@/pages/tool/unit-converter"));
+const GradientGeneratorPage = lazy(() => import("@/pages/tool/gradient-generator"));
+const ThumbnailGeneratorPage = lazy(() => import("@/pages/tool/thumbnail-generator"));
 
 // Additional PDF Tools
 // HTMLToPDFPage already imported above
 
-// Additional Image Tools  
-import ImageBorderAdderPage from "@/pages/tool/image-border-adder";
-import ImageMergePage from "@/pages/tool/image-merge";
-import ImageSplitPage from "@/pages/tool/image-split";
-import ImageMetadataExtractorPage from "@/pages/tool/image-metadata-extractor";
-import ImageEnhancePage from "@/pages/tool/image-enhance";
-import ImageUpscalePage from "@/pages/tool/image-upscale";
-import ImageFilterEffectsPage from "@/pages/tool/image-filter-effects";
-import WatermarkRemovePage from "@/pages/tool/watermark-remove";
-import PassportPhotoPage from "@/pages/tool/passport-photo";
+// Additional Image Tools - lazy loaded
+const ImageBorderAdderPage = lazy(() => import("@/pages/tool/image-border-adder"));
+const ImageMergePage = lazy(() => import("@/pages/tool/image-merge"));
+const ImageSplitPage = lazy(() => import("@/pages/tool/image-split"));
+const ImageMetadataExtractorPage = lazy(() => import("@/pages/tool/image-metadata-extractor"));
+const ImageEnhancePage = lazy(() => import("@/pages/tool/image-enhance"));
+const ImageUpscalePage = lazy(() => import("@/pages/tool/image-upscale"));
+const ImageFilterEffectsPage = lazy(() => import("@/pages/tool/image-filter-effects"));
+const WatermarkRemovePage = lazy(() => import("@/pages/tool/watermark-remove"));
+const PassportPhotoPage = lazy(() => import("@/pages/tool/passport-photo"));
 
-// Additional Audio/Video Tools
-import AudioReverserPage from "@/pages/tool/audio-reverser";
-import VocalRemoverPage from "@/pages/tool/vocal-remover";
-import PitchChangerPage from "@/pages/tool/pitch-changer";
-import SubtitleExtractorPage from "@/pages/tool/subtitle-extractor";
-import VideoRotatorPage from "@/pages/tool/video-rotator";
-import VideoSpeedChangerPage from "@/pages/tool/video-speed-changer";
+// Additional Audio/Video Tools - lazy loaded
+const AudioReverserPage = lazy(() => import("@/pages/tool/audio-reverser"));
+const VocalRemoverPage = lazy(() => import("@/pages/tool/vocal-remover"));
+const PitchChangerPage = lazy(() => import("@/pages/tool/pitch-changer"));
+const SubtitleExtractorPage = lazy(() => import("@/pages/tool/subtitle-extractor"));
+const VideoRotatorPage = lazy(() => import("@/pages/tool/video-rotator"));
+const VideoSpeedChangerPage = lazy(() => import("@/pages/tool/video-speed-changer"));
 
-// Additional Government Tools
-import BirthCertificatePage from "@/pages/tool/birth-certificate";
-import DeathCertificatePage from "@/pages/tool/death-certificate";
-import CasteCertificatePage from "@/pages/tool/caste-certificate";
-import AffidavitGeneratorPage from "@/pages/tool/affidavit-generator";
-import RentAgreementPage from "@/pages/tool/rent-agreement";
-import RationCardStatusPage from "@/pages/tool/ration-card-status";
+// Additional Government Tools - lazy loaded
+const BirthCertificatePage = lazy(() => import("@/pages/tool/birth-certificate"));
+const DeathCertificatePage = lazy(() => import("@/pages/tool/death-certificate"));
+const CasteCertificatePage = lazy(() => import("@/pages/tool/caste-certificate"));
+const AffidavitGeneratorPage = lazy(() => import("@/pages/tool/affidavit-generator"));
+const RentAgreementPage = lazy(() => import("@/pages/tool/rent-agreement"));
+const RationCardStatusPage = lazy(() => import("@/pages/tool/ration-card-status"));
 
-// Missing Tools - New Imports
-import PowerPointToPDFPage from "@/pages/tool/powerpoint-to-pdf";
-import PDFBookmarkManagerPage from "@/pages/tool/pdf-bookmark-manager";
-import PDFFormFillerPage from "@/pages/tool/pdf-form-filler";
-import PDFSignatureAdderPage from "@/pages/tool/pdf-signature-adder";
-import PDFVersionConverterPage from "@/pages/tool/pdf-version-converter";
-import CollageMakerPage from "@/pages/tool/collage-maker";
-import BatchProcessorPage from "@/pages/tool/batch-processor";
-import AudioEqualizerPage from "@/pages/tool/audio-equalizer";
-import VolumeAdjusterPage from "@/pages/tool/volume-adjuster";
-import SubtitleAdderPage from "@/pages/tool/subtitle-adder";
-import VideoWatermarkPage from "@/pages/tool/video-watermark";
-import FormatInfoPage from "@/pages/tool/format-info";
-import UANValidatorPage from "@/pages/tool/uan-validator";
-import VSSAULicenceValidatorPage from "@/pages/tool/vs-sau-licence-validator";
-import ShopActLicenceValidatorPage from "@/pages/tool/shop-act-licence-validator";
+// Missing Tools - lazy loaded
+const PowerPointToPDFPage = lazy(() => import("@/pages/tool/powerpoint-to-pdf"));
+const PDFBookmarkManagerPage = lazy(() => import("@/pages/tool/pdf-bookmark-manager"));
+const PDFFormFillerPage = lazy(() => import("@/pages/tool/pdf-form-filler"));
+const PDFSignatureAdderPage = lazy(() => import("@/pages/tool/pdf-signature-adder"));
+const PDFVersionConverterPage = lazy(() => import("@/pages/tool/pdf-version-converter"));
+const CollageMakerPage = lazy(() => import("@/pages/tool/collage-maker"));
+const BatchProcessorPage = lazy(() => import("@/pages/tool/batch-processor"));
+const AudioEqualizerPage = lazy(() => import("@/pages/tool/audio-equalizer"));
+const VolumeAdjusterPage = lazy(() => import("@/pages/tool/volume-adjuster"));
+const SubtitleAdderPage = lazy(() => import("@/pages/tool/subtitle-adder"));
+const VideoWatermarkPage = lazy(() => import("@/pages/tool/video-watermark"));
+const FormatInfoPage = lazy(() => import("@/pages/tool/format-info"));
+const UANValidatorPage = lazy(() => import("@/pages/tool/uan-validator"));
+const VSSAULicenceValidatorPage = lazy(() => import("@/pages/tool/vs-sau-licence-validator"));
+const ShopActLicenceValidatorPage = lazy(() => import("@/pages/tool/shop-act-licence-validator"));
 
-import NotFound from "@/pages/not-found";
-import HelpCenter from "@/pages/help";
-import Contact from "@/pages/contact";
-import About from "@/pages/about";
-import Privacy from "@/pages/privacy";
-import Terms from "@/pages/terms";
-import AllTools from "@/pages/all-tools";
-import AnimatedIconsDemo from "@/pages/animated-icons-demo";
+const NotFound = lazy(() => import("@/pages/not-found"));
+const HelpCenter = lazy(() => import("@/pages/help"));
+const Contact = lazy(() => import("@/pages/contact"));
+const About = lazy(() => import("@/pages/about"));
+const Privacy = lazy(() => import("@/pages/privacy"));
+const Terms = lazy(() => import("@/pages/terms"));
+const AllTools = lazy(() => import("@/pages/all-tools"));
+const AnimatedIconsDemo = lazy(() => import("@/pages/animated-icons-demo"));
 
 
 
@@ -196,7 +196,7 @@ function RouteLoading() {
 
 function Router() {
   return (
-    <Suspense fallback={<RouteLoading />}>
+    <Suspense fallback={<PageLoadingFallback />}>
       <ScrollToTop />
       <Switch>
       <Route path="/" component={Home} />
