@@ -8,12 +8,30 @@ Fixed for Replit deployment environment
 import os
 import sys
 import subprocess
-import signal
 import time
 from pathlib import Path
 
+def install_packages():
+    """Install required Python packages"""
+    try:
+        print("📦 Installing FastAPI dependencies...")
+        subprocess.run([
+            sys.executable, "-m", "pip", "install", 
+            "fastapi>=0.116.1", 
+            "uvicorn>=0.35.0", 
+            "python-multipart>=0.0.20", 
+            "requests>=2.32.4"
+        ], check=True)
+        print("✅ Dependencies installed successfully")
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Failed to install dependencies: {e}")
+        sys.exit(1)
+
 def start_fastapi_service():
     """Start FastAPI service with proper production configuration"""
+    
+    # Install packages first
+    install_packages()
     
     # Set working directory to server
     server_dir = Path(__file__).parent / "server"
@@ -41,7 +59,8 @@ def start_fastapi_service():
             "--host", "0.0.0.0",
             "--port", "8000",
             "--workers", "1",
-            "--log-level", "info"
+            "--log-level", "info",
+            "--reload"
         ]
         
         print(f"🔧 Command: {' '.join(cmd)}")
