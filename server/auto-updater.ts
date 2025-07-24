@@ -50,6 +50,11 @@ export class AutoUpdater {
     }, 5000);
   }
 
+  public startWatching() {
+    console.log('🎯 Auto-updater started - monitoring file changes...');
+    console.log('📁 Watching directories:', this.watchedDirectories);
+  }
+
   private async performUpdate() {
     try {
       console.log('🔄 Auto-updating sitemap and robots.txt...');
