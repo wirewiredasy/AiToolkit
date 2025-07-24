@@ -22,6 +22,7 @@ export default function MediaToolkit() {
     { id: 'video-compressor', name: 'Video Compressor', description: 'Reduce video file size', icon: 'fas fa-compress', route: '/tool/video-compressor' },
     { id: 'audio-compressor', name: 'Audio Compressor', description: 'Reduce audio file size', icon: 'fas fa-compress-alt', route: '/tool/audio-compressor' },
     { id: 'volume-changer', name: 'Volume Changer', description: 'Adjust audio volume', icon: 'fas fa-volume-up', route: '/tool/volume-changer' },
+    { id: 'volume-adjuster', name: 'Volume Adjuster', description: 'Fine-tune audio volume', icon: 'fas fa-volume-up', route: '/tool/volume-adjuster' },
     { id: 'speed-changer', name: 'Speed Changer', description: 'Change playback speed', icon: 'fas fa-tachometer-alt', route: '/tool/speed-changer' },
     { id: 'audio-normalizer', name: 'Audio Normalizer', description: 'Normalize audio levels', icon: 'fas fa-balance-scale', route: '/tool/audio-normalizer' },
     { id: 'noise-reducer', name: 'Noise Reducer', description: 'Remove background noise', icon: 'fas fa-volume-mute', route: '/tool/noise-reducer' },
@@ -31,6 +32,8 @@ export default function MediaToolkit() {
     { id: 'video-resizer', name: 'Video Resizer', description: 'Change video resolution', icon: 'fas fa-expand-arrows-alt', route: '/tool/video-resizer' },
     { id: 'video-rotator', name: 'Video Rotator', description: 'Rotate video orientation', icon: 'fas fa-redo', route: '/tool/video-rotator' },
     { id: 'subtitle-extractor', name: 'Subtitle Extractor', description: 'Extract subtitles from video', icon: 'fas fa-closed-captioning', route: '/tool/subtitle-extractor' },
+    { id: 'subtitle-adder', name: 'Subtitle Adder', description: 'Add subtitles to video', icon: 'fas fa-closed-captioning', route: '/tool/subtitle-adder' },
+    { id: 'video-watermark', name: 'Video Watermark', description: 'Add watermark to video', icon: 'fas fa-image', route: '/tool/video-watermark' },
     { id: 'thumbnail-generator', name: 'Thumbnail Generator', description: 'Generate video thumbnails', icon: 'fas fa-image', route: '/tool/thumbnail-generator' },
   ];
 

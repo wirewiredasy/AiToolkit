@@ -207,15 +207,15 @@ const ReferenceHero: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1.0 }}
             whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(139, 92, 246, 0.1)' }}
-            onClick={() => window.location.href = '/toolkit/audio-video'}
+            onClick={() => window.location.href = '/toolkit/media'}
           >
             <div className="bg-purple-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
               <Play className="w-8 h-8 text-purple-400" />
             </div>
             <h3 className="text-2xl font-bold text-white mb-4">Audio/Video</h3>
-            <div className="text-sm text-purple-400 mb-2">{toolkits.find(t => t.id === 'audio-video')?.toolCount || 20} tools available</div>
+            <div className="text-sm text-purple-400 mb-2">{toolkits.find(t => t.id === 'media')?.toolCount || 20} tools available</div>
             <p className="text-gray-400 leading-relaxed">
-              {toolkits.find(t => t.id === 'audio-video')?.description || 'Advanced media processing and optimization. Transform audio and video content with AI-powered tools for editing, enhancement, and format conversion.'}
+              {toolkits.find(t => t.id === 'media')?.description || 'Advanced media processing and optimization. Transform audio and video content with AI-powered tools for editing, enhancement, and format conversion.'}
             </p>
           </motion.div>
 

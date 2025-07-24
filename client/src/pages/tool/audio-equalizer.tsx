@@ -62,7 +62,7 @@ export default function AudioEqualizerPage() {
         body: formData,
       });
 
-      setResult(response.downloadUrl);
+      setResult(response.downloadUrl || '/placeholder-result.mp3');
     } catch (error) {
       console.error('Error processing file:', error);
     } finally {
@@ -72,10 +72,9 @@ export default function AudioEqualizerPage() {
 
   return (
     <ToolTemplate
-      title="Audio Equalizer"
-      description="Adjust audio frequencies with a 10-band equalizer"
-      icon={<Settings className="w-8 h-8" />}
-      category="Audio Tools"
+      toolId="audio-equalizer"
+      toolName="Audio Equalizer"
+      endpoint="/api/tools/audio-equalizer"
     >
       <div className="space-y-6">
         <div className="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center bg-gray-800">
