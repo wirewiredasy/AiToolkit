@@ -41,3 +41,6 @@ fastapi
 python-multipart
 requests
 uvicorn
+fastapi
+python-multipart
+uvicorn
