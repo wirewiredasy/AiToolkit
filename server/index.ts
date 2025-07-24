@@ -149,11 +149,31 @@ app.use((req, res, next) => {
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || '5000', 10);
+  
+  // Enhanced server startup with error handling
   server.listen({
     port,
     host: "0.0.0.0",
     reusePort: true,
   }, () => {
     log(`serving on port ${port}`);
+    log(`📁 File uploads directory: ./uploads`);
+    log(`📁 Processed files directory: ./uploads/processed`);
+    log(`🎯 All 108+ AI tools are ready for processing`);
+  }).on('error', (err: any) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`Port ${port} is already in use. Attempting to find an alternative port...`);
+      // Try alternative port if main port is busy
+      const altPort = port + 1;
+      server.listen({
+        port: altPort,
+        host: "0.0.0.0",
+        reusePort: true,
+      }, () => {
+        log(`serving on alternative port ${altPort}`);
+      });
+    } else {
+      console.error('Server startup error:', err);
+    }
   });
 })();

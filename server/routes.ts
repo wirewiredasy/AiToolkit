@@ -294,6 +294,33 @@ function generateLoremIpsum(paragraphs: number): string {
   return Array(paragraphs).fill(lorem).join('\n\n');
 }
 
+// Helper function to get MIME type based on file extension
+function getMimeType(filename: string): string {
+  const ext = filename.toLowerCase().split('.').pop();
+  const mimeTypes: { [key: string]: string } = {
+    'pdf': 'application/pdf',
+    'png': 'image/png',
+    'jpg': 'image/jpeg',
+    'jpeg': 'image/jpeg',
+    'gif': 'image/gif',
+    'mp3': 'audio/mpeg',
+    'mp4': 'video/mp4',
+    'avi': 'video/x-msvideo',
+    'mov': 'video/quicktime',
+    'zip': 'application/zip',
+    'txt': 'text/plain',
+    'json': 'application/json',
+    'csv': 'text/csv',
+    'html': 'text/html',
+    'css': 'text/css',
+    'js': 'application/javascript',
+    'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+  };
+  return mimeTypes[ext || ''] || 'application/octet-stream';
+}
+
 // Middleware to verify JWT token
 const authenticateToken = async (req: any, res: any, next: any) => {
   const authHeader = req.headers['authorization'];
@@ -734,7 +761,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
-  // Download endpoint for processed files
+  // Enhanced download endpoint for processed files
   app.get('/api/download/:filename', async (req, res) => {
     try {
       const filename = req.params.filename;
@@ -748,6 +775,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Ensure processed directory exists
       if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir, { recursive: true });
+      }
+
+      // Check if file already exists
+      if (fs.existsSync(filePath)) {
+        const fileContent = fs.readFileSync(filePath);
+        const mimeType = getMimeType(filename);
+        
+        // Set enhanced headers for better download experience
+        res.setHeader('Content-Type', mimeType);
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+        res.setHeader('Content-Length', fileContent.length);
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        
+        return res.send(fileContent);
       }
 
       // Generate actual file content based on file type
@@ -790,10 +833,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Write the file to disk
       fs.writeFileSync(filePath, fileContent);
 
-      // Set appropriate headers for file download
+      // Set enhanced headers for better download experience
       res.setHeader('Content-Type', mimeType);
       res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
       res.setHeader('Content-Length', fileContent.length);
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+      res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition');
       
       // Stream the file to the client
       res.send(fileContent);
@@ -807,7 +854,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         } catch (cleanupError) {
           console.log('File cleanup completed:', filename);
         }
-      }, 30000); // Delete after 30 seconds
+      }, 60000); // Delete after 60 seconds (increased time)
       
     } catch (error) {
       console.error('Download error:', error);
