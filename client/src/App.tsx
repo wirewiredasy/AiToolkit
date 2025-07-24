@@ -5,6 +5,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/use-auth";
+import { LoadingScreen, useAppLoading } from "@/components/ui/loading-screen";
 import Layout from "@/components/layout/layout";
 import Home from "@/pages/home";
 import Dashboard from "@/pages/dashboard";
@@ -371,6 +372,13 @@ function Router() {
 }
 
 function App() {
+  const { isLoading, isReady, handleLoadingComplete } = useAppLoading();
+
+  // Show loading screen until app is ready
+  if (isLoading || !isReady) {
+    return <LoadingScreen onLoadingComplete={handleLoadingComplete} />;
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

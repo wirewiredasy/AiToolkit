@@ -2,7 +2,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 
 interface GeometricLogoProps {
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | number;
   showText?: boolean;
   className?: string;
 }
@@ -26,10 +26,17 @@ const GeometricLogo: React.FC<GeometricLogoProps> = ({
     'xl': 'text-3xl'
   };
 
+  // Handle custom size numbers
+  const logoSize = typeof size === 'number' ? { width: size, height: size } : undefined;
+  const logoClasses = typeof size === 'string' ? sizeClasses[size] : '';
+
   return (
     <div className={cn('flex items-center space-x-3', className)}>
       {/* Geometric Logo - Same as reference */}
-      <div className={cn('relative', sizeClasses[size])}>
+      <div 
+        className={cn('relative', logoClasses)}
+        style={logoSize}
+      >
         {/* Teal curved shape - top left */}
         <div className="absolute top-0 left-0 w-1/2 h-3/4 bg-gradient-to-br from-teal-400 to-teal-500 rounded-tl-3xl rounded-bl-lg" />
         {/* Beige curved shape - top right */}
@@ -43,7 +50,7 @@ const GeometricLogo: React.FC<GeometricLogoProps> = ({
         <div className="flex flex-col">
           <h1 className={cn(
             'font-bold text-white',
-            textSizeClasses[size]
+            typeof size === 'string' ? textSizeClasses[size] : 'text-xl'
           )}>
             SUNTYN AI
           </h1>
