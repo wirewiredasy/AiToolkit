@@ -11,6 +11,7 @@ import { randomBytes } from "crypto";
 import { SitemapRobotsGenerator } from "./sitemap-generator";
 import { AutoUpdater } from "./auto-updater";
 import { FileProcessor } from "./file-processors";
+import { EnhancedFileProcessor } from "./enhanced-processors";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
@@ -93,7 +94,7 @@ export function registerRoutes(app: Express): Server {
         name,
       });
 
-      const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET);
+      const token = jwt.sign({ userId: Number(user.id), email: user.email }, JWT_SECRET);
       
       res.json({ 
         message: "User created successfully", 
@@ -119,7 +120,7 @@ export function registerRoutes(app: Express): Server {
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
-      const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET);
+      const token = jwt.sign({ userId: Number(user.id), email: user.email }, JWT_SECRET);
       
       res.json({ 
         message: "Login successful", 
@@ -277,31 +278,31 @@ export function registerRoutes(app: Express): Server {
         const outputFilename = `processed-${endpoint}.${fileExtension}`;
         const outputPath = path.join(outputDir, outputFilename);
 
-        // Process file based on category using FileProcessor
+        // Process file based on category using Enhanced File Processor
         let processingResult;
         
         switch (category) {
           case 'PDF':
-            processingResult = await FileProcessor.processPDF(endpoint, files, metadata);
+            processingResult = await EnhancedFileProcessor.processPDF(endpoint, files, metadata);
             fs.writeFileSync(outputPath, processingResult);
             break;
             
           case 'Image':
-            processingResult = await FileProcessor.processImage(endpoint, files, metadata);
+            processingResult = await EnhancedFileProcessor.processImage(endpoint, files, metadata);
             fs.writeFileSync(outputPath, processingResult);
             break;
             
           case 'Audio/Video':
             if (endpoint.includes('audio')) {
-              processingResult = await FileProcessor.processAudio(endpoint, files, metadata);
+              processingResult = await EnhancedFileProcessor.processAudio(endpoint, files, metadata);
             } else {
-              processingResult = await FileProcessor.processVideo(endpoint, files, metadata);
+              processingResult = await EnhancedFileProcessor.processVideo(endpoint, files, metadata);
             }
             fs.writeFileSync(outputPath, processingResult);
             break;
             
           case 'Government':
-            processingResult = await FileProcessor.processGovernment(endpoint, inputValue, metadata);
+            processingResult = await EnhancedFileProcessor.processGovernment(endpoint, inputValue, metadata);
             fs.writeFileSync(outputPath, processingResult);
             break;
             
@@ -311,13 +312,14 @@ export function registerRoutes(app: Express): Server {
             if (endpoint === 'hash-generator' && files.length > 0) {
               content = fs.readFileSync(files[0].path).toString();
             } else {
-              content = metadata.text || metadata.content || 'Sample data';
+              content = metadata.text || metadata.content || inputValue || 'Sample data for processing';
             }
             
-            const devResult = await processDeveloperTool(endpoint, content, metadata);
+            const devResult = await EnhancedFileProcessor.processDeveloper(endpoint, content, metadata);
             fs.writeFileSync(outputPath, devResult);
             break;
         }
+
 
         // Simulate realistic processing time
         let processingTime = 1000;
@@ -359,34 +361,7 @@ export function registerRoutes(app: Express): Server {
     });
   });
 
-  // Developer tool processing function
-  async function processDeveloperTool(endpoint: string, content: string, settings: any) {
-    switch (endpoint) {
-      case 'json-formatter':
-        try {
-          const parsed = JSON.parse(content);
-          return JSON.stringify(parsed, null, 2);
-        } catch {
-          return `JSON FORMATTER RESULT\n\nError: Invalid JSON provided\nOriginal Content:\n${content}\n\nPlease provide valid JSON for formatting.`;
-        }
-        
-      case 'base64-encoder':
-        const base64 = Buffer.from(content).toString('base64');
-        return `BASE64 ENCODER RESULT\n\nOriginal Content: ${content.substring(0, 100)}${content.length > 100 ? '...' : ''}\nEncoded Result:\n${base64}\n\nEncoding completed successfully.`;
-        
-      case 'hash-generator':
-        const crypto = await import('crypto');
-        const md5 = crypto.createHash('md5').update(content).digest('hex');
-        const sha256 = crypto.createHash('sha256').update(content).digest('hex');
-        return `HASH GENERATOR RESULT\n\nOriginal Content: ${content.substring(0, 50)}...\n\nMD5: ${md5}\nSHA-256: ${sha256}\n\nHashes generated successfully.`;
-        
-      case 'qr-generator':
-        return `QR CODE GENERATOR RESULT\n\nData: ${settings?.text || content}\nQR Code: [QR_CODE_DATA]\nFormat: PNG\nSize: 256x256px\n\nQR code generated successfully.`;
-        
-      default:
-        return `DEVELOPER TOOL RESULT\n\nTool: ${endpoint}\nContent: ${content}\nProcessed: ${new Date().toLocaleString()}\n\nProcessing completed successfully.`;
-    }
-  }
+
 
   // Enhanced download endpoint
   app.get('/api/download/:filename', async (req, res) => {
