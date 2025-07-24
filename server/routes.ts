@@ -82,7 +82,7 @@ export function registerRoutes(app: Express): Server {
     try {
       const { email, password, name } = signupSchema.parse(req.body);
 
-      const existingUser = await storage.getUser(email);
+      const existingUser = await storage.getUserByEmail(email);
       if (existingUser) {
         return res.status(400).json({ message: "Email already exists" });
       }
@@ -110,7 +110,7 @@ export function registerRoutes(app: Express): Server {
     try {
       const { email, password } = loginSchema.parse(req.body);
 
-      const user = await storage.getUser(email);
+      const user = await storage.getUserByEmail(email);
       if (!user) {
         return res.status(401).json({ message: "Invalid credentials" });
       }
@@ -244,10 +244,26 @@ export function registerRoutes(app: Express): Server {
       const startTime = Date.now();
       
       try {
-        // Extract files and settings
+        // Extract files and settings - handle both JSON and form data
         const files = req.files || [];
-        const metadata = req.body.metadata ? JSON.parse(req.body.metadata) : {};
-        const inputValue = req.body.inputValue || metadata.inputValue || '';
+        let metadata = {};
+        let inputValue = '';
+        
+        // Handle different content types
+        if (req.body) {
+          metadata = req.body.metadata || req.body || {};
+          inputValue = req.body.inputValue || req.body.text || req.body.content || '';
+          
+          // If metadata is a string, try to parse it
+          if (typeof metadata === 'string') {
+            try {
+              metadata = JSON.parse(metadata);
+            } catch (e) {
+              // If parsing fails, treat as plain object
+              metadata = { text: metadata };
+            }
+          }
+        }
         
         // Create output directory
         const outputDir = './uploads/processed';

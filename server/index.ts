@@ -7,6 +7,9 @@ import { sanitizeInput, validateFileUpload, userRateLimit } from "./middleware/v
 
 const app = express();
 
+// Configure trust proxy for Replit environment
+app.set('trust proxy', true);
+
 // Rate limiting for API endpoints
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
