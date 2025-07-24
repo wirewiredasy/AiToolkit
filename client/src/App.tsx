@@ -1,5 +1,5 @@
 import { Switch, Route, useLocation } from "wouter";
-import { useEffect } from "react";
+import { useEffect, Suspense, lazy } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -7,10 +7,13 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/use-auth";
 import { LoadingScreen, useAppLoading } from "@/components/ui/loading-screen";
 import Layout from "@/components/layout/layout";
-import Home from "@/pages/home";
-import Dashboard from "@/pages/dashboard";
-import Login from "@/pages/auth/login";
-import Signup from "@/pages/auth/signup";
+
+// Lazy load components for better performance
+const Home = lazy(() => import("@/pages/home"));
+const Dashboard = lazy(() => import("@/pages/dashboard"));
+const Login = lazy(() => import("@/pages/auth/login"));
+const Signup = lazy(() => import("@/pages/auth/signup"));
+// Removed - now using lazy loading above
 import PDFToolkit from "@/pages/toolkit/pdf";
 import ImageToolkit from "@/pages/toolkit/image";
 import MediaToolkit from "@/pages/toolkit/media";
@@ -181,9 +184,18 @@ function ScrollToTop() {
   return null;
 }
 
+// Simple loading fallback for route transitions
+function RouteLoading() {
+  return (
+    <div className="flex items-center justify-center min-h-[200px]">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-500"></div>
+    </div>
+  );
+}
+
 function Router() {
   return (
-    <>
+    <Suspense fallback={<RouteLoading />}>
       <ScrollToTop />
       <Switch>
       <Route path="/" component={Home} />
@@ -366,8 +378,8 @@ function Router() {
       <Route path="/animated-icons-demo" component={AnimatedIconsDemo} />
 
       <Route component={NotFound} />
-    </Switch>
-    </>
+      </Switch>
+    </Suspense>
   );
 }
 

@@ -6,7 +6,7 @@ interface LoadingScreenProps {
   minLoadTime?: number;
 }
 
-export function LoadingScreen({ onLoadingComplete, minLoadTime = 2000 }: LoadingScreenProps) {
+export function LoadingScreen({ onLoadingComplete, minLoadTime = 800 }: LoadingScreenProps) {
   const [progress, setProgress] = useState(0);
   const [loadingText, setLoadingText] = useState("Loading Suntyn AI...");
 
@@ -22,26 +22,26 @@ export function LoadingScreen({ onLoadingComplete, minLoadTime = 2000 }: Loading
     const startTime = Date.now();
     let currentMessageIndex = 0;
 
-    // Progress animation
+    // Progress animation - faster loading
     const progressInterval = setInterval(() => {
       setProgress(prev => {
         if (prev >= 100) {
           const elapsed = Date.now() - startTime;
           if (elapsed >= minLoadTime) {
             clearInterval(progressInterval);
-            setTimeout(() => onLoadingComplete?.(), 500);
+            setTimeout(() => onLoadingComplete?.(), 200);
           }
           return 100;
         }
-        return prev + Math.random() * 3 + 1;
+        return prev + Math.random() * 8 + 4; // Faster progress
       });
-    }, 100);
+    }, 50); // More frequent updates
 
-    // Loading text animation
+    // Loading text animation - faster
     const textInterval = setInterval(() => {
       currentMessageIndex = (currentMessageIndex + 1) % loadingMessages.length;
       setLoadingText(loadingMessages[currentMessageIndex]);
-    }, 400);
+    }, 200);
 
     return () => {
       clearInterval(progressInterval);
@@ -66,8 +66,8 @@ export function LoadingScreen({ onLoadingComplete, minLoadTime = 2000 }: Loading
         />
       </div>
 
-      {/* Floating particles */}
-      {[...Array(12)].map((_, i) => (
+      {/* Floating particles - reduced for better performance */}
+      {[...Array(6)].map((_, i) => (
         <div
           key={i}
           className="absolute w-2 h-2 bg-teal-400/30 rounded-full animate-pulse"
@@ -97,16 +97,16 @@ export function LoadingScreen({ onLoadingComplete, minLoadTime = 2000 }: Loading
               </div>
             </div>
 
-            {/* AI neural network effect */}
+            {/* AI neural network effect - reduced for performance */}
             <div className="absolute inset-0 w-32 h-32 rounded-full">
-              {[...Array(8)].map((_, i) => (
+              {[...Array(4)].map((_, i) => (
                 <div
                   key={i}
                   className="absolute w-1 h-1 bg-teal-400 rounded-full opacity-60"
                   style={{
                     left: '50%',
                     top: '50%',
-                    transform: `rotate(${i * 45}deg) translateY(-60px)`,
+                    transform: `rotate(${i * 90}deg) translateY(-60px)`,
                     animation: `neuralPulse 2s ease-in-out infinite`,
                     animationDelay: `${i * 0.25}s`
                   }}
@@ -192,8 +192,8 @@ export function useAppLoading() {
         }
       });
 
-      // Additional initialization time for smooth UX
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Reduced initialization time for faster loading
+      await new Promise(resolve => setTimeout(resolve, 400));
       
       setIsReady(true);
     };
