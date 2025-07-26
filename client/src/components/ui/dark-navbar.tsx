@@ -3,6 +3,7 @@ import { Link, useLocation } from 'wouter';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import GeometricLogo from '@/components/ui/geometric-logo';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 const navigationItems = [
   { href: '/', label: 'HOME' },
@@ -30,8 +31,8 @@ export default function DarkNavbar() {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled 
-        ? 'bg-black/90 backdrop-blur-xl shadow-2xl' 
-        : 'bg-black/80 backdrop-blur-sm'
+        ? 'bg-white/90 dark:bg-black/90 backdrop-blur-xl shadow-2xl' 
+        : 'bg-white/80 dark:bg-black/80 backdrop-blur-sm'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -51,7 +52,7 @@ export default function DarkNavbar() {
                   <span className={`text-sm font-medium transition-all duration-200 hover:text-cyan-400 ${
                     isActive 
                       ? 'text-cyan-400' 
-                      : 'text-white'
+                      : 'text-gray-800 dark:text-white'
                   }`}>
                     {item.label}
                   </span>
@@ -60,21 +61,25 @@ export default function DarkNavbar() {
             })}
           </div>
 
-          {/* Sign Up Button */}
-          <Button 
-            className="hidden lg:flex bg-cyan-500 hover:bg-cyan-600 text-black font-semibold px-6 py-2 rounded-full transition-all duration-300"
-            asChild
-          >
-            <Link href="/signup">
-              Sign Up
-            </Link>
-          </Button>
+          {/* Theme Toggle and Sign Up Button */}
+          <div className="hidden lg:flex items-center space-x-4">
+            <ThemeToggle />
+            <Button 
+              className="bg-cyan-500 hover:bg-cyan-600 text-black font-semibold px-6 py-2 rounded-full transition-all duration-300"
+              asChild
+            >
+              <Link href="/signup">
+                Sign Up
+              </Link>
+            </Button>
+          </div>
 
-          {/* Mobile menu button */}
-          <div className="lg:hidden">
+          {/* Mobile theme toggle and menu button */}
+          <div className="lg:hidden flex items-center space-x-2">
+            <ThemeToggle />
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-white hover:text-cyan-400 transition-colors duration-200"
+              className="text-gray-800 dark:text-white hover:text-cyan-400 transition-colors duration-200"
             >
               {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -84,7 +89,7 @@ export default function DarkNavbar() {
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <div className="lg:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-black/95 rounded-b-2xl">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-white/95 dark:bg-black/95 rounded-b-2xl border-t border-gray-200 dark:border-gray-700">
               {navigationItems.map((item) => {
                 const isActive = location === item.href;
                 return (
@@ -93,7 +98,7 @@ export default function DarkNavbar() {
                       className={`block px-3 py-2 rounded-lg text-base font-medium transition-all duration-200 ${
                         isActive 
                           ? 'bg-cyan-500/20 text-cyan-400' 
-                          : 'text-white hover:bg-gray-800 hover:text-cyan-400'
+                          : 'text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-cyan-400'
                       }`}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >

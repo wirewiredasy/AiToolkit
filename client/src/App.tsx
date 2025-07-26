@@ -9,6 +9,7 @@ import { LoadingScreen, useAppLoading } from "@/components/ui/loading-screen";
 import { PageLoadingFallback } from "@/components/ui/loading-fallback";
 import Layout from "@/components/layout/layout";
 import ErrorBoundary from "@/components/ui/error-boundary";
+import { ThemeProvider } from "@/hooks/use-theme";
 
 // Lazy load components for better performance
 const Home = lazy(() => import("@/pages/home"));
@@ -393,18 +394,20 @@ function App() {
   }
 
   return (
-    <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <AuthProvider>
-            <Layout>
-              <Router />
-            </Layout>
-            <Toaster />
-          </AuthProvider>
-        </TooltipProvider>
-      </QueryClientProvider>
-    </ErrorBoundary>
+    <ThemeProvider>
+      <ErrorBoundary>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <AuthProvider>
+              <Layout>
+                <Router />
+              </Layout>
+              <Toaster />
+            </AuthProvider>
+          </TooltipProvider>
+        </QueryClientProvider>
+      </ErrorBoundary>
+    </ThemeProvider>
   );
 }
 
