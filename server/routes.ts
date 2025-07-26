@@ -12,6 +12,7 @@ import { SitemapRobotsGenerator } from "./sitemap-generator";
 import { AutoUpdater } from "./auto-updater";
 import { FileProcessor } from "./file-processors";
 import { EnhancedFileProcessor } from "./enhanced-processors";
+import { RealFileProcessor } from "./real-file-processor";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
@@ -294,47 +295,14 @@ export function registerRoutes(app: Express): Server {
         const outputFilename = `processed-${endpoint}.${fileExtension}`;
         const outputPath = path.join(outputDir, outputFilename);
 
-        // Process file based on category using Enhanced File Processor
-        let processingResult;
+        // Process file using Real File Processor - generates actual downloadable files
+        const processingResult = await RealFileProcessor.processFile(endpoint, category, files, {
+          text: inputValue,
+          content: inputValue,
+          ...metadata
+        });
         
-        switch (category) {
-          case 'PDF':
-            processingResult = await EnhancedFileProcessor.processPDF(endpoint, files, metadata);
-            fs.writeFileSync(outputPath, processingResult);
-            break;
-            
-          case 'Image':
-            processingResult = await EnhancedFileProcessor.processImage(endpoint, files, metadata);
-            fs.writeFileSync(outputPath, processingResult);
-            break;
-            
-          case 'Audio/Video':
-            if (endpoint.includes('audio')) {
-              processingResult = await EnhancedFileProcessor.processAudio(endpoint, files, metadata);
-            } else {
-              processingResult = await EnhancedFileProcessor.processVideo(endpoint, files, metadata);
-            }
-            fs.writeFileSync(outputPath, processingResult);
-            break;
-            
-          case 'Government':
-            processingResult = await EnhancedFileProcessor.processGovernment(endpoint, inputValue, metadata);
-            fs.writeFileSync(outputPath, processingResult);
-            break;
-            
-          case 'Developer':
-            // Developer tools process text/data, not files
-            let content = '';
-            if (endpoint === 'hash-generator' && files.length > 0) {
-              content = fs.readFileSync(files[0].path).toString();
-            } else {
-              content = metadata.text || metadata.content || inputValue || 'Sample data for processing';
-            }
-            
-            const devResult = await EnhancedFileProcessor.processDeveloper(endpoint, content, metadata);
-            fs.writeFileSync(outputPath, devResult);
-            break;
-        }
+        fs.writeFileSync(outputPath, processingResult);
 
 
         // Simulate realistic processing time
