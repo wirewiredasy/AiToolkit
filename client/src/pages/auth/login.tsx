@@ -46,17 +46,17 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-background text-foreground py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <div className="flex justify-center mb-4">
             <GeometricLogo size="lg" showText={false} />
           </div>
-          <h2 className="text-3xl font-bold text-white">Welcome back</h2>
-          <p className="mt-2 text-gray-400">Sign in to your account</p>
+          <h2 className="text-3xl font-bold text-foreground">Welcome back</h2>
+          <p className="mt-2 text-muted-foreground">Sign in to your account</p>
         </div>
 
-        <Card className="bg-gray-800 border-gray-700">
+        <Card className="bg-card border-border">
           <CardHeader>
             <div className="flex justify-center mb-6">
               <GeometricLogo size="lg" showText={false} />

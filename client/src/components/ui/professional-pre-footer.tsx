@@ -86,7 +86,7 @@ export default function ProfessionalPreFooter() {
   }, []);
 
   return (
-    <section className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-24 overflow-hidden">
+    <section className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 dark:from-black dark:via-gray-950 dark:to-black py-24 overflow-hidden">
       {/* Subtle background grid */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0" style={{
@@ -112,8 +112,8 @@ export default function ProfessionalPreFooter() {
                 key={index}
                 className={`group relative p-8 rounded-3xl border transition-all duration-500 cursor-pointer ${
                   isActive
-                    ? 'bg-slate-800/80 border-cyan-400/50 shadow-2xl shadow-cyan-500/20 scale-105'
-                    : 'bg-slate-800/40 border-slate-700/50 hover:bg-slate-800/60 hover:border-slate-600'
+                    ? 'bg-slate-800/80 dark:bg-gray-900/80 border-cyan-400/50 shadow-2xl shadow-cyan-500/20 scale-105'
+                    : 'bg-slate-800/40 dark:bg-gray-900/40 border-slate-700/50 dark:border-gray-800/50 hover:bg-slate-800/60 dark:hover:bg-gray-900/60 hover:border-slate-600 dark:hover:border-gray-700'
                 }`}
                 onMouseEnter={() => setActiveFeature(index)}
               >
@@ -123,10 +123,10 @@ export default function ProfessionalPreFooter() {
                 </div>
 
                 {/* Content */}
-                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">
+                <h3 className="text-xl font-bold text-white dark:text-gray-100 mb-3 group-hover:text-cyan-300 transition-colors">
                   {feature.title}
                 </h3>
-                <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                <p className="text-gray-400 dark:text-gray-300 text-sm leading-relaxed mb-4">
                   {feature.description}
                 </p>
                 <div className="flex items-center space-x-2">
@@ -146,7 +146,7 @@ export default function ProfessionalPreFooter() {
           <div className="flex items-center justify-center">
             {/* Main showcase card */}
             <div className="relative max-w-md mx-auto">
-              <div className="bg-white rounded-3xl p-8 shadow-2xl border border-gray-100">
+              <div className="bg-white dark:bg-gray-900 rounded-3xl p-8 shadow-2xl border border-gray-100 dark:border-gray-700">
                 {/* Browser controls */}
                 <div className="flex items-center space-x-2 mb-6">
                   <div className="w-3 h-3 bg-red-500 rounded-full"></div>
@@ -160,8 +160,8 @@ export default function ProfessionalPreFooter() {
                     <Star className="h-8 w-8 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900">Suntyn AI Hub</h3>
-                    <p className="text-gray-600">108+ Professional Tools</p>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">Suntyn AI Hub</h3>
+                    <p className="text-gray-600 dark:text-gray-300">108+ Professional Tools</p>
                     <div className="flex items-center space-x-1 mt-1">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                       <span className="text-green-600 text-xs font-semibold">Live & Active</span>
@@ -203,12 +203,12 @@ export default function ProfessionalPreFooter() {
 
         {/* CTA Section */}
         <div className="text-center">
-          <div className="relative bg-slate-800/50 backdrop-blur-xl rounded-3xl p-12 border border-slate-600/50 shadow-2xl">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <div className="relative bg-slate-800/50 dark:bg-gray-900/50 backdrop-blur-xl rounded-3xl p-12 border border-slate-600/50 dark:border-gray-700/50 shadow-2xl">
+            <h2 className="text-4xl md:text-5xl font-bold text-white dark:text-gray-100 mb-6">
               Transform Your Workflow Today
             </h2>
             
-            <p className="text-gray-300 text-xl mb-8 max-w-3xl mx-auto">
+            <p className="text-gray-300 dark:text-gray-200 text-xl mb-8 max-w-3xl mx-auto">
               Join 50,000+ professionals who've already revolutionized their productivity with Suntyn AI's intelligent toolkit.
             </p>
 

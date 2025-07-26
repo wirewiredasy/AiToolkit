@@ -6,7 +6,7 @@ import { Link } from 'wouter';
 
 const ReferenceHero: React.FC = () => {
   return (
-    <section className="relative min-h-screen bg-gray-900 overflow-hidden">
+    <section className="relative min-h-screen bg-gray-900 dark:bg-black overflow-hidden">
       {/* Grid Background Pattern */}
       <div className="absolute inset-0 opacity-20">
         <div 
@@ -47,7 +47,7 @@ const ReferenceHero: React.FC = () => {
             </motion.div>
 
             <motion.h1 
-              className="text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight mb-8"
+              className="text-4xl lg:text-5xl xl:text-6xl font-bold text-white dark:text-gray-100 leading-tight mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -61,7 +61,7 @@ const ReferenceHero: React.FC = () => {
 
             {/* Statistics Badge */}
             <motion.div
-              className="inline-flex items-center space-x-6 bg-gray-800/30 backdrop-blur-sm rounded-full px-6 py-3 border border-gray-700/50 mb-8"
+              className="inline-flex items-center space-x-6 bg-gray-800/30 dark:bg-gray-900/40 backdrop-blur-sm rounded-full px-6 py-3 border border-gray-700/50 dark:border-gray-600/50 mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
