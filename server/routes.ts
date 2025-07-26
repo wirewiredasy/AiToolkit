@@ -302,7 +302,8 @@ export function registerRoutes(app: Express): Server {
           ...metadata
         });
         
-        fs.writeFileSync(outputPath, processingResult);
+        // Ensure we write binary data properly
+        fs.writeFileSync(outputPath, processingResult, { flag: 'w' });
 
 
         // Simulate realistic processing time
