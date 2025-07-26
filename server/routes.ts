@@ -302,8 +302,8 @@ export function registerRoutes(app: Express): Server {
           ...metadata
         });
         
-        // Ensure we write binary data properly
-        fs.writeFileSync(outputPath, processingResult, { flag: 'w' });
+        // Ensure we write binary data properly with binary flag
+        fs.writeFileSync(outputPath, processingResult, { flag: 'w', encoding: null });
 
 
         // Simulate realistic processing time
@@ -348,7 +348,7 @@ export function registerRoutes(app: Express): Server {
 
 
 
-  // Enhanced download endpoint
+  // Enhanced download endpoint - Fixed for proper binary file streaming
   app.get('/api/download/:filename', async (req, res) => {
     try {
       const filename = req.params.filename;
@@ -358,6 +358,9 @@ export function registerRoutes(app: Express): Server {
         return res.status(404).json({ success: false, message: 'File not found' });
       }
 
+      // Get file stats for proper Content-Length
+      const stats = fs.statSync(filePath);
+      
       // Set appropriate headers for download
       const ext = path.extname(filename).toLowerCase();
       const mimeTypes: Record<string, string> = {
@@ -376,14 +379,18 @@ export function registerRoutes(app: Express): Server {
 
       const mimeType = mimeTypes[ext] || 'application/octet-stream';
       
+      // Set headers for proper binary download
       res.setHeader('Content-Type', mimeType);
       res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+      res.setHeader('Content-Length', stats.size.toString());
+      res.setHeader('Accept-Ranges', 'bytes');
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
 
-      const fileStream = fs.createReadStream(filePath);
-      fileStream.pipe(res);
+      // Read file as binary buffer and send directly
+      const fileBuffer = fs.readFileSync(filePath);
+      res.end(fileBuffer, 'binary');
       
     } catch (error) {
       console.error('Download error:', error);
