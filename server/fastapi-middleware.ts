@@ -103,12 +103,32 @@ export class FastAPIMiddleware {
         body: JSON.stringify(req.body),
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        res.json(data);
+      // Check if this is a download request
+      if (toolPath.includes('/download/')) {
+        // Handle binary file download
+        if (response.ok) {
+          const contentType = response.headers.get('Content-Type') || 'application/octet-stream';
+          const contentDisposition = response.headers.get('Content-Disposition');
+          
+          res.setHeader('Content-Type', contentType);
+          if (contentDisposition) {
+            res.setHeader('Content-Disposition', contentDisposition);
+          }
+          
+          const buffer = await response.arrayBuffer();
+          res.send(Buffer.from(buffer));
+        } else {
+          res.status(response.status).json({ error: 'File not found' });
+        }
       } else {
-        res.status(response.status).json(data);
+        // Handle JSON response for processing requests
+        const data = await response.json();
+
+        if (response.ok) {
+          res.json(data);
+        } else {
+          res.status(response.status).json(data);
+        }
       }
     } catch (error: any) {
       console.error('FastAPI service error:', error);
