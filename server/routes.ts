@@ -359,13 +359,18 @@ export function registerRoutes(app: Express): Server {
 
 
 
-  // Enhanced download endpoint - Fixed for proper binary file streaming
+  // ⚡ FIXED DOWNLOAD ENDPOINT - Real binary file streaming (NO TEXT OUTPUT)
   app.get('/api/download/:filename', async (req, res) => {
     try {
       const filename = req.params.filename;
       const filePath = path.join('./uploads/processed', filename);
       
+      console.log(`📁 Download request for: ${filename}`);
+      console.log(`📂 File path: ${filePath}`);
+      console.log(`📋 File exists: ${fs.existsSync(filePath)}`);
+      
       if (!fs.existsSync(filePath)) {
+        console.log(`❌ File not found: ${filename}`);
         return res.status(404).json({ success: false, message: 'File not found' });
       }
 
@@ -399,9 +404,17 @@ export function registerRoutes(app: Express): Server {
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
 
-      // Read file as binary buffer and send directly
+      // ⚡ FORCE BINARY DOWNLOAD - No text conversion
       const fileBuffer = fs.readFileSync(filePath);
-      res.end(fileBuffer, 'binary');
+      
+      // Log first few bytes to verify binary content
+      console.log(`📋 File first 20 bytes:`, fileBuffer.slice(0, 20).toString('hex'));
+      console.log(`📄 File size: ${fileBuffer.length} bytes`);
+      console.log(`📎 MIME type: ${mimeType}`);
+      
+      // Send binary data directly without encoding conversion
+      res.write(fileBuffer);
+      res.end();
       
       // Auto-cleanup after successful download (production ready)
       setTimeout(() => {
