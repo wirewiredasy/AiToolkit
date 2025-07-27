@@ -7,17 +7,22 @@ import { sanitizeInput, validateFileUpload, userRateLimit } from "./middleware/v
 
 const app = express();
 
-// Configure trust proxy for Replit environment
-app.set('trust proxy', true);
+// Configure trust proxy for Replit environment - More secure configuration
+app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal']);
 
-// Rate limiting for API endpoints
+// Rate limiting for API endpoints - Production ready configuration  
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // Limit each IP to 100 requests per windowMs
   message: 'Too many requests from this IP, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
-  trustProxy: false, // Fix for production rate limiting
+  keyGenerator: (req) => {
+    // Use X-Forwarded-For header in Replit environment for proper IP detection
+    return (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() || 
+           req.socket.remoteAddress || 
+           'unknown';
+  }
 });
 
 // Apply rate limiting to API routes
