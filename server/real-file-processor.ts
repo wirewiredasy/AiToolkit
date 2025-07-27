@@ -5,6 +5,7 @@ import crypto from 'crypto';
 import { AdvancedPDFProcessor } from './advanced-pdf-processor';
 import { TinyWowLevelProcessor } from './tinywow-level-processor';
 import { RealWorkingProcessor } from './real-working-processor';
+import { TinyWowCloneProcessor } from './tinywow-clone-processor';
 
 // REAL FILE PROCESSOR - Generates actual downloadable files, not dummy text
 export class RealFileProcessor {
@@ -250,11 +251,11 @@ startxref
     return Buffer.from(content, 'utf8');
   }
 
-  // Process based on tool type and return actual files - REAL WORKING LIKE TINYWOW
+  // Process based on tool type and return actual files - COMPLETE TINYWOW CLONE
   static async processFile(toolType: string, category: string, inputFiles: any[], metadata: any = {}): Promise<Buffer> {
-    console.log(`🚀 Real working processing: ${toolType}, files: ${inputFiles.length}, category: ${category}`);
+    console.log(`🔥 TinyWow Clone Processing: ${toolType}, files: ${inputFiles.length}, category: ${category}`);
     
-    // Use Real Working Processor for actual file manipulation like TinyWow
-    return await RealWorkingProcessor.processUploadedFiles(toolType, category, inputFiles, metadata);
+    // Use Complete TinyWow Clone Processor for exact TinyWow functionality
+    return await TinyWowCloneProcessor.processTinyWowStyle(toolType, category, inputFiles, metadata);
   }
 }
