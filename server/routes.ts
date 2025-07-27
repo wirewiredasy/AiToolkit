@@ -5,8 +5,7 @@ import { loginSchema, signupSchema } from "@shared/schema";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { api } from "./api-router";
-// FastAPI middleware removed - using Express.js only for production stability
+// PRODUCTION CLEAN: Using Express.js only - FastAPI completely removed
 import { randomBytes } from "crypto";
 import { SitemapRobotsGenerator } from "./sitemap-generator";
 import { AutoUpdater } from "./auto-updater";
