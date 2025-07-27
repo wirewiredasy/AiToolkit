@@ -313,7 +313,7 @@ export function registerRoutes(app: Express): Server {
         let processingTime = 50; // Ultra fast base time
         
         // Check if fast mode is enabled in metadata
-        const isFastMode = metadata?.fastMode || req.body?.fastMode;
+        const isFastMode = (metadata as any)?.fastMode || req.body?.fastMode;
         
         if (isFastMode) {
           processingTime = Math.floor(Math.random() * 100) + 50; // 0.05-0.15s ultra fast
