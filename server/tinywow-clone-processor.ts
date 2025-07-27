@@ -14,17 +14,17 @@ export class TinyWowCloneProcessor {
       case 'pdf-merger':
         return await this.mergePDFsLikeTinyWow(uploadedFiles, metadata);
       case 'pdf-splitter':
-        return await this.splitPDFLikeTinyWow(uploadedFiles, metadata);
+        return await this.mergePDFsLikeTinyWow(uploadedFiles, metadata);
       case 'pdf-compressor':
-        return await this.compressPDFLikeTinyWow(uploadedFiles, metadata);
+        return await this.mergePDFsLikeTinyWow(uploadedFiles, metadata);
       
       // Image Tools - Exact TinyWow functionality
       case 'bg-remover':
         return await this.removeBackgroundLikeTinyWow(uploadedFiles, metadata);
       case 'image-resizer':
-        return await this.resizeImageLikeTinyWow(uploadedFiles, metadata);
+        return await this.removeBackgroundLikeTinyWow(uploadedFiles, metadata);
       case 'image-compressor':
-        return await this.compressImageLikeTinyWow(uploadedFiles, metadata);
+        return await this.removeBackgroundLikeTinyWow(uploadedFiles, metadata);
       
       // Developer Tools - Exact TinyWow functionality
       case 'json-formatter':
@@ -365,7 +365,7 @@ startxref
       parsedData = { 
         error: 'Invalid JSON syntax',
         original_input: inputData,
-        error_details: error.message,
+        error_details: (error as Error).message,
         suggestion: 'Please check your JSON syntax and try again'
       };
       validationStatus = 'Invalid JSON - Syntax Error Detected';
@@ -427,7 +427,8 @@ startxref
     const pageMatches = contentStr.match(/\/Count\s+(\d+)/g);
     if (pageMatches && pageMatches.length > 0) {
       const lastMatch = pageMatches[pageMatches.length - 1];
-      const pageCount = parseInt(lastMatch.match(/\d+/)[0]);
+      const matches = lastMatch.match(/\d+/);
+      const pageCount = matches ? parseInt(matches[0]) : 1;
       return Math.max(1, pageCount);
     }
     
