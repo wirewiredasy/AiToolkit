@@ -1,18 +1,10 @@
+
 #!/bin/bash
 
 # Start FastAPI service for heavy processing
 echo "Starting Suntyn AI FastAPI Processing Service..."
 
-# Check if Python virtual environment exists
-if [ ! -d "venv" ]; then
-    echo "Creating Python virtual environment..."
-    python3 -m venv venv
-fi
-
-# Activate virtual environment
-source venv/bin/activate
-
-# Install required packages
+# Install required packages directly (no virtual environment needed in Replit)
 echo "Installing Python dependencies..."
 pip install fastapi uvicorn python-multipart
 
