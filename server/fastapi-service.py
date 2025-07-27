@@ -5,19 +5,41 @@ FastAPI Microservice for Heavy File Processing
 Production-ready version for Replit deployment
 """
 
-from fastapi import FastAPI, HTTPException, File, UploadFile, Form
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, Response
-from pydantic import BaseModel
-from typing import Optional, Dict, Any
-import asyncio
-import os
-import time
-import tempfile
-import shutil
-from pathlib import Path
-import io
-import base64
+try:
+    from fastapi import FastAPI, HTTPException, File, UploadFile, Form
+    from fastapi.middleware.cors import CORSMiddleware
+    from fastapi.responses import FileResponse, Response
+    from pydantic import BaseModel
+    from typing import Optional, Dict, Any
+    import asyncio
+    import os
+    import time
+    import tempfile
+    import shutil
+    from pathlib import Path
+    import io
+    import base64
+    print("✅ All FastAPI imports successful")
+except ImportError as e:
+    print(f"❌ Import error: {e}")
+    print("Installing missing packages...")
+    import subprocess
+    import sys
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "--force-reinstall", "fastapi", "uvicorn", "pydantic"])
+    # Retry imports
+    from fastapi import FastAPI, HTTPException, File, UploadFile, Form
+    from fastapi.middleware.cors import CORSMiddleware
+    from fastapi.responses import FileResponse, Response
+    from pydantic import BaseModel
+    from typing import Optional, Dict, Any
+    import asyncio
+    import os
+    import time
+    import tempfile
+    import shutil
+    from pathlib import Path
+    import io
+    import base64
 
 # Production configuration
 app = FastAPI(
@@ -519,18 +541,34 @@ async def root():
 
 # Production startup
 if __name__ == "__main__":
-    import uvicorn
-    
-    host = os.getenv("HOST", "0.0.0.0")
-    port = int(os.getenv("PORT", "8000"))
-    
-    print(f"🚀 Starting Suntyn AI FastAPI Service on {host}:{port}")
-    print(f"🌐 Environment: {os.getenv('ENV', 'development')}")
-    
-    uvicorn.run(
-        app, 
-        host=host, 
-        port=port, 
-        log_level="info", 
-        reload=False
-    )
+    try:
+        import uvicorn
+        
+        host = os.getenv("HOST", "0.0.0.0")
+        port = int(os.getenv("PORT", "8000"))
+        
+        print(f"🚀 Starting Suntyn AI FastAPI Service on {host}:{port}")
+        print(f"🌐 Environment: {os.getenv('ENV', 'development')}")
+        print(f"📍 Server will be accessible at: http://0.0.0.0:{port}")
+        
+        uvicorn.run(
+            app, 
+            host=host, 
+            port=port, 
+            log_level="info", 
+            reload=False
+        )
+    except ImportError:
+        print("❌ uvicorn not found, installing...")
+        import subprocess
+        import sys
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "uvicorn[standard]"])
+        import uvicorn
+        
+        host = os.getenv("HOST", "0.0.0.0")
+        port = int(os.getenv("PORT", "8000"))
+        
+        uvicorn.run(app, host=host, port=port, log_level="info", reload=False)
+    except Exception as e:
+        print(f"❌ Failed to start FastAPI service: {e}")
+        sys.exit(1)
