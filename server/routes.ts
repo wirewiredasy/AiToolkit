@@ -239,25 +239,13 @@ export function registerRoutes(app: Express): Server {
     { endpoint: 'js-minifier', name: 'JS Minifier', category: 'Developer' }
   ];
 
-  // Create individual endpoints for all tools with smart routing (Express.js + FastAPI)
+  // Create individual endpoints for all tools with FAST processing (Express.js optimized)
   allToolEndpoints.forEach(({ endpoint, name, category }) => {
     app.post(`/api/tools/${endpoint}`, upload.any(), async (req: any, res) => {
       const startTime = Date.now();
       
-      // Smart routing: Check if FastAPI should handle heavy processing
-      const totalFileSize = req.files?.reduce((sum: number, file: any) => sum + file.size, 0) || 0;
-      
-      if (fastApiMiddleware.shouldUseFastAPI(endpoint, totalFileSize)) {
-        const isHealthy = await fastApiMiddleware.isHealthy();
-        if (isHealthy) {
-          console.log(`🚀 Routing ${endpoint} to FastAPI (heavy processing)`);
-          return await fastApiMiddleware.forwardToFastAPI(req, res, endpoint);
-        } else {
-          console.log(`⚠️ FastAPI unavailable, falling back to Express.js`);
-        }
-      }
-      
-      console.log(`⚡ Processing ${endpoint} with Express.js (light processing)`);
+      // ⚡ FAST PROCESSING - Direct Express.js processing
+      console.log(`⚡ Fast processing ${endpoint} with Express.js`);
       
       try {
         // Extract files and settings - handle both JSON and form data
@@ -321,14 +309,22 @@ export function registerRoutes(app: Express): Server {
         fs.writeFileSync(outputPath, processingResult, { flag: 'w', encoding: null });
 
 
-        // Simulate realistic processing time
-        let processingTime = 1000;
-        switch (category) {
-          case 'PDF': processingTime = Math.floor(Math.random() * 3000) + 1500; break;
-          case 'Image': processingTime = Math.floor(Math.random() * 2000) + 1000; break;
-          case 'Audio/Video': processingTime = Math.floor(Math.random() * 5000) + 2000; break;
-          case 'Government': processingTime = Math.floor(Math.random() * 1500) + 500; break;
-          case 'Developer': processingTime = Math.floor(Math.random() * 1000) + 300; break;
+        // ⚡ ULTRA FAST PROCESSING - Minimized simulation time for maximum speed
+        let processingTime = 50; // Ultra fast base time
+        
+        // Check if fast mode is enabled in metadata
+        const isFastMode = metadata?.fastMode || req.body?.fastMode;
+        
+        if (isFastMode) {
+          processingTime = Math.floor(Math.random() * 100) + 50; // 0.05-0.15s ultra fast
+        } else {
+          switch (category) {
+            case 'PDF': processingTime = Math.floor(Math.random() * 200) + 100; break; // 0.1-0.3s
+            case 'Image': processingTime = Math.floor(Math.random() * 150) + 100; break; // 0.1-0.25s
+            case 'Audio/Video': processingTime = Math.floor(Math.random() * 300) + 200; break; // 0.2-0.5s
+            case 'Government': processingTime = Math.floor(Math.random() * 100) + 50; break; // 0.05-0.15s
+            case 'Developer': processingTime = Math.floor(Math.random() * 75) + 25; break; // 0.025-0.1s
+          }
         }
         
         await new Promise(resolve => setTimeout(resolve, processingTime));
