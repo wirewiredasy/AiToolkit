@@ -6,7 +6,7 @@ import { z } from "zod";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { api } from "./api-router";
-import { fastApiMiddleware } from "./fastapi-middleware";
+// FastAPI middleware removed - using Express.js only for production stability
 import { randomBytes } from "crypto";
 import { SitemapRobotsGenerator } from "./sitemap-generator";
 import { AutoUpdater } from "./auto-updater";
@@ -239,7 +239,7 @@ export function registerRoutes(app: Express): Server {
     { endpoint: 'js-minifier', name: 'JS Minifier', category: 'Developer' }
   ];
 
-  // Create individual endpoints for all tools with real processing
+  // Create individual endpoints for all tools with real processing - Express.js only
   allToolEndpoints.forEach(({ endpoint, name, category }) => {
     app.post(`/api/tools/${endpoint}`, upload.any(), async (req: any, res) => {
       const startTime = Date.now();
