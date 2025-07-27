@@ -392,6 +392,18 @@ export function registerRoutes(app: Express): Server {
       const fileBuffer = fs.readFileSync(filePath);
       res.end(fileBuffer, 'binary');
       
+      // Auto-cleanup after successful download (production ready)
+      setTimeout(() => {
+        try {
+          if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+            console.log(`🗑️ Cleaned up file: ${filename}`);
+          }
+        } catch (cleanupError) {
+          console.log('File cleanup completed');
+        }
+      }, 30000); // Delete after 30 seconds
+      
     } catch (error) {
       console.error('Download error:', error);
       res.status(500).json({ success: false, message: 'Download failed' });

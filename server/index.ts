@@ -17,6 +17,7 @@ const apiLimiter = rateLimit({
   message: 'Too many requests from this IP, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
+  trustProxy: false, // Fix for production rate limiting
 });
 
 // Apply rate limiting to API routes
@@ -44,20 +45,20 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", "true");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, x-auth-token");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
-  
+
   // Handle preflight requests
   if (req.method === 'OPTIONS') {
     res.sendStatus(200);
     return;
   }
-  
+
   // Enhanced security headers
   res.header("X-Content-Type-Options", "nosniff");
   res.header("X-Frame-Options", "SAMEORIGIN");
   res.header("X-XSS-Protection", "1; mode=block");
   res.header("Referrer-Policy", "strict-origin-when-cross-origin");
   res.header("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
-  
+
   // Enhanced CSP header for Vite HMR compatibility
   res.header("Content-Security-Policy", 
     "default-src 'self'; " +
@@ -68,7 +69,7 @@ app.use((req, res, next) => {
     "connect-src 'self' ws: wss: http: https:; " +
     "worker-src 'self' blob:;"
   );
-  
+
   next();
 });
 
@@ -149,7 +150,7 @@ app.use((req, res, next) => {
       ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
     });
   });
-  
+
   // Handle uncaught exceptions
   process.on('uncaughtException', (err) => {
     console.error('Uncaught Exception:', err);
@@ -177,7 +178,7 @@ app.use((req, res, next) => {
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || '5000', 10);
-  
+
   // Enhanced server startup with error handling
   server.listen({
     port,
