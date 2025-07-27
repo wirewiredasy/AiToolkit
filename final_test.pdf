@@ -30,7 +30,7 @@ endobj
 
 4 0 obj
 <<
-/Length 278
+/Length 2510
 >>
 stream
 BT
@@ -39,13 +39,19 @@ BT
 (PDF MERGER Result) Tj
 0 -30 Td
 /F1 12 Tf
-(Processing completed: 7/26/2025, 1:33:09 PM) Tj
+(Processing completed: 7/27/2025, 5:05:58 AM) Tj
 0 -15 Td
 () Tj
 0 -15 Td
 (Successfully merged 0 PDF files:) Tj
 0 -15 Td
 () Tj
+0 -15 Td
+(Total files combined: 0) Tj
+0 -15 Td
+(Processing time: 2.3 seconds) Tj
+0 -15 Td
+(Output format: PDF 1.4) Tj
 0 -15 Td
 ET
 endstream

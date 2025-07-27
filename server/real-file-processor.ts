@@ -2,6 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
+import { AdvancedPDFProcessor } from './advanced-pdf-processor';
 
 // REAL FILE PROCESSOR - Generates actual downloadable files, not dummy text
 export class RealFileProcessor {
@@ -257,17 +258,12 @@ startxref
         let pdfContent = `Processing completed: ${timestamp}\n\n`;
         
         if (toolType === 'pdf-merger') {
-          pdfContent += `Successfully merged ${inputFiles.length} PDF files:\n`;
-          inputFiles.forEach((file, i) => {
-            pdfContent += `${i + 1}. ${file.originalname || `Document_${i + 1}.pdf`}\n`;
-          });
-          pdfContent += `\nTotal files combined: ${inputFiles.length}\nProcessing time: 2.3 seconds\nOutput format: PDF 1.4`;
+          // Use advanced PDF processor for proper merging
+          return await AdvancedPDFProcessor.mergePDFs(inputFiles, metadata);
         } else if (toolType === 'pdf-splitter') {
-          pdfContent += `PDF split into individual pages\nSource: ${inputFiles[0]?.originalname || 'document.pdf'}\nPages extracted: Multiple\nOutput: Individual PDF files`;
+          return await AdvancedPDFProcessor.splitPDF(inputFiles[0], metadata);
         } else if (toolType === 'pdf-compressor') {
-          const originalSize = inputFiles[0]?.size || 500000;
-          const newSize = Math.floor(originalSize * 0.7);
-          pdfContent += `Compression completed\nOriginal size: ${(originalSize/1024).toFixed(1)} KB\nCompressed size: ${(newSize/1024).toFixed(1)} KB\nSpace saved: ${((originalSize-newSize)/1024).toFixed(1)} KB`;
+          return await AdvancedPDFProcessor.compressPDF(inputFiles[0], metadata);
         } else {
           pdfContent += `Tool: ${toolType}\nFiles processed: ${inputFiles.length}\nStatus: Successfully completed`;
         }
