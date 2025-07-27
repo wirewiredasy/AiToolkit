@@ -53,13 +53,13 @@ def start_fastapi_service():
     os.environ.update({
         'PYTHONPATH': str(Path(__file__).parent),
         'HOST': '0.0.0.0',
-        'PORT': '8000',
+        'PORT': '8001',
         'ENV': 'production'
     })
 
     try:
         print("🚀 Starting Suntyn AI FastAPI Service (Production Mode)")
-        print(f"🌐 Service will be available at: http://0.0.0.0:8000")
+        print(f"🌐 Service will be available at: http://0.0.0.0:8001")
 
         # Run the FastAPI service directly with python
         cmd = ["python3", "fastapi-service.py"]

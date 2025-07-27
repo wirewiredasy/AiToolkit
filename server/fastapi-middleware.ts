@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 // FastAPI service configuration
-const FASTAPI_PORT = 8000;
+const FASTAPI_PORT = 8001;
 const FASTAPI_URL = `http://localhost:${FASTAPI_PORT}`;
 
 // Heavy processing tools that should use FastAPI
