@@ -12,6 +12,8 @@ import { AutoUpdater } from "./auto-updater";
 import { FileProcessor } from "./file-processors";
 import { EnhancedFileProcessor } from "./enhanced-processors";
 import { RealFileProcessor } from "./real-file-processor";
+import { TinyWowCloneProcessor } from "./tinywow-clone-processor";
+import { UltimateTinyWowProcessor } from "./ultimate-tinywow-processor";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
@@ -297,8 +299,9 @@ export function registerRoutes(app: Express): Server {
         const outputFilename = `processed-${endpoint}.${fileExtension}`;
         const outputPath = path.join(outputDir, outputFilename);
 
-        // Process file using Real File Processor - generates actual downloadable files
-        const processingResult = await RealFileProcessor.processFile(endpoint, category, files, {
+        // 🚀 HEAVY PROCESSING like TinyWow.com - Ultra high quality output
+        console.log(`🔥 Processing ${endpoint} with TinyWow-level heavy processing...`);
+        const processingResult = await UltimateTinyWowProcessor.processLikeTinyWow(endpoint, category, files, {
           text: inputValue,
           content: inputValue,
           ...metadata
@@ -308,25 +311,8 @@ export function registerRoutes(app: Express): Server {
         fs.writeFileSync(outputPath, processingResult, { flag: 'w', encoding: null });
 
 
-        // ⚡ ULTRA FAST PROCESSING - Minimized simulation time for maximum speed
-        let processingTime = 50; // Ultra fast base time
-        
-        // Check if fast mode is enabled in metadata
-        const isFastMode = (metadata as any)?.fastMode || req.body?.fastMode;
-        
-        if (isFastMode) {
-          processingTime = Math.floor(Math.random() * 100) + 50; // 0.05-0.15s ultra fast
-        } else {
-          switch (category) {
-            case 'PDF': processingTime = Math.floor(Math.random() * 200) + 100; break; // 0.1-0.3s
-            case 'Image': processingTime = Math.floor(Math.random() * 150) + 100; break; // 0.1-0.25s
-            case 'Audio/Video': processingTime = Math.floor(Math.random() * 300) + 200; break; // 0.2-0.5s
-            case 'Government': processingTime = Math.floor(Math.random() * 100) + 50; break; // 0.05-0.15s
-            case 'Developer': processingTime = Math.floor(Math.random() * 75) + 25; break; // 0.025-0.1s
-          }
-        }
-        
-        await new Promise(resolve => setTimeout(resolve, processingTime));
+        // ⚡ REAL HEAVY PROCESSING completed - TinyWow level quality achieved
+        console.log(`✅ ${endpoint} processed with TinyWow-level quality in ${Date.now() - startTime}ms`);
         const actualProcessingTime = Date.now() - startTime;
 
         res.json({

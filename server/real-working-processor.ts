@@ -85,7 +85,7 @@ export class RealWorkingProcessor {
       }
     }
 
-    return this.createAdvancedPNG(imageInfo.width, imageInfo.height, toolId, actualImageData, imageInfo.originalFile);
+    return this.createAdvancedPNG(imageInfo.width, imageInfo.height, toolId, actualImageData || undefined, imageInfo.originalFile);
   }
 
   // Real developer tools processing
