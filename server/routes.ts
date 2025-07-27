@@ -239,10 +239,25 @@ export function registerRoutes(app: Express): Server {
     { endpoint: 'js-minifier', name: 'JS Minifier', category: 'Developer' }
   ];
 
-  // Create individual endpoints for all tools with real processing - Express.js only
+  // Create individual endpoints for all tools with smart routing (Express.js + FastAPI)
   allToolEndpoints.forEach(({ endpoint, name, category }) => {
     app.post(`/api/tools/${endpoint}`, upload.any(), async (req: any, res) => {
       const startTime = Date.now();
+      
+      // Smart routing: Check if FastAPI should handle heavy processing
+      const totalFileSize = req.files?.reduce((sum: number, file: any) => sum + file.size, 0) || 0;
+      
+      if (fastApiMiddleware.shouldUseFastAPI(endpoint, totalFileSize)) {
+        const isHealthy = await fastApiMiddleware.isHealthy();
+        if (isHealthy) {
+          console.log(`🚀 Routing ${endpoint} to FastAPI (heavy processing)`);
+          return await fastApiMiddleware.forwardToFastAPI(req, res, endpoint);
+        } else {
+          console.log(`⚠️ FastAPI unavailable, falling back to Express.js`);
+        }
+      }
+      
+      console.log(`⚡ Processing ${endpoint} with Express.js (light processing)`);
       
       try {
         // Extract files and settings - handle both JSON and form data
