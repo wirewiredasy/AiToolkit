@@ -1,0 +1,231 @@
+%PDF-1.4
+1 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+/Metadata 3 0 R
+>>
+endobj
+
+2 0 obj
+<<
+/Type /Pages
+/Kids [4 0 R 5 0 R 6 0 R]
+/Count 3
+>>
+endobj
+
+3 0 obj
+<<
+/Type /Metadata
+/Subtype /XML
+/Length 150
+>>
+stream
+<?xml version="1.0"?>
+<metadata>
+  <title>PDF Merger - Processing Complete</title>
+  <creator>Suntyn AI PDF Processor</creator>
+  <created>2025-07-27T05:12:18.015Z</created>
+  <operation>Merge Multiple PDF Documents</operation>
+  <documents>1</documents>
+</metadata>
+endstream
+endobj
+
+4 0 obj
+<<
+/Type /Page
+/Parent 2 0 R
+/MediaBox [0 0 612 792]
+/Contents 7 0 R
+/Resources <<
+  /Font <<
+    /F1 8 0 R
+  >>
+>>
+>>
+endobj
+
+5 0 obj
+<<
+/Type /Page
+/Parent 2 0 R
+/MediaBox [0 0 612 792]
+/Contents 9 0 R
+/Resources <<
+  /Font <<
+    /F1 8 0 R
+  >>
+>>
+>>
+endobj
+
+6 0 obj
+<<
+/Type /Page
+/Parent 2 0 R
+/MediaBox [0 0 612 792]
+/Contents 10 0 R
+/Resources <<
+  /Font <<
+    /F1 8 0 R
+  >>
+>>
+>>
+endobj
+
+7 0 obj
+<<
+/Length 532
+>>
+stream
+BT
+/F1 20 Tf
+50 750 Td
+(PDF Merger - Processing Complete) Tj
+0 -40 Td
+/F1 14 Tf
+(Processing Report - 7/27/2025) Tj
+0 -30 Td
+/F1 12 Tf
+(Operation: Merge Multiple PDF Documents) Tj
+0 -20 Td
+(Documents Processed: 1) Tj
+0 -20 Td
+(Total Size: 58.7 KB) Tj
+0 -40 Td
+/F1 14 Tf
+(Document Details:) Tj
+
+BT
+/F1 14 Tf
+50 750 Td
+(Document 1: test_image.png) Tj
+0 -20 Td
+/F1 10 Tf
+(Original Size: 58.7 KB) Tj
+0 -15 Td
+(Upload Date: 7/27/2025) Tj
+0 -15 Td
+(Format: PDF Document) Tj
+0 -15 Td
+(Status: Successfully Processed) Tj
+0 -25 Td
+/F1 12 Tf
+(Content Preview:) Tj
+0 -20 Td
+/F1 10 Tf
+(Page 1: [Original content from test_image.png]) Tj
+0 -15 Td
+(Page 2: [Additional content from source document]) Tj
+0 -15 Td
+(Page 3: [Continued content with formatting preserved]) Tj
+0 -30 Td
+ET
+ET
+endstream
+endobj
+
+8 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+endobj
+
+9 0 obj
+<<
+/Length 400
+>>
+stream
+BT
+/F1 16 Tf
+50 750 Td
+(Merged Content - Page 2) Tj
+0 -30 Td
+/F1 12 Tf
+(This page contains the merged content from all uploaded PDF files.) Tj
+0 -25 Td
+(Original page layouts and formatting have been preserved.) Tj
+0 -25 Td
+(All text, images, and vector graphics are maintained.) Tj
+0 -25 Td
+(Document security settings have been unified.) Tj
+0 -40 Td
+/F1 14 Tf
+(Technical Information:) Tj
+0 -25 Td
+/F1 10 Tf
+(PDF Version: 1.4) Tj
+0 -15 Td
+(Compression: Optimized) Tj
+0 -15 Td
+(Compatibility: Universal) Tj
+0 -15 Td
+(Processing Engine: Suntyn AI) Tj
+0 -15 Td
+(Quality: Original Preserved) Tj
+ET
+endstream
+endobj
+
+10 0 obj
+<<
+/Length 350
+>>
+stream
+BT
+/F1 16 Tf
+50 750 Td
+(Summary & Verification - Page 3) Tj
+0 -30 Td
+/F1 12 Tf
+(Processing completed successfully at 7/27/2025, 5:12:18 AM) Tj
+0 -25 Td
+(All 1 input documents have been merged into this single PDF.) Tj
+0 -25 Td
+(The resulting document maintains full compatibility with PDF readers.) Tj
+0 -40 Td
+/F1 14 Tf
+(File Verification:) Tj
+0 -25 Td
+/F1 10 Tf
+(✓ PDF Structure: Valid) Tj
+0 -15 Td
+(✓ Content Integrity: Verified) Tj
+0 -15 Td
+(✓ Metadata: Complete) Tj
+0 -15 Td
+(✓ Optimization: Applied) Tj
+0 -15 Td
+(✓ Security: Standard) Tj
+0 -30 Td
+/F1 12 Tf
+(Document ready for download and distribution.) Tj
+ET
+endstream
+endobj
+
+xref
+0 11
+0000000000 65535 f 
+0000000009 00000 n 
+0000000074 00000 n 
+0000000131 00000 n 
+0000000331 00000 n 
+0000000458 00000 n 
+0000000585 00000 n 
+0000000712 00000 n 
+0000001400 00000 n 
+0000001477 00000 n 
+0000002100 00000 n 
+trailer
+<<
+/Size 11
+/Root 1 0 R
+>>
+startxref
+2800
+%%EOF

@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import { AdvancedPDFProcessor } from './advanced-pdf-processor';
+import { TinyWowLevelProcessor } from './tinywow-level-processor';
 
 // REAL FILE PROCESSOR - Generates actual downloadable files, not dummy text
 export class RealFileProcessor {
@@ -248,84 +249,9 @@ startxref
     return Buffer.from(content, 'utf8');
   }
 
-  // Process based on tool type and return actual files
+  // Process based on tool type and return actual files - TINYWOW QUALITY LEVEL
   static async processFile(toolType: string, category: string, inputFiles: any[], metadata: any = {}): Promise<Buffer> {
-    const timestamp = new Date().toLocaleString();
-    
-    switch (category) {
-      case 'PDF':
-        const pdfTitle = `${toolType.replace('-', ' ').toUpperCase()} Result`;
-        let pdfContent = `Processing completed: ${timestamp}\n\n`;
-        
-        if (toolType === 'pdf-merger') {
-          // Use advanced PDF processor for proper merging
-          return await AdvancedPDFProcessor.mergePDFs(inputFiles, metadata);
-        } else if (toolType === 'pdf-splitter') {
-          return await AdvancedPDFProcessor.splitPDF(inputFiles[0], metadata);
-        } else if (toolType === 'pdf-compressor') {
-          return await AdvancedPDFProcessor.compressPDF(inputFiles[0], metadata);
-        } else {
-          pdfContent += `Tool: ${toolType}\nFiles processed: ${inputFiles.length}\nStatus: Successfully completed`;
-        }
-        
-        return this.createPDF(pdfTitle, pdfContent);
-
-      case 'Image':
-        const imageTitle = `${toolType.replace('-', ' ').toUpperCase()} - ${timestamp}`;
-        let width = 800, height = 600;
-        
-        if (metadata?.width && metadata?.height) {
-          width = parseInt(metadata.width);
-          height = parseInt(metadata.height);
-        }
-        
-        return this.createPNG(width, height, imageTitle);
-
-      case 'Audio/Video':
-        if (toolType.includes('audio')) {
-          const audioTitle = `${toolType.replace('-', ' ').toUpperCase()} Result`;
-          return this.createMP3(audioTitle, 30);
-        } else {
-          const videoTitle = `${toolType.replace('-', ' ').toUpperCase()} Result`;
-          return this.createMP4(videoTitle, 15);
-        }
-
-      case 'Government':
-        const govTitle = `${toolType.replace('-', ' ').toUpperCase()} Certificate`;
-        const govContent = `GOVERNMENT DOCUMENT VALIDATION\n\n${govTitle}\n\nDocument processed: ${timestamp}\nValidation ID: ${toolType.toUpperCase()}-${Date.now()}\nStatus: Processing completed successfully\n\nThis document contains validation results for the submitted information.\nFor official government certificates, please contact relevant authorities.\n\nNote: This is a format validation only.`;
-        return this.createPDF(govTitle, govContent);
-
-      case 'Developer':
-        if (toolType === 'json-formatter') {
-          const jsonData = {
-            tool: toolType,
-            timestamp: timestamp,
-            input: metadata?.text || 'Sample JSON data',
-            output: 'Formatted successfully',
-            status: 'success',
-            processing_time: '0.12s',
-            size_original: metadata?.text?.length || 0,
-            size_formatted: (metadata?.text?.length || 0) * 1.2
-          };
-          return this.createJSON(jsonData);
-        } else if (toolType === 'markdown-to-html') {
-          const htmlTitle = 'Markdown to HTML Conversion Result';
-          const htmlContent = metadata?.text || 'Sample converted content from markdown';
-          return this.createHTML(htmlTitle, htmlContent);
-        } else if (toolType === 'hash-generator') {
-          const input = metadata?.text || 'sample text';
-          const md5 = crypto.createHash('md5').update(input).digest('hex');
-          const sha256 = crypto.createHash('sha256').update(input).digest('hex');
-          const hashContent = `HASH GENERATION RESULTS\n\nInput: ${input}\nMD5: ${md5}\nSHA-256: ${sha256}\nGenerated: ${timestamp}`;
-          return this.createTXT(hashContent);
-        } else {
-          const devContent = `${toolType.replace('-', ' ').toUpperCase()} Processing Result\n\nTimestamp: ${timestamp}\nInput: ${metadata?.text || 'Sample input'}\nOutput: Processing completed successfully\nTool: ${toolType}\nCategory: ${category}\nStatus: Success`;
-          return this.createTXT(devContent);
-        }
-
-      default:
-        const defaultContent = `${toolType.replace('-', ' ').toUpperCase()} Processing Complete\n\nTimestamp: ${timestamp}\nTool: ${toolType}\nCategory: ${category}\nStatus: Successfully processed\nOutput: Ready for download`;
-        return this.createTXT(defaultContent);
-    }
+    // Use TinyWow-level processor for professional quality output
+    return await TinyWowLevelProcessor.processToolRequest(toolType, category, inputFiles, metadata);
   }
 }
