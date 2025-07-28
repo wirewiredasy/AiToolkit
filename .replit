@@ -94,3 +94,16 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python3 start_fastapi.py"
+
+[[workflows.workflow]]
+name = "Auto Update Dependencies"
+author = 45641380
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "chmod +x auto-update.sh"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "./auto-update.sh"

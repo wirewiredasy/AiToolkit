@@ -1,0 +1,27 @@
+
+{
+  "name": "suntyn-ai-update-config",
+  "version": "1.0.0",
+  "description": "Auto-update configuration for Suntyn AI dependencies",
+  "updateConfig": {
+    "autoUpdate": true,
+    "updateInterval": "weekly",
+    "securityUpdates": "immediate",
+    "stableOnly": false,
+    "excludePackages": [],
+    "updateStrategy": "minor"
+  },
+  "scripts": {
+    "update:all": "npm update && pip install -r requirements.txt --upgrade",
+    "update:security": "npm audit fix --force",
+    "update:dependencies": "npm-check-updates -u && npm install",
+    "update:python": "python update-requirements.py",
+    "health:check": "npm audit && pip check"
+  },
+  "monitoring": {
+    "enabled": true,
+    "checkInterval": "daily",
+    "notifications": true,
+    "logUpdates": true
+  }
+}
