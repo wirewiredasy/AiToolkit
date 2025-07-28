@@ -37,42 +37,42 @@ export function ResultDisplay({
 
   const downloadFile = async () => {
     if (!result.downloadUrl) return;
-    
+
     setIsDownloading(true);
     try {
       console.log('Starting download from:', result.downloadUrl);
-      
+
       const response = await fetch(result.downloadUrl);
       console.log('Download response status:', response.status);
       console.log('Download response headers:');
       response.headers.forEach((value, key) => {
         console.log(`${key}: ${value}`);
       });
-      
+
       if (!response.ok) {
         throw new Error(`Download failed with status: ${response.status}`);
       }
-      
+
       const blob = await response.blob();
       console.log('Downloaded blob:', {
         size: blob.size,
         type: blob.type
       });
-      
+
       // Verify the blob contains binary data
       const arrayBuffer = await blob.arrayBuffer();
       const uint8Array = new Uint8Array(arrayBuffer);
       const first20Bytes = Array.from(uint8Array.slice(0, 20))
         .map(b => b.toString(16).padStart(2, '0'))
         .join(' ');
-      
+
       console.log('First 20 bytes (hex):', first20Bytes);
-      
+
       // Check if it's actual binary data or text
       const textDecoder = new TextDecoder();
       const firstText = textDecoder.decode(uint8Array.slice(0, 100));
       console.log('First 100 chars as text:', firstText);
-      
+
       // Verify file type
       let isValidFile = false;
       if (result.filename?.endsWith('.pdf')) {
@@ -91,7 +91,7 @@ export function ResultDisplay({
       } else {
         isValidFile = true; // Assume other formats are OK
       }
-      
+
       if (!isValidFile) {
         console.warn('Warning: Downloaded file may not be valid binary data');
         toast({
@@ -100,7 +100,7 @@ export function ResultDisplay({
           variant: "destructive",
         });
       }
-      
+
       // Create download
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -111,12 +111,12 @@ export function ResultDisplay({
       a.click();
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
-      
+
       toast({
         title: "Download Started",
         description: `${result.filename} (${blob.size} bytes) is being downloaded`,
       });
-      
+
     } catch (error) {
       console.error('Download error:', error);
       toast({

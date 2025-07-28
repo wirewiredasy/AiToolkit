@@ -129,6 +129,10 @@ async def merge_pdfs_real(files: List[UploadFile]) -> tuple[str, int]:
     temp_files = []
     
     try:
+        # Ensure static directory exists
+        static_dir = os.path.abspath("../../static")
+        os.makedirs(static_dir, exist_ok=True)
+        
         # Save uploaded files temporarily
         for file in files:
             content = await file.read()
@@ -137,29 +141,45 @@ async def merge_pdfs_real(files: List[UploadFile]) -> tuple[str, int]:
             temp_file.close()
             temp_files.append(temp_file.name)
             
-            # Add to merger
-            merger.append(temp_file.name)
+            # Validate PDF before adding
+            try:
+                merger.append(temp_file.name)
+                print(f"✅ Added PDF: {file.filename}")
+            except Exception as e:
+                print(f"⚠️ Skipping invalid PDF: {file.filename} - {e}")
         
         # Generate output filename
         output_filename = f"merged-{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
-        output_path = f"../../static/{output_filename}"
+        output_path = os.path.join(static_dir, output_filename)
         
         # Write merged PDF
-        merger.write(output_path)
+        with open(output_path, 'wb') as output_file:
+            merger.write(output_file)
         merger.close()
         
         # Cleanup temp files
         for temp_file in temp_files:
-            os.unlink(temp_file)
+            try:
+                os.unlink(temp_file)
+            except:
+                pass
         
-        # Get file size
-        file_size = os.path.getsize(output_path)
-        print(f"✅ Merged PDF created: {output_filename} ({file_size} bytes)")
-        
-        return output_filename, file_size
+        # Verify file was created and get size
+        if os.path.exists(output_path):
+            file_size = os.path.getsize(output_path)
+            print(f"✅ Real merged PDF created: {output_filename} ({file_size} bytes)")
+            return output_filename, file_size
+        else:
+            raise Exception("Failed to create merged PDF file")
         
     except Exception as e:
         print(f"❌ Error merging PDFs: {e}")
+        # Cleanup temp files on error
+        for temp_file in temp_files:
+            try:
+                os.unlink(temp_file)
+            except:
+                pass
         # Fallback: create a simple PDF
         return await generate_processed_pdf("pdf-merger", files, {})
 

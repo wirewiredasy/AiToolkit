@@ -37,8 +37,11 @@ os.makedirs("fastapi_backend/uploads", exist_ok=True)
 os.makedirs("fastapi_backend/uploads/processed", exist_ok=True)
 
 # Serve static files for processed downloads
-os.makedirs("../static", exist_ok=True)
-app.mount("/static", StaticFiles(directory="../static"), name="static")
+static_dir = os.path.abspath("../static")
+os.makedirs(static_dir, exist_ok=True)
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+print(f"📁 Static files served from: {static_dir}")
 
 @app.get("/")
 async def root():
@@ -76,31 +79,43 @@ async def process_pdf_tool(
 @app.get("/api/tools/download/{filename}")
 async def download_processed_file(filename: str):
     """Download processed files from any microservice"""
-    file_path = f"../static/{filename}"
+    static_dir = os.path.abspath("../static")
+    file_path = os.path.join(static_dir, filename)
+    
+    print(f"🔍 Searching for file: {file_path}")
+    
     if os.path.exists(file_path):
         # Determine media type based on file extension
-        if filename.endswith('.pdf'):
-            media_type = 'application/pdf'
-        elif filename.endswith('.png'):
-            media_type = 'image/png'
-        elif filename.endswith('.jpg') or filename.endswith('.jpeg'):
-            media_type = 'image/jpeg'
-        elif filename.endswith('.mp3'):
-            media_type = 'audio/mpeg'
-        elif filename.endswith('.mp4'):
-            media_type = 'video/mp4'
-        elif filename.endswith('.json'):
-            media_type = 'application/json'
-        else:
-            media_type = 'application/octet-stream'
+        media_types = {
+            '.pdf': 'application/pdf',
+            '.png': 'image/png',
+            '.jpg': 'image/jpeg',
+            '.jpeg': 'image/jpeg',
+            '.mp3': 'audio/mpeg',
+            '.mp4': 'video/mp4',
+            '.json': 'application/json',
+            '.txt': 'text/plain'
+        }
+        
+        file_ext = os.path.splitext(filename)[1].lower()
+        media_type = media_types.get(file_ext, 'application/octet-stream')
+        
+        file_size = os.path.getsize(file_path)
+        print(f"✅ Serving file: {filename} ({file_size} bytes) as {media_type}")
             
         return FileResponse(
             path=file_path,
             media_type=media_type,
             filename=filename,
-            headers={"Content-Disposition": f"attachment; filename={filename}"}
+            headers={
+                "Content-Disposition": f"attachment; filename={filename}",
+                "Content-Length": str(file_size)
+            }
         )
-    raise HTTPException(status_code=404, detail="File not found")
+    
+    print(f"❌ File not found: {file_path}")
+    print(f"📁 Files in static directory: {os.listdir(static_dir) if os.path.exists(static_dir) else 'Directory not found'}")
+    raise HTTPException(status_code=404, detail=f"File not found: {filename}")
 
 # Image Tools Endpoints  
 @app.post("/api/tools/{tool_name}")
