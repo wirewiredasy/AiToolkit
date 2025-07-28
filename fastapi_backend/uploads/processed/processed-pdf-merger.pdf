@@ -5,8 +5,8 @@
 /Type /Catalog
 /Pages 2 0 R
 /Producer (Suntyn AI PDF Microservice v1.0)
-/CreationDate (D:20250728080134)
-/ModDate (D:20250728080134)
+/CreationDate (D:20250728081453)
+/ModDate (D:20250728081453)
 /Title (PDF MERGER - Professional Processing)
 /Subject (Processed with TinyWow-level quality using FastAPI microservice)
 /Creator (Suntyn AI - PDF Processing Microservice)
@@ -17,7 +17,7 @@ endobj
 <<
 /Type /Pages
 /Kids [3 0 R]
-/Count 5
+/Count 6
 >>
 endobj
 
@@ -58,7 +58,7 @@ BT
 0 -20 Td
 (Processing Date: 2025-07-28) Tj
 0 -20 Td
-(Processing Time: 08:01:34) Tj
+(Processing Time: 08:14:53) Tj
 0 -30 Td
 /F1 14 Tf
 (PROCESSING SUMMARY:) Tj
@@ -66,9 +66,9 @@ BT
 /F1 11 Tf
 (Total Files: 2) Tj
 0 -15 Td
-(Total Pages: 5) Tj
+(Total Pages: 6) Tj
 0 -15 Td
-(Total Size: 459.0 KB) Tj
+(Total Size: 460.0 KB) Tj
 0 -15 Td
 (Service: PDF Microservice) Tj
 0 -15 Td
@@ -78,10 +78,10 @@ BT
 (FILE ANALYSIS:) Tj
 0 -25 Td
 /F1 10 Tf
-(1. merged (2).pdf - 3 pages, 230.0 KB) Tj
+(1. merged (1).pdf - 3 pages, 230.0 KB) Tj
 0 -40 Td
 /F1 10 Tf
-(2. page_2.pdf - 2 pages, 229.0 KB) Tj
+(2. merged (2).pdf - 3 pages, 230.0 KB) Tj
 0 -40 Td
 /F1 12 Tf
 (PROCESSING VERIFICATION:) Tj
