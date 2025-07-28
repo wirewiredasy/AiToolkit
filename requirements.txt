@@ -63,3 +63,5 @@ re
 os
 sys
 time
+pillow-simd
+rembg

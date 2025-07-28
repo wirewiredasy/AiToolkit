@@ -33,6 +33,18 @@ async function startServer() {
     stdio: 'inherit'
   });
 
+  // Start Media service
+  const mediaProcess = spawn('python', ['-m', 'uvicorn', 'media_service:app', '--host', '0.0.0.0', '--port', '8003', '--reload'], {
+    cwd: path.join(process.cwd(), 'fastapi_backend/services'),
+    stdio: 'inherit'
+  });
+
+  // Start Government service
+  const govProcess = spawn('python', ['-m', 'uvicorn', 'government_service:app', '--host', '0.0.0.0', '--port', '8004', '--reload'], {
+    cwd: path.join(process.cwd(), 'fastapi_backend/services'),
+    stdio: 'inherit'
+  });
+
   // Start static file server
   const staticProcess = spawn('node', ['static_server.js'], {
     cwd: process.cwd(),
@@ -82,6 +94,8 @@ async function startServer() {
     console.log(`🔗 Backend: FastAPI Gateway on port 5001`);
     console.log(`🔧 PDF Service: http://localhost:8001`);
     console.log(`🖼️  Image Service: http://localhost:8002`);
+    console.log(`🎵 Media Service: http://localhost:8003`);
+    console.log(`🏛️  Government Service: http://localhost:8004`);
     console.log(`💻 Developer Service: http://localhost:8005`);
     console.log(`✅ Full-stack application ready!`);
 
@@ -92,6 +106,8 @@ async function startServer() {
       pdfProcess.kill();
       imageProcess.kill();
       devProcess.kill();
+      mediaProcess.kill();
+      govProcess.kill();
       staticProcess.kill();
       vite.close();
       process.exit(0);

@@ -107,8 +107,8 @@ async def simulate_heavy_processing(tool_name: str, file_count: int):
         await asyncio.sleep(processing_time / len(steps))
 
 async def remove_background_real(file: UploadFile) -> tuple[str, int]:
-    """Remove background from image using PIL"""
-    print("🔥 Removing background with PIL...")
+    """Remove background from image using advanced PIL techniques"""
+    print("🔥 Removing background with advanced PIL processing...")
     
     try:
         content = await file.read()
@@ -118,17 +118,51 @@ async def remove_background_real(file: UploadFile) -> tuple[str, int]:
         if image.mode != 'RGBA':
             image = image.convert('RGBA')
         
-        # Simple background removal by making white pixels transparent
+        # Advanced background removal algorithm
         data = image.getdata()
         new_data = []
+        
+        # Calculate average background color (assuming corners are background)
+        width, height = image.size
+        corner_pixels = []
+        try:
+            corner_pixels = [
+                image.getpixel((0, 0)),
+                image.getpixel((width-1, 0)),
+                image.getpixel((0, height-1)),
+                image.getpixel((width-1, height-1))
+            ]
+        except:
+            corner_pixels = [(255, 255, 255, 255)] * 4
+        
+        # Get most common corner color as background
+        valid_pixels = [p for p in corner_pixels if len(p) >= 3]
+        if valid_pixels:
+            bg_r = sum(p[0] for p in valid_pixels) // len(valid_pixels)
+            bg_g = sum(p[1] for p in valid_pixels) // len(valid_pixels)
+            bg_b = sum(p[2] for p in valid_pixels) // len(valid_pixels)
+        else:
+            bg_r, bg_g, bg_b = 255, 255, 255
+        
+        tolerance = 40  # Tolerance for background detection
+        
         for item in data:
-            # Change all white (also shades of whites) pixels to transparent
-            if item[0] > 200 and item[1] > 200 and item[2] > 200:
-                new_data.append((255, 255, 255, 0))  # Transparent
+            r, g, b = item[:3]
+            a = item[3] if len(item) > 3 else 255
+            
+            # Check if pixel is similar to background color
+            if (abs(r - bg_r) < tolerance and 
+                abs(g - bg_g) < tolerance and 
+                abs(b - bg_b) < tolerance):
+                new_data.append((r, g, b, 0))  # Make transparent
             else:
-                new_data.append(item)
+                new_data.append((r, g, b, a))  # Keep original
         
         image.putdata(new_data)
+        
+        # Apply edge smoothing
+        from PIL import ImageFilter
+        image = image.filter(ImageFilter.SMOOTH_MORE)
         
         # Save processed image
         output_filename = f"bg-removed-{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
@@ -137,7 +171,7 @@ async def remove_background_real(file: UploadFile) -> tuple[str, int]:
         image.save(output_path, "PNG")
         file_size = os.path.getsize(output_path)
         
-        print(f"✅ Background removed: {output_filename} ({file_size} bytes)")
+        print(f"✅ Background removed with advanced algorithm: {output_filename} ({file_size} bytes)")
         return output_filename, file_size
         
     except Exception as e:
@@ -145,12 +179,13 @@ async def remove_background_real(file: UploadFile) -> tuple[str, int]:
         return await generate_processed_image("bg-remover", [file], {})
 
 async def resize_image_real(file: UploadFile, metadata: dict) -> tuple[str, int]:
-    """Resize image using PIL"""
-    print("🔥 Resizing image with PIL...")
+    """Resize image using high-quality PIL processing"""
+    print("🔥 Resizing image with high-quality PIL processing...")
     
     try:
         content = await file.read()
         image = Image.open(io.BytesIO(content))
+        original_width, original_height = image.size
         
         # Get resize dimensions from metadata
         width = metadata.get('width', 800)
@@ -162,17 +197,45 @@ async def resize_image_real(file: UploadFile, metadata: dict) -> tuple[str, int]
         except:
             width, height = 800, 600
         
-        # Resize image
-        resized_image = image.resize((width, height), Image.Resampling.LANCZOS)
+        # Validate dimensions
+        if width < 1 or height < 1:
+            width, height = 800, 600
+        if width > 4000 or height > 4000:
+            width, height = 4000, 4000
+        
+        print(f"🔄 Resizing from {original_width}x{original_height} to {width}x{height}")
+        
+        # Use high-quality resampling
+        try:
+            if hasattr(Image, 'Resampling'):
+                resized_image = image.resize((width, height), Image.Resampling.LANCZOS)
+            else:
+                # Fallback for older PIL versions
+                resized_image = image.resize((width, height), 1)  # LANCZOS = 1
+        except:
+            resized_image = image.resize((width, height))
+        
+        # Optimize quality
+        if image.mode == 'RGBA':
+            # Preserve transparency
+            resized_image = resized_image.convert('RGBA')
+        elif image.mode == 'P':
+            # Convert palette mode
+            resized_image = resized_image.convert('RGB')
         
         # Save processed image
         output_filename = f"resized-{width}x{height}-{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
         output_path = f"../../static/{output_filename}"
         
-        resized_image.save(output_path, "PNG")
+        # Save with proper format and quality
+        if resized_image.mode == 'RGBA':
+            resized_image.save(output_path, "PNG", optimize=True)
+        else:
+            resized_image.save(output_path, "PNG", optimize=True)
+        
         file_size = os.path.getsize(output_path)
         
-        print(f"✅ Image resized: {output_filename} ({file_size} bytes)")
+        print(f"✅ Image resized successfully: {output_filename} ({file_size} bytes)")
         return output_filename, file_size
         
     except Exception as e:

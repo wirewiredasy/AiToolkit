@@ -4,7 +4,7 @@ hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
 
 [nix]
 channel = "stable-25_05"
-packages = ["cairo", "cargo", "ffmpeg-full", "freetype", "ghostscript", "glibcLocales", "gobject-introspection", "gtk3", "imagemagickBig", "libiconv", "pkg-config", "python3", "qhull", "rustc", "tcl", "tk", "xcodebuild", "zlib"]
+packages = ["cairo", "cargo", "ffmpeg-full", "file", "freetype", "ghostscript", "glibcLocales", "gobject-introspection", "gtk3", "imagemagickBig", "lcms2", "libGL", "libGLU", "libiconv", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "pkg-config", "python3", "qhull", "rustc", "tcl", "tk", "xcodebuild", "zlib"]
 
 [env]
 REPLIT_KEEP_PACKAGE_DEV_DEPENDENCIES = "1"
@@ -47,6 +47,14 @@ externalPort = 3001
 [[ports]]
 localPort = 8002
 externalPort = 3003
+
+[[ports]]
+localPort = 8003
+externalPort = 6800
+
+[[ports]]
+localPort = 8004
+externalPort = 8008
 
 [[ports]]
 localPort = 8005
