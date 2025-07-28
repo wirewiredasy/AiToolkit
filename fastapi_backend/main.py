@@ -41,7 +41,11 @@ app.mount("/uploads", StaticFiles(directory="../uploads"), name="uploads")
 
 @app.get("/")
 async def root():
-    return {"message": "Suntyn AI - TinyWow Clone API Gateway", "status": "active"}
+    return {"message": "Suntyn AI - TinyWow Clone API Gateway", "status": "active", "version": "2.0.0"}
+
+@app.get("/api")
+async def api_root():
+    return {"message": "Suntyn AI API Gateway", "status": "active", "endpoints": ["/api/health", "/api/process"]}
 
 @app.get("/health")
 async def health_check():
