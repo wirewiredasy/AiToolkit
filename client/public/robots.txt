@@ -1,5 +1,5 @@
 # Robots.txt for Suntyn AI - Neural Intelligence Platform
-# Generated automatically on 2025-07-27
+# Generated automatically on 2025-07-28
 # Visit: https://suntyn-ai.com
 
 User-agent: *
