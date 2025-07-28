@@ -33,11 +33,11 @@ MICROSERVICES = {
 }
 
 # Create uploads directory
-os.makedirs("uploads", exist_ok=True)
-os.makedirs("uploads/processed", exist_ok=True)
+os.makedirs("../uploads", exist_ok=True)
+os.makedirs("../uploads/processed", exist_ok=True)
 
 # Serve static files
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+app.mount("/uploads", StaticFiles(directory="../uploads"), name="uploads")
 
 @app.get("/")
 async def root():

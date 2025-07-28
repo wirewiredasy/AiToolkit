@@ -56,11 +56,18 @@ def main():
     processes = []
     
     try:
-        for name, port, script in services:
+        # Start main gateway first
+        main_process = start_service("Main Gateway", 5000, "main")
+        if main_process:
+            processes.append(("Main Gateway", main_process))
+        time.sleep(3)
+        
+        # Start microservices
+        for name, port, script in services[1:]:  # Skip main gateway
             process = start_service(name, port, script)
             if process:
                 processes.append((name, process))
-            time.sleep(2)  # Wait between service starts
+            time.sleep(1)  # Wait between service starts
         
         print("\n🎯 All services started successfully!")
         print("📊 Service Status:")

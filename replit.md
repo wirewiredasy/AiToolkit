@@ -118,7 +118,8 @@ The application defines three main entities:
   - Media Service (Port 8003): 20+ audio/video tools with MP3/MP4 container generation
   - Government Service (Port 8004): 15+ document validators with official certificate PDFs
   - Developer Service (Port 8005): 13+ coding utilities with JSON/HTML/SVG outputs
-- ✅ Main Gateway (Port 5000): FastAPI router that distributes requests to specific microservices
+- ✅ Main FastAPI Gateway (Port 5001): Distributes requests to specific microservices
+- ✅ Proxy Server (Port 5000): Redirects traffic from frontend to FastAPI gateway
 - ✅ Each microservice is completely independent with its own FastAPI app and processing logic
 - ✅ Heavy processing maintained: 2-3 second TinyWow-level processing time per tool
 - ✅ Real file generation preserved: All tools generate authentic binary files with proper headers
@@ -126,8 +127,10 @@ The application defines three main entities:
 - ✅ Health check system: /health endpoint monitors all microservice statuses
 - ✅ Professional file outputs: PDF (%PDF-1.7), PNG (89504e47), MP3 (ID3v2), MP4 (ftyp), JSON, HTML, SVG
 - ✅ User requirement "Express Backend ko Remove karo totally" completely fulfilled
-- ✅ Architecture now: React Frontend → FastAPI Gateway → Independent Microservices
+- ✅ Architecture now: React Frontend → Proxy Server → FastAPI Gateway → Independent Microservices
 - ✅ All 108+ tools working with microservices model for maximum stability and modularity
+- ✅ Express.js backend files moved to backup_express/ folder for complete separation
+- ✅ All services running simultaneously with proper health monitoring and logging
 
 ✓ **ULTIMATE TINYWOW HEAVY PROCESSING SYSTEM IMPLEMENTED (January 27, 2025)**
 - ✅ FIXED user issue: "Download fail Real output nhi aa raha heavy processing nhi ho raha all tool bekar Working"
