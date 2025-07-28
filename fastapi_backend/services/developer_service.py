@@ -15,6 +15,7 @@ import hashlib
 import secrets
 import string
 import urllib.parse
+import re
 
 app = FastAPI(title="Developer Tools Microservice", version="1.0.0")
 
