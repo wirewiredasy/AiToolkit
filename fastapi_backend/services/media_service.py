@@ -23,7 +23,7 @@ app.add_middleware(
 
 # Ensure directories exist
 os.makedirs("../../static", exist_ok=True)
-os.makedirs("uploads/processed", exist_ok=True)
+os.makedirs("../../static", exist_ok=True)
 
 @app.get("/health")
 async def health_check():

@@ -37,7 +37,8 @@ os.makedirs("fastapi_backend/uploads", exist_ok=True)
 os.makedirs("fastapi_backend/uploads/processed", exist_ok=True)
 
 # Serve static files for processed downloads
-app.mount("/static", StaticFiles(directory="uploads/processed"), name="static")
+os.makedirs("../static", exist_ok=True)
+app.mount("/static", StaticFiles(directory="../static"), name="static")
 
 @app.get("/")
 async def root():
@@ -75,7 +76,7 @@ async def process_pdf_tool(
 @app.get("/api/tools/download/{filename}")
 async def download_processed_file(filename: str):
     """Download processed files from any microservice"""
-    file_path = f"fastapi_backend/uploads/processed/{filename}"
+    file_path = f"../static/{filename}"
     if os.path.exists(file_path):
         # Determine media type based on file extension
         if filename.endswith('.pdf'):
@@ -179,7 +180,7 @@ async def route_to_microservice(service: str, tool_name: str, files: List[Upload
 @app.get("/api/download/{filename}")
 async def download_file(filename: str):
     """Download processed files"""
-    file_path = f"uploads/processed/{filename}"
+    file_path = f"../static/{filename}"
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail="File not found")
     
