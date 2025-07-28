@@ -29,7 +29,7 @@ app.add_middleware(
 )
 
 # Ensure directories exist
-os.makedirs("../uploads/processed", exist_ok=True)
+os.makedirs("uploads/processed", exist_ok=True)
 
 @app.get("/health")
 async def health_check():
@@ -62,7 +62,7 @@ async def process_developer_tool(
 
     # Save processed file
     output_filename = f"processed-{tool_name}.{file_extension}"
-    output_path = f"../uploads/processed/{output_filename}"
+    output_path = f"uploads/processed/{output_filename}"
 
     with open(output_path, "wb") as f:
         f.write(dev_content)
@@ -72,7 +72,7 @@ async def process_developer_tool(
     return JSONResponse(content={
         "success": True,
         "message": f"{tool_name.replace('-', ' ').title()} completed successfully",
-        "downloadUrl": f"/api/download/{output_filename}",
+        "downloadUrl": f"/static/{output_filename}",
         "filename": output_filename,
         "processingTime": int(processing_time),
         "toolId": tool_name,

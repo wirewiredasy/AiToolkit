@@ -33,11 +33,11 @@ MICROSERVICES = {
 }
 
 # Create uploads directory
-os.makedirs("../uploads", exist_ok=True)
-os.makedirs("../uploads/processed", exist_ok=True)
+os.makedirs("fastapi_backend/uploads", exist_ok=True)
+os.makedirs("fastapi_backend/uploads/processed", exist_ok=True)
 
-# Serve static files
-app.mount("/uploads", StaticFiles(directory="../uploads"), name="uploads")
+# Serve static files for processed downloads
+app.mount("/static", StaticFiles(directory="uploads/processed"), name="static")
 
 @app.get("/")
 async def root():
@@ -71,6 +71,35 @@ async def process_pdf_tool(
 ):
     """Route PDF tools to PDF microservice"""
     return await route_to_microservice("pdf", f"pdf-{tool_name}", files, metadata)
+
+@app.get("/api/tools/download/{filename}")
+async def download_processed_file(filename: str):
+    """Download processed files from any microservice"""
+    file_path = f"fastapi_backend/uploads/processed/{filename}"
+    if os.path.exists(file_path):
+        # Determine media type based on file extension
+        if filename.endswith('.pdf'):
+            media_type = 'application/pdf'
+        elif filename.endswith('.png'):
+            media_type = 'image/png'
+        elif filename.endswith('.jpg') or filename.endswith('.jpeg'):
+            media_type = 'image/jpeg'
+        elif filename.endswith('.mp3'):
+            media_type = 'audio/mpeg'
+        elif filename.endswith('.mp4'):
+            media_type = 'video/mp4'
+        elif filename.endswith('.json'):
+            media_type = 'application/json'
+        else:
+            media_type = 'application/octet-stream'
+            
+        return FileResponse(
+            path=file_path,
+            media_type=media_type,
+            filename=filename,
+            headers={"Content-Disposition": f"attachment; filename={filename}"}
+        )
+    raise HTTPException(status_code=404, detail="File not found")
 
 # Image Tools Endpoints  
 @app.post("/api/tools/{tool_name}")

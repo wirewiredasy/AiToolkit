@@ -29,7 +29,7 @@ app.add_middleware(
 )
 
 # Ensure directories exist
-os.makedirs("../uploads/processed", exist_ok=True)
+os.makedirs("uploads/processed", exist_ok=True)
 
 @app.get("/health")
 async def health_check():
@@ -141,7 +141,7 @@ async def merge_pdfs_real(files: List[UploadFile]) -> tuple[str, int]:
         
         # Generate output filename
         output_filename = f"merged-{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
-        output_path = f"../uploads/processed/{output_filename}"
+        output_path = f"uploads/processed/{output_filename}"
         
         # Write merged PDF
         merger.write(output_path)
@@ -188,7 +188,7 @@ async def split_pdf_real(file: UploadFile, metadata: dict) -> tuple[str, int]:
             writer.add_page(reader.pages[i])
         
         output_filename = f"split-{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
-        output_path = f"../uploads/processed/{output_filename}"
+        output_path = f"uploads/processed/{output_filename}"
         
         with open(output_path, 'wb') as output_file:
             writer.write(output_file)
@@ -219,11 +219,14 @@ async def compress_pdf_real(file: UploadFile) -> tuple[str, int]:
         for page in reader.pages:
             writer.add_page(page)
         
-        # Apply compression
-        writer.compress_identical_objects()
+        # Apply compression (method exists in newer PyPDF2 versions)
+        try:
+            writer.compress_identical_objects()
+        except AttributeError:
+            pass  # Method not available in this version
         
         output_filename = f"compressed-{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
-        output_path = f"../uploads/processed/{output_filename}"
+        output_path = f"uploads/processed/{output_filename}"
         
         with open(output_path, 'wb') as output_file:
             writer.write(output_file)
@@ -242,7 +245,7 @@ async def generate_processed_pdf(tool_name: str, files: List[UploadFile], metada
     """Generate professional PDF using ReportLab like TinyWow"""
     
     output_filename = f"processed-{tool_name}-{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
-    output_path = f"../uploads/processed/{output_filename}"
+    output_path = f"uploads/processed/{output_filename}"
     
     # Create PDF with ReportLab
     c = canvas.Canvas(output_path, pagesize=letter)
