@@ -10,6 +10,7 @@ import os
 import io
 from datetime import datetime
 import json
+from fastapi.responses import StreamingResponse, JSONResponse
 
 app = FastAPI(title="PDF Tools Microservice", version="1.0.0")
 
@@ -35,10 +36,10 @@ async def process_pdf_tool(
     metadata: Optional[str] = Form(None)
 ):
     """Process PDF tool request with heavy processing like TinyWow"""
-    
+
     start_time = datetime.now()
     print(f"🔥 PDF Service: Processing {tool_name} with {len(files)} files")
-    
+
     # Parse metadata
     meta_data = {}
     if metadata:
@@ -46,23 +47,23 @@ async def process_pdf_tool(
             meta_data = json.loads(metadata)
         except:
             meta_data = {"text": metadata}
-    
+
     # Heavy processing simulation like TinyWow
     await simulate_heavy_processing(tool_name, len(files))
-    
+
     # Generate professional PDF output
     pdf_content = await generate_professional_pdf(tool_name, files, meta_data)
-    
+
     # Save processed file
     output_filename = f"processed-{tool_name}.pdf"
     output_path = f"../uploads/processed/{output_filename}"
-    
+
     with open(output_path, "wb") as f:
         f.write(pdf_content)
-    
+
     processing_time = (datetime.now() - start_time).total_seconds() * 1000
-    
-    return {
+
+    return JSONResponse(content={
         "success": True,
         "message": f"{tool_name.replace('-', ' ').title()} completed successfully",
         "downloadUrl": f"/api/download/{output_filename}",
@@ -76,15 +77,15 @@ async def process_pdf_tool(
             "service": "pdf-microservice",
             **meta_data
         }
-    }
+    })
 
 async def simulate_heavy_processing(tool_name: str, file_count: int):
     """Simulate heavy processing like TinyWow"""
     import asyncio
-    
+
     # Heavy processing time based on tool complexity
     processing_time = max(2.0, file_count * 0.8)  # Minimum 2 seconds
-    
+
     steps = [
         "Initializing PDF processors...",
         "Loading document analyzers...", 
@@ -93,18 +94,18 @@ async def simulate_heavy_processing(tool_name: str, file_count: int):
         "Optimizing output quality...",
         "Finalizing PDF document..."
     ]
-    
+
     for i, step in enumerate(steps):
         print(f"📊 {step}")
         await asyncio.sleep(processing_time / len(steps))
 
 async def generate_professional_pdf(tool_name: str, files: List[UploadFile], metadata: dict) -> bytes:
     """Generate professional PDF like TinyWow"""
-    
+
     # Analyze uploaded files
     file_analysis = []
     total_size = 0
-    
+
     for file in files:
         content = await file.read()
         file_info = {
@@ -116,7 +117,7 @@ async def generate_professional_pdf(tool_name: str, files: List[UploadFile], met
         }
         file_analysis.append(file_info)
         total_size += file_info["size"]
-    
+
     # If no files uploaded, create sample data
     if not file_analysis:
         file_analysis = [{
@@ -126,11 +127,11 @@ async def generate_professional_pdf(tool_name: str, files: List[UploadFile], met
             "pages": 3,
             "is_valid": True
         }]
-    
+
     # Generate professional PDF content
     timestamp = datetime.now()
     total_pages = sum(f["pages"] for f in file_analysis)
-    
+
     pdf_content = f"""%PDF-1.7
 %âãÏÓ
 1 0 obj
@@ -261,13 +262,13 @@ def estimate_pdf_pages(content: bytes) -> int:
     """Estimate number of pages in PDF"""
     if len(content) < 4:
         return 1
-    
+
     if content[:4] == b'%PDF':
         # Count page objects
         content_str = content.decode('utf-8', errors='ignore')
         page_count = content_str.count('/Type /Page')
         return max(1, page_count)
-    
+
     # Estimate based on file size
     return max(1, len(content) // 50000)
 

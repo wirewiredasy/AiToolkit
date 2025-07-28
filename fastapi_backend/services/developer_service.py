@@ -16,6 +16,7 @@ import secrets
 import string
 import urllib.parse
 import re
+from fastapi.responses import StreamingResponse, JSONResponse
 
 app = FastAPI(title="Developer Tools Microservice", version="1.0.0")
 
@@ -41,10 +42,10 @@ async def process_developer_tool(
     metadata: Optional[str] = Form(None)
 ):
     """Process developer tool request with heavy processing like TinyWow"""
-    
+
     start_time = datetime.now()
     print(f"💻 Developer Service: Processing {tool_name} with {len(files)} files")
-    
+
     # Parse metadata
     meta_data = {}
     if metadata:
@@ -52,23 +53,23 @@ async def process_developer_tool(
             meta_data = json.loads(metadata)
         except:
             meta_data = {"text": metadata}
-    
+
     # Heavy processing simulation like TinyWow
     await simulate_heavy_processing(tool_name, len(files))
-    
+
     # Generate professional developer output
     dev_content, file_extension = await generate_developer_output(tool_name, files, meta_data)
-    
+
     # Save processed file
     output_filename = f"processed-{tool_name}.{file_extension}"
     output_path = f"../uploads/processed/{output_filename}"
-    
+
     with open(output_path, "wb") as f:
         f.write(dev_content)
-    
+
     processing_time = (datetime.now() - start_time).total_seconds() * 1000
-    
-    return {
+
+    return JSONResponse(content={
         "success": True,
         "message": f"{tool_name.replace('-', ' ').title()} completed successfully",
         "downloadUrl": f"/api/download/{output_filename}",
@@ -82,15 +83,15 @@ async def process_developer_tool(
             "service": "developer-microservice",
             **meta_data
         }
-    }
+    })
 
 async def simulate_heavy_processing(tool_name: str, file_count: int):
     """Simulate heavy processing like TinyWow"""
     import asyncio
-    
+
     # Heavy processing time based on tool complexity
     processing_time = max(1.5, file_count * 0.8)  # Developer tools are generally faster
-    
+
     steps = [
         "Loading developer processors...",
         "Analyzing code structure...", 
@@ -99,17 +100,17 @@ async def simulate_heavy_processing(tool_name: str, file_count: int):
         "Validating result...",
         "Finalizing developer output..."
     ]
-    
+
     for i, step in enumerate(steps):
         print(f"📊 {step}")
         await asyncio.sleep(processing_time / len(steps))
 
 async def generate_developer_output(tool_name: str, files: List[UploadFile], metadata: dict) -> tuple[bytes, str]:
     """Generate professional developer tool output like TinyWow"""
-    
+
     # Get input text from metadata or uploaded file
     input_text = metadata.get('text', '')
-    
+
     if files and len(files) > 0:
         file = files[0]
         content = await file.read()
@@ -117,7 +118,7 @@ async def generate_developer_output(tool_name: str, files: List[UploadFile], met
             input_text = content.decode('utf-8')
         except:
             input_text = content.decode('utf-8', errors='ignore')
-    
+
     # Process based on tool type
     if tool_name == "json-formatter":
         return generate_formatted_json(input_text, files[0] if files else None), "json"
@@ -154,7 +155,7 @@ def generate_formatted_json(json_input: str, original_file: Optional[UploadFile]
     try:
         # Parse and validate JSON
         parsed_json = json.loads(json_input or '{}')
-        
+
         # Create professional output
         result = {
             "processed_by": "Suntyn AI Developer Microservice",
@@ -176,9 +177,9 @@ def generate_formatted_json(json_input: str, original_file: Optional[UploadFile]
             },
             "formatted_content": parsed_json
         }
-        
+
         return json.dumps(result, indent=2, ensure_ascii=False).encode('utf-8')
-        
+
     except json.JSONDecodeError as e:
         error_result = {
             "processed_by": "Suntyn AI Developer Microservice",
@@ -197,9 +198,9 @@ def generate_base64_encoded(text: str) -> bytes:
     """Generate Base64 encoded output"""
     if not text:
         text = "Sample text for Base64 encoding"
-    
+
     encoded = base64.b64encode(text.encode('utf-8')).decode('ascii')
-    
+
     result = f"""Base64 Encoding Result
 Processed by: Suntyn AI Developer Microservice
 Processing Time: {datetime.now().isoformat()}
@@ -218,16 +219,16 @@ Service Information:
 - Architecture: FastAPI + Independent Services
 - Processing: TinyWow-level Quality
 """
-    
+
     return result.encode('utf-8')
 
 def generate_hash_output(text: str) -> bytes:
     """Generate multiple hash outputs"""
     if not text:
         text = "Sample text for hash generation"
-    
+
     text_bytes = text.encode('utf-8')
-    
+
     result = f"""Hash Generation Result
 Processed by: Suntyn AI Developer Microservice
 Processing Time: {datetime.now().isoformat()}
@@ -247,7 +248,7 @@ Service Information:
 - Security: Professional Grade Hashing
 - Processing: TinyWow-level Quality
 """
-    
+
     return result.encode('utf-8')
 
 def generate_secure_password(metadata: dict) -> bytes:
@@ -257,7 +258,7 @@ def generate_secure_password(metadata: dict) -> bytes:
     include_numbers = metadata.get('numbers', True)
     include_uppercase = metadata.get('uppercase', True)
     include_lowercase = metadata.get('lowercase', True)
-    
+
     # Build character set
     chars = ""
     if include_lowercase:
@@ -268,16 +269,16 @@ def generate_secure_password(metadata: dict) -> bytes:
         chars += string.digits
     if include_symbols:
         chars += "!@#$%^&*()-_=+[]{}|;:,.<>?"
-    
+
     if not chars:
         chars = string.ascii_letters + string.digits
-    
+
     # Generate multiple passwords
     passwords = []
     for i in range(5):
         password = ''.join(secrets.choice(chars) for _ in range(length))
         passwords.append(password)
-    
+
     result = f"""Secure Password Generation
 Processed by: Suntyn AI Developer Microservice
 Processing Time: {datetime.now().isoformat()}
@@ -306,14 +307,14 @@ Service Information:
 - Architecture: FastAPI + Independent Services
 - Security: Military Grade Random Generation
 """
-    
+
     return result.encode('utf-8')
 
 def generate_qr_code_svg(text: str) -> bytes:
     """Generate SVG QR Code"""
     if not text:
         text = "https://suntyn.ai"
-    
+
     # Create professional SVG QR code
     qr_svg = f"""<?xml version="1.0" encoding="UTF-8"?>
 <svg width="300" height="300" xmlns="http://www.w3.org/2000/svg" style="background: white;">
@@ -324,32 +325,32 @@ def generate_qr_code_svg(text: str) -> bytes:
       .qr-background {{ fill: #fff; }}
     </style>
   </defs>
-  
+
   <!-- Background -->
   <rect width="300" height="300" class="qr-background"/>
-  
+
   <!-- Title -->
   <text x="150" y="20" text-anchor="middle" class="qr-title">QR Code Generated by Suntyn AI</text>
-  
+
   <!-- QR Code Area -->
   <rect x="50" y="40" width="200" height="200" fill="none" stroke="#333" stroke-width="2"/>
-  
+
   <!-- QR Pattern (Simplified) -->
   {generate_qr_pattern()}
-  
+
   <!-- Corner Squares -->
   <rect x="60" y="50" width="30" height="30" class="qr-module"/>
   <rect x="210" y="50" width="30" height="30" class="qr-module"/>
   <rect x="60" y="200" width="30" height="30" class="qr-module"/>
-  
+
   <!-- Center Square -->
   <rect x="135" y="125" width="30" height="30" class="qr-module"/>
-  
+
   <!-- Data -->
   <text x="150" y="270" text-anchor="middle" class="qr-title">Data: {text[:30]}{'...' if len(text) > 30 else ''}</text>
   <text x="150" y="290" text-anchor="middle" class="qr-title">Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</text>
 </svg>"""
-    
+
     return qr_svg.encode('utf-8')
 
 def generate_qr_pattern() -> str:
@@ -366,7 +367,7 @@ def generate_qr_pattern() -> str:
 def generate_color_palette(metadata: dict) -> bytes:
     """Generate color palette"""
     base_color = metadata.get('color', '#3498db')
-    
+
     palette = {
         "processed_by": "Suntyn AI Developer Microservice",
         "processing_time": datetime.now().isoformat(),
@@ -393,13 +394,13 @@ def generate_color_palette(metadata: dict) -> bytes:
             "architecture": "FastAPI + Independent Services"
         }
     }
-    
+
     return json.dumps(palette, indent=2).encode('utf-8')
 
 def generate_lorem_ipsum(metadata: dict) -> bytes:
     """Generate Lorem Ipsum text"""
     paragraphs = int(metadata.get('paragraphs', 3))
-    
+
     lorem_text = """Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
@@ -408,7 +409,7 @@ At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praese
 
     paragraphs_list = lorem_text.split('\n\n')
     selected_paragraphs = (paragraphs_list * (paragraphs // len(paragraphs_list) + 1))[:paragraphs]
-    
+
     result = f"""Lorem Ipsum Generator
 Processed by: Suntyn AI Developer Microservice
 Processing Time: {datetime.now().isoformat()}
@@ -422,16 +423,16 @@ Service Information:
 - Architecture: FastAPI + Independent Services
 - Content: Professional Lorem Ipsum
 """
-    
+
     return result.encode('utf-8')
 
 def generate_url_encoded(text: str) -> bytes:
     """Generate URL encoded output"""
     if not text:
         text = "https://example.com/path?param=value&special=chars!"
-    
+
     encoded = urllib.parse.quote(text, safe='')
-    
+
     result = f"""URL Encoding Result
 Processed by: Suntyn AI Developer Microservice
 Processing Time: {datetime.now().isoformat()}
@@ -450,7 +451,7 @@ Service Information:
 - Architecture: FastAPI + Independent Services
 - Encoding: RFC 3986 Compliant
 """
-    
+
     return result.encode('utf-8')
 
 def generate_timestamp_conversion(timestamp_input: str) -> bytes:
@@ -468,7 +469,7 @@ def generate_timestamp_conversion(timestamp_input: str) -> bytes:
         # Use current time as default
         dt = datetime.now()
         timestamp = int(dt.timestamp())
-    
+
     result = {
         "processed_by": "Suntyn AI Developer Microservice",
         "processing_time": datetime.now().isoformat(),
@@ -493,20 +494,20 @@ def generate_timestamp_conversion(timestamp_input: str) -> bytes:
             "architecture": "FastAPI + Independent Services"
         }
     }
-    
+
     return json.dumps(result, indent=2).encode('utf-8')
 
 def generate_regex_test_result(metadata: dict) -> bytes:
     """Generate regex test result"""
     pattern = metadata.get('pattern', r'\d+')
     test_string = metadata.get('test_string', '123 abc 456 def')
-    
+
     import re
-    
+
     try:
         matches = re.findall(pattern, test_string)
         match_objects = list(re.finditer(pattern, test_string))
-        
+
         result = {
             "processed_by": "Suntyn AI Developer Microservice",
             "processing_time": datetime.now().isoformat(),
@@ -544,14 +545,14 @@ def generate_regex_test_result(metadata: dict) -> bytes:
                 "matches": []
             }
         }
-    
+
     return json.dumps(result, indent=2).encode('utf-8')
 
 def generate_html_from_markdown(markdown_text: str) -> bytes:
     """Convert Markdown to HTML"""
     if not markdown_text:
         markdown_text = "# Sample Markdown\n\nThis is **bold** and *italic* text."
-    
+
     # Simple markdown to HTML conversion
     html = markdown_text
     html = re.sub(r'^# (.+)$', r'<h1>\1</h1>', html, flags=re.MULTILINE)
@@ -562,7 +563,7 @@ def generate_html_from_markdown(markdown_text: str) -> bytes:
     html = re.sub(r'`(.+?)`', r'<code>\1</code>', html)
     html = html.replace('\n\n', '</p><p>')
     html = f'<p>{html}</p>'
-    
+
     full_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -598,11 +599,11 @@ def generate_html_from_markdown(markdown_text: str) -> bytes:
         <p>Processing Time: {datetime.now().isoformat()}</p>
         <p>Architecture: FastAPI + Independent Services</p>
     </div>
-    
+
     <div class="content">
         {html}
     </div>
-    
+
     <div class="header">
         <h3>Service Information</h3>
         <ul>
@@ -613,7 +614,7 @@ def generate_html_from_markdown(markdown_text: str) -> bytes:
     </div>
 </body>
 </html>"""
-    
+
     return full_html.encode('utf-8')
 
 def generate_minified_css(css_input: str) -> bytes:
@@ -629,7 +630,7 @@ def generate_minified_css(css_input: str) -> bytes:
     max-width: 1200px;
     margin: 0 auto;
 }"""
-    
+
     # Simple CSS minification
     minified = css_input
     minified = re.sub(r'/\*.*?\*/', '', minified, flags=re.DOTALL)  # Remove comments
@@ -638,7 +639,7 @@ def generate_minified_css(css_input: str) -> bytes:
     minified = re.sub(r'\s*{\s*', '{', minified)  # Remove space around {
     minified = re.sub(r';\s*', ';', minified)  # Remove space after ;
     minified = minified.strip()
-    
+
     result = f"""/* CSS Minifier Result - Suntyn AI Developer Microservice */
 /* Original: {len(css_input)} bytes → Minified: {len(minified)} bytes */
 /* Compression: {((1 - len(minified) / len(css_input)) * 100):.1f}% smaller */
@@ -646,7 +647,7 @@ def generate_minified_css(css_input: str) -> bytes:
 /* Architecture: FastAPI + Independent Services */
 
 {minified}"""
-    
+
     return result.encode('utf-8')
 
 def generate_minified_js(js_input: str) -> bytes:
@@ -660,7 +661,7 @@ def generate_minified_js(js_input: str) -> bytes:
 
 const myVar = 'Hello World';
 console.log(myVar);"""
-    
+
     # Simple JavaScript minification
     minified = js_input
     minified = re.sub(r'//.*$', '', minified, flags=re.MULTILINE)  # Remove single-line comments
@@ -669,7 +670,7 @@ console.log(myVar);"""
     minified = re.sub(r'\s*{\s*', '{', minified)  # Remove space around {
     minified = re.sub(r';\s*', ';', minified)  # Remove space after ;
     minified = minified.strip()
-    
+
     result = f"""// JavaScript Minifier Result - Suntyn AI Developer Microservice
 // Original: {len(js_input)} bytes → Minified: {len(minified)} bytes
 // Compression: {((1 - len(minified) / len(js_input)) * 100):.1f}% smaller
@@ -677,7 +678,7 @@ console.log(myVar);"""
 // Architecture: FastAPI + Independent Services
 
 {minified}"""
-    
+
     return result.encode('utf-8')
 
 if __name__ == "__main__":
