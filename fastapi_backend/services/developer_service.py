@@ -29,6 +29,7 @@ app.add_middleware(
 )
 
 # Ensure directories exist
+os.makedirs("../../static", exist_ok=True)
 os.makedirs("uploads/processed", exist_ok=True)
 
 @app.get("/health")
@@ -62,7 +63,7 @@ async def process_developer_tool(
 
     # Save processed file
     output_filename = f"processed-{tool_name}.{file_extension}"
-    output_path = f"uploads/processed/{output_filename}"
+    output_path = f"../../static/{output_filename}"
 
     with open(output_path, "wb") as f:
         f.write(dev_content)

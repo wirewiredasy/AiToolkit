@@ -24,7 +24,8 @@ app.add_middleware(
 )
 
 # Ensure directories exist
-os.makedirs("../uploads/processed", exist_ok=True)
+os.makedirs("../../static", exist_ok=True)
+os.makedirs("uploads/processed", exist_ok=True)
 
 @app.get("/health")
 async def health_check():
@@ -57,7 +58,7 @@ async def process_government_tool(
     
     # Save processed file
     output_filename = f"processed-{tool_name}.pdf"
-    output_path = f"../uploads/processed/{output_filename}"
+    output_path = f"../../static/{output_filename}"
     
     with open(output_path, "wb") as f:
         f.write(gov_content)

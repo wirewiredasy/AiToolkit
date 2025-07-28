@@ -26,6 +26,7 @@ app.add_middleware(
 )
 
 # Ensure directories exist  
+os.makedirs("../../static", exist_ok=True)
 os.makedirs("uploads/processed", exist_ok=True)
 
 @app.get("/health")
@@ -131,7 +132,7 @@ async def remove_background_real(file: UploadFile) -> tuple[str, int]:
         
         # Save processed image
         output_filename = f"bg-removed-{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
-        output_path = f"uploads/processed/{output_filename}"
+        output_path = f"../../static/{output_filename}"
         
         image.save(output_path, "PNG")
         file_size = os.path.getsize(output_path)
@@ -166,7 +167,7 @@ async def resize_image_real(file: UploadFile, metadata: dict) -> tuple[str, int]
         
         # Save processed image
         output_filename = f"resized-{width}x{height}-{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
-        output_path = f"uploads/processed/{output_filename}"
+        output_path = f"../../static/{output_filename}"
         
         resized_image.save(output_path, "PNG")
         file_size = os.path.getsize(output_path)
@@ -192,7 +193,7 @@ async def compress_image_real(file: UploadFile) -> tuple[str, int]:
         
         # Save compressed image
         output_filename = f"compressed-{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg"
-        output_path = f"uploads/processed/{output_filename}"
+        output_path = f"../../static/{output_filename}"
         
         # Save with compression
         image.save(output_path, "JPEG", quality=75, optimize=True)
@@ -209,7 +210,7 @@ async def generate_processed_image(tool_name: str, files: List[UploadFile], meta
     """Generate professional image using PIL like TinyWow"""
     
     output_filename = f"processed-{tool_name}-{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
-    output_path = f"uploads/processed/{output_filename}"
+    output_path = f"../../static/{output_filename}"
     
     # Create image with PIL
     from PIL import Image, ImageDraw

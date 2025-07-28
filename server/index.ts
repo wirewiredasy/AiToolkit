@@ -33,6 +33,12 @@ async function startServer() {
     stdio: 'inherit'
   });
 
+  // Start static file server
+  const staticProcess = spawn('node', ['static_server.js'], {
+    cwd: process.cwd(),
+    stdio: 'inherit'
+  });
+
   // Wait a moment for services to start
   await new Promise(resolve => setTimeout(resolve, 3000));
 
@@ -56,6 +62,11 @@ async function startServer() {
             target: 'http://localhost:5001',
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/api/, '/api')
+          },
+          '/static': {
+            target: 'http://localhost:3001',
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/static/, '/static')
           }
         }
       },
@@ -81,6 +92,7 @@ async function startServer() {
       pdfProcess.kill();
       imageProcess.kill();
       devProcess.kill();
+      staticProcess.kill();
       vite.close();
       process.exit(0);
     });
