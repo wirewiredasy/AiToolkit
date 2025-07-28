@@ -386,13 +386,6 @@ function Router() {
 }
 
 function App() {
-  const { isLoading, isReady, handleLoadingComplete } = useAppLoading();
-
-  // Show loading screen until app is ready
-  if (isLoading || !isReady) {
-    return <LoadingScreen onLoadingComplete={handleLoadingComplete} />;
-  }
-
   return (
     <ThemeProvider>
       <ErrorBoundary>
