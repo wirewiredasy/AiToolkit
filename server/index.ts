@@ -62,13 +62,7 @@ async function startServer() {
       server: { 
         port: 5000,
         host: '0.0.0.0',
-        allowedHosts: [
-          'localhost',
-          '127.0.0.1',
-          '02d0c99b-e487-4d7c-a6de-edf9691d54a6-00-1dfktcacfsmtq.worf.replit.dev',
-          '.replit.dev',
-          '.repl.co'
-        ],
+        allowedHosts: 'any',
         proxy: {
           '/api': {
             target: 'http://localhost:5001',
