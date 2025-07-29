@@ -42,15 +42,25 @@ export function ResultDisplay({
     try {
       console.log('Starting download from:', result.downloadUrl);
 
-      // Add timeout and abort controller
+      // Enhanced timeout and abort controller with user-friendly messaging
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+        toast({
+          title: "Download Timeout",
+          description: "Download is taking longer than expected. Please try again.",
+          variant: "destructive",
+        });
+      }, 30000); // 30 second timeout
 
+      // Enhanced headers for better compatibility
       const response = await fetch(result.downloadUrl, {
         signal: controller.signal,
         headers: {
           'Accept': '*/*',
-          'Cache-Control': 'no-cache'
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
         }
       });
 
@@ -63,11 +73,26 @@ export function ResultDisplay({
       });
 
       if (!response.ok) {
-        if (response.status === 404 && retryCount < 2) {
-          // Retry after 2 seconds for 404 errors
-          setTimeout(() => downloadFile(retryCount + 1), 2000);
+        // Enhanced retry logic with exponential backoff
+        if (response.status === 404 && retryCount < 3) {
+          const delay = Math.pow(2, retryCount) * 1000; // Exponential backoff: 1s, 2s, 4s
+          setTimeout(() => downloadFile(retryCount + 1), delay);
+          toast({
+            title: "File Not Ready",
+            description: `Retrying download in ${delay/1000} seconds... (Attempt ${retryCount + 1}/3)`,
+          });
           return;
         }
+        
+        // Handle specific error codes
+        if (response.status === 413) {
+          throw new Error('File too large for download');
+        } else if (response.status >= 500) {
+          throw new Error('Server error - please try again later');
+        } else if (response.status === 429) {
+          throw new Error('Too many requests - please wait a moment');
+        }
+        
         throw new Error(`Download failed with status: ${response.status} - ${response.statusText}`);
       }
 
@@ -146,23 +171,36 @@ export function ResultDisplay({
     } catch (error) {
       console.error('Download error:', error);
       
-      // Detailed error handling
-      let errorMessage = "Unknown error occurred";
+      // Enhanced error handling with specific error types
+      let errorMessage = "An unexpected error occurred";
       let errorTitle = "Download Failed";
+      let canRetry = retryCount < 3;
       
       if (error instanceof Error) {
         if (error.name === 'AbortError') {
           errorTitle = "Download Timeout";
-          errorMessage = "Download took too long. File might be too large or server is slow.";
-        } else if (error.message.includes('NetworkError') || error.message.includes('fetch')) {
+          errorMessage = "Download took too long. This might happen with large files or slow connections.";
+          canRetry = true;
+        } else if (error.message.includes('NetworkError') || error.message.includes('fetch') || error.message.includes('Failed to fetch')) {
           errorTitle = "Network Error";
-          errorMessage = "Please check your internet connection and try again.";
-        } else if (error.message.includes('404')) {
+          errorMessage = "Unable to connect to server. Please check your internet connection.";
+          canRetry = true;
+        } else if (error.message.includes('404') || error.message.includes('File Not Found')) {
           errorTitle = "File Not Found";
-          errorMessage = "The processed file could not be found. Please process again.";
-        } else if (error.message.includes('500')) {
+          errorMessage = "The processed file is not available yet or was removed. Please process again.";
+          canRetry = retryCount < 2; // Fewer retries for 404s
+        } else if (error.message.includes('500') || error.message.includes('Server error')) {
           errorTitle = "Server Error";
-          errorMessage = "Server processing error. Please try again in a moment.";
+          errorMessage = "Server is experiencing issues. Please try again in a moment.";
+          canRetry = true;
+        } else if (error.message.includes('413') || error.message.includes('too large')) {
+          errorTitle = "File Too Large";
+          errorMessage = "The processed file is too large to download. Try processing smaller files.";
+          canRetry = false;
+        } else if (error.message.includes('429') || error.message.includes('Too many requests')) {
+          errorTitle = "Rate Limited";
+          errorMessage = "Too many download requests. Please wait a moment before trying again.";
+          canRetry = true;
         } else {
           errorMessage = error.message;
         }
@@ -172,9 +210,17 @@ export function ResultDisplay({
         title: errorTitle,
         description: errorMessage,
         variant: "destructive",
-        action: retryCount < 2 ? (
-          <Button variant="outline" size="sm" onClick={() => downloadFile(retryCount + 1)}>
-            Retry
+        action: canRetry ? (
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={(e) => {
+              e.preventDefault();
+              const delay = Math.pow(2, retryCount) * 1000;
+              setTimeout(() => downloadFile(retryCount + 1), delay);
+            }}
+          >
+            Retry {retryCount < 3 ? `(${3 - retryCount} left)` : ''}
           </Button>
         ) : undefined
       });

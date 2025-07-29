@@ -75,68 +75,181 @@ export function ToolTemplate({
 
   const processMutation = useMutation({
     mutationFn: async (formData: FormData) => {
-      // Simulate upload progress
+      // Enhanced upload progress simulation with realistic stages
       const interval = setInterval(() => {
         setUploadProgress(prev => {
           if (prev >= 95) {
             clearInterval(interval);
             return 95;
           }
-          return prev + Math.random() * 15;
+          // Slower initial progress, faster in middle
+          const increment = prev < 20 ? Math.random() * 5 : 
+                           prev < 80 ? Math.random() * 10 : 
+                           Math.random() * 3;
+          return Math.min(prev + increment, 95);
         });
-      }, 200);
+      }, 300);
 
       // Use the correct endpoint format
       const processEndpoint = endpoint.startsWith('/api/') ? endpoint : `/api/tools/${toolId}`;
 
       try {
-        // Add timeout handling
+        // Enhanced timeout handling with progress feedback
         const controller = new AbortController();
         const timeoutId = setTimeout(() => {
-            controller.abort();
-        }, 60000); // 60 second timeout
+          controller.abort();
+          toast({
+            title: "Processing Timeout",
+            description: "Processing is taking longer than expected. Large files may need more time.",
+            variant: "destructive",
+          });
+        }, 90000); // Increased to 90 second timeout
+
+        // Validate form data before sending
+        const fileCount = formData.getAll('files').length;
+        if (resultType === "file" && fileCount === 0) {
+          throw new Error('Please select at least one file to process');
+        }
+
+        // Check file sizes (client-side validation)
+        const files = formData.getAll('files') as File[];
+        const totalSize = files.reduce((sum, file) => sum + file.size, 0);
+        if (totalSize > maxFileSize) {
+          throw new Error(`Total file size (${(totalSize/1024/1024).toFixed(1)}MB) exceeds limit (${(maxFileSize/1024/1024).toFixed(1)}MB)`);
+        }
 
         const response = await fetch(processEndpoint, {
           method: "POST",
           body: formData,
-          signal: controller.signal, // Add abort signal
+          signal: controller.signal,
+          headers: {
+            // Let browser set Content-Type for FormData
+            'Accept': 'application/json',
+            'Cache-Control': 'no-cache'
+          }
         });
 
-        clearTimeout(timeoutId); // Clear timeout if request completes
+        clearTimeout(timeoutId);
 
         if (!response.ok) {
-          const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
-          throw new Error(errorData.message || `API request failed: ${response.status}`);
+          // Enhanced error response handling
+          let errorData;
+          try {
+            errorData = await response.json();
+          } catch {
+            errorData = { message: `Request failed with status ${response.status}` };
+          }
+
+          // Specific error handling based on status codes
+          if (response.status === 413) {
+            throw new Error('File size too large. Please use smaller files.');
+          } else if (response.status === 415) {
+            throw new Error('Unsupported file type. Please check accepted file formats.');
+          } else if (response.status === 422) {
+            throw new Error(errorData.message || 'Invalid input parameters. Please check your settings.');
+          } else if (response.status === 429) {
+            throw new Error('Server is busy. Please wait a moment and try again.');
+          } else if (response.status >= 500) {
+            throw new Error('Server error. Please try again later.');
+          }
+          
+          throw new Error(errorData.message || `Processing failed: ${response.status} ${response.statusText}`);
         }
 
-        return await response.json();
+        const result = await response.json();
+        
+        // Validate response structure
+        if (!result || typeof result !== 'object') {
+          throw new Error('Invalid response from server');
+        }
+
+        return result;
       } catch (error: any) {
-        // Handle timeout error
+        // Enhanced error handling with specific error types
         if (error.name === 'AbortError') {
-          throw new Error('Request timed out. Please try again.');
+          throw new Error('Processing timed out. This can happen with large files or complex operations. Please try with smaller files or simpler settings.');
         }
 
-        // Handle other errors
-        console.error('API request error:', error);
-        throw new Error(error.message || 'An unexpected error occurred.');
+        if (error.message.includes('NetworkError') || error.message.includes('fetch')) {
+          throw new Error('Network connection error. Please check your internet connection and try again.');
+        }
+
+        if (error.message.includes('Failed to fetch')) {
+          throw new Error('Unable to connect to processing server. Please try again in a moment.');
+        }
+
+        // Log detailed error for debugging
+        console.error('Processing error details:', {
+          error: error.message,
+          endpoint: processEndpoint,
+          toolId,
+          fileCount: formData.getAll('files').length
+        });
+
+        throw new Error(error.message || 'An unexpected error occurred during processing.');
       } finally {
         clearInterval(interval);
         setUploadProgress(100);
       }
     },
     onSuccess: (data) => {
-      toast({
-        title: "Success!",
-        description: data.message || `${toolName} completed successfully`,
-      });
+      // Enhanced success handling with validation
+      if (data && data.success !== false) {
+        toast({
+          title: "Processing Complete!",
+          description: data.message || `${toolName} completed successfully`,
+        });
+      } else {
+        // Handle cases where success is false but no error was thrown
+        toast({
+          title: "Processing Issue",
+          description: data.message || "Processing completed but with warnings",
+          variant: "destructive",
+        });
+      }
       setUploadProgress(0);
     },
     onError: (error: Error) => {
       console.error('Tool processing error:', error);
+      
+      // Enhanced error categorization for better user experience
+      let errorTitle = "Processing Failed";
+      let errorDescription = error.message;
+      
+      if (error.message.includes('timeout') || error.message.includes('timed out')) {
+        errorTitle = "Processing Timeout";
+        errorDescription = "Processing took too long. Try using smaller files or simpler settings.";
+      } else if (error.message.includes('file size') || error.message.includes('too large')) {
+        errorTitle = "File Too Large";
+        errorDescription = "Please use smaller files. Maximum allowed size is " + (maxFileSize / 1024 / 1024).toFixed(0) + "MB.";
+      } else if (error.message.includes('network') || error.message.includes('connection')) {
+        errorTitle = "Connection Error";
+        errorDescription = "Please check your internet connection and try again.";
+      } else if (error.message.includes('file type') || error.message.includes('format')) {
+        errorTitle = "Invalid File Format";
+        errorDescription = "Please check that your files are in the correct format for this tool.";
+      } else if (error.message.includes('server') || error.message.includes('500')) {
+        errorTitle = "Server Error";
+        errorDescription = "The server is experiencing issues. Please try again in a few moments.";
+      }
+
       toast({
-        title: "Error",
-        description: error.message || `${toolName} failed. Please try again.`,
+        title: errorTitle,
+        description: errorDescription,
         variant: "destructive",
+        action: (
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => {
+              // Reset and allow retry
+              setUploadProgress(0);
+              setFiles([]);
+            }}
+          >
+            Reset
+          </Button>
+        )
       });
       setUploadProgress(0);
     },

@@ -11,8 +11,15 @@ import os
 import uvicorn
 from typing import Optional, List
 import json
+import asyncio
+import logging
+from datetime import datetime
 
 app = FastAPI(title="Suntyn AI - TinyWow Clone", version="2.0.0")
+
+# Configure logging for better error tracking
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # CORS middleware
 app.add_middleware(
@@ -53,18 +60,62 @@ async def api_root():
 
 @app.get("/api/health")
 async def health_check():
-    """Check health of all microservices"""
+    """Check health of all microservices with enhanced monitoring"""
     health_status = {}
+    overall_status = "healthy"
+    timestamp = datetime.now().isoformat()
     
     async with httpx.AsyncClient() as client:
         for service, url in MICROSERVICES.items():
             try:
-                response = await client.get(f"{url}/health", timeout=5.0)
-                health_status[service] = "healthy" if response.status_code == 200 else "unhealthy"
-            except:
-                health_status[service] = "down"
+                start_time = datetime.now()
+                response = await client.get(f"{url}/health", timeout=10.0)
+                response_time = (datetime.now() - start_time).total_seconds()
+                
+                if response.status_code == 200:
+                    health_status[service] = {
+                        "status": "healthy",
+                        "response_time_ms": round(response_time * 1000, 2),
+                        "url": url
+                    }
+                else:
+                    health_status[service] = {
+                        "status": "unhealthy",
+                        "status_code": response.status_code,
+                        "url": url
+                    }
+                    overall_status = "degraded"
+                    
+            except httpx.TimeoutException:
+                health_status[service] = {
+                    "status": "timeout",
+                    "error": "Service response timeout",
+                    "url": url
+                }
+                overall_status = "degraded"
+            except httpx.NetworkError as e:
+                health_status[service] = {
+                    "status": "down",
+                    "error": f"Network error: {str(e)}",
+                    "url": url
+                }
+                overall_status = "degraded"
+            except Exception as e:
+                health_status[service] = {
+                    "status": "error",
+                    "error": f"Unknown error: {str(e)}",
+                    "url": url
+                }
+                overall_status = "degraded"
+                logger.error(f"Health check error for {service}: {str(e)}")
     
-    return {"status": "ok", "microservices": health_status}
+    return {
+        "status": overall_status,
+        "timestamp": timestamp,
+        "microservices": health_status,
+        "total_services": len(MICROSERVICES),
+        "healthy_services": len([s for s in health_status.values() if s.get("status") == "healthy"])
+    }
 
 # PDF Tools Endpoints
 @app.post("/api/tools/pdf-{tool_name}")
@@ -200,88 +251,215 @@ async def process_image_tool(
     raise HTTPException(status_code=404, detail=f"Tool {tool_name} not found")
 
 async def route_to_microservice(service: str, tool_name: str, files: List[UploadFile], metadata: Optional[str]):
-    """Route request to appropriate microservice"""
+    """Route request to appropriate microservice with enhanced error handling"""
+    request_id = f"{service}_{tool_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    logger.info(f"[{request_id}] Processing request for {tool_name} via {service} service")
+    
     service_url = MICROSERVICES.get(service)
     if not service_url:
+        logger.error(f"[{request_id}] Service {service} not found in MICROSERVICES")
         raise HTTPException(status_code=503, detail=f"Service {service} is currently unavailable")
     
-    # Validate file size and type
+    # Enhanced file validation with detailed logging
     total_size = 0
     files_data = []
     
-    for file in files:
-        if file.size and file.size > 50 * 1024 * 1024:  # 50MB limit
-            raise HTTPException(status_code=413, detail=f"File {file.filename} is too large (max 50MB)")
-        
-        content = await file.read()
-        total_size += len(content)
-        
-        if total_size > 100 * 1024 * 1024:  # 100MB total limit
-            raise HTTPException(status_code=413, detail="Total file size exceeds 100MB limit")
+    try:
+        for i, file in enumerate(files):
+            # Validate file existence and basic properties
+            if not file.filename:
+                raise HTTPException(status_code=400, detail=f"File {i+1} has no filename")
             
-        files_data.append(("files", (file.filename, content, file.content_type)))
+            # Read file content with size validation
+            content = await file.read()
+            file_size = len(content)
+            total_size += file_size
+            
+            logger.info(f"[{request_id}] File {i+1}: {file.filename} ({file_size} bytes, {file.content_type})")
+            
+            # Individual file size check
+            if file_size > 50 * 1024 * 1024:  # 50MB limit
+                raise HTTPException(
+                    status_code=413, 
+                    detail=f"File '{file.filename}' is too large ({file_size/1024/1024:.1f}MB). Maximum allowed: 50MB"
+                )
+            
+            # Total size check
+            if total_size > 100 * 1024 * 1024:  # 100MB total limit
+                raise HTTPException(
+                    status_code=413, 
+                    detail=f"Total file size ({total_size/1024/1024:.1f}MB) exceeds 100MB limit"
+                )
+            
+            # Validate file content (basic checks for common issues)
+            if file_size == 0:
+                raise HTTPException(status_code=400, detail=f"File '{file.filename}' is empty")
+            
+            files_data.append(("files", (file.filename, content, file.content_type)))
     
-    # Prepare form data with validation
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"[{request_id}] File processing error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error processing uploaded files: {str(e)}")
+    
+    # Enhanced metadata validation
     form_data = {}
     if metadata:
         try:
-            # Validate JSON if metadata is provided
-            if metadata.strip().startswith('{'):
-                json.loads(metadata)
+            # Validate JSON if metadata looks like JSON
+            if metadata.strip().startswith('{') and metadata.strip().endswith('}'):
+                parsed_metadata = json.loads(metadata)
+                logger.info(f"[{request_id}] Metadata validated: {list(parsed_metadata.keys())}")
             form_data["metadata"] = metadata
-        except json.JSONDecodeError:
-            raise HTTPException(status_code=400, detail="Invalid metadata format")
+        except json.JSONDecodeError as e:
+            logger.error(f"[{request_id}] Invalid metadata JSON: {str(e)}")
+            raise HTTPException(status_code=400, detail=f"Invalid metadata format: {str(e)}")
     
-    # Health check for service
-    async with httpx.AsyncClient() as client:
+    # Enhanced service health check
+    async with httpx.AsyncClient(timeout=60.0) as client:
         try:
-            health_check = await client.get(f"{service_url}/health", timeout=5.0)
-            if health_check.status_code != 200:
-                raise HTTPException(status_code=503, detail=f"Service {service} is unhealthy")
-        except:
+            start_time = datetime.now()
+            health_response = await client.get(f"{service_url}/health", timeout=10.0)
+            health_time = (datetime.now() - start_time).total_seconds()
+            
+            if health_response.status_code != 200:
+                logger.warning(f"[{request_id}] Service {service} health check failed: {health_response.status_code}")
+                raise HTTPException(
+                    status_code=503, 
+                    detail=f"Service {service} is unhealthy (status: {health_response.status_code})"
+                )
+            
+            logger.info(f"[{request_id}] Service {service} health check passed ({health_time:.2f}s)")
+            
+        except httpx.TimeoutException:
+            logger.error(f"[{request_id}] Service {service} health check timeout")
+            raise HTTPException(status_code=503, detail=f"Service {service} health check timeout")
+        except httpx.NetworkError as e:
+            logger.error(f"[{request_id}] Service {service} network error: {str(e)}")
             raise HTTPException(status_code=503, detail=f"Service {service} is not responding")
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.error(f"[{request_id}] Service {service} health check error: {str(e)}")
+            raise HTTPException(status_code=503, detail=f"Service {service} health check failed")
         
-        # Process request with retries
-        max_retries = 2
+        # Enhanced processing with retries and detailed error handling
+        max_retries = 3
+        base_delay = 1.0
+        
         for attempt in range(max_retries + 1):
             try:
+                logger.info(f"[{request_id}] Attempt {attempt + 1}/{max_retries + 1} - Sending to {service_url}/process/{tool_name}")
+                
+                start_time = datetime.now()
                 response = await client.post(
                     f"{service_url}/process/{tool_name}",
                     files=files_data,
                     data=form_data,
-                    timeout=45.0  # Increased timeout
+                    timeout=60.0  # Increased timeout for complex processing
                 )
+                processing_time = (datetime.now() - start_time).total_seconds()
+                
+                logger.info(f"[{request_id}] Response received: {response.status_code} ({processing_time:.2f}s)")
                 
                 if response.status_code == 200:
-                    return response.json()
+                    try:
+                        result = response.json()
+                        logger.info(f"[{request_id}] Processing successful")
+                        return result
+                    except json.JSONDecodeError as e:
+                        logger.error(f"[{request_id}] Invalid JSON response: {str(e)}")
+                        raise HTTPException(status_code=502, detail="Invalid response format from processing service")
+                        
+                elif response.status_code == 400:
+                    error_detail = "Invalid request parameters"
+                    try:
+                        error_data = response.json()
+                        error_detail = error_data.get("detail", error_detail)
+                    except:
+                        pass
+                    logger.warning(f"[{request_id}] Bad request: {error_detail}")
+                    raise HTTPException(status_code=400, detail=error_detail)
+                    
+                elif response.status_code == 413:
+                    logger.warning(f"[{request_id}] File too large")
+                    raise HTTPException(status_code=413, detail="File size exceeds service limits")
+                    
+                elif response.status_code == 415:
+                    logger.warning(f"[{request_id}] Unsupported media type")
+                    raise HTTPException(status_code=415, detail="Unsupported file type for this tool")
+                    
                 elif response.status_code == 422:
-                    raise HTTPException(status_code=422, detail="Invalid input parameters")
+                    error_detail = "Invalid input parameters"
+                    try:
+                        error_data = response.json()
+                        error_detail = error_data.get("detail", error_detail)
+                    except:
+                        pass
+                    logger.warning(f"[{request_id}] Validation error: {error_detail}")
+                    raise HTTPException(status_code=422, detail=error_detail)
+                    
                 elif response.status_code == 429:
                     if attempt < max_retries:
-                        await asyncio.sleep(2 ** attempt)  # Exponential backoff
+                        delay = base_delay * (2 ** attempt)  # Exponential backoff
+                        logger.warning(f"[{request_id}] Rate limited, retrying in {delay}s")
+                        await asyncio.sleep(delay)
                         continue
+                    logger.error(f"[{request_id}] Rate limit exceeded after retries")
                     raise HTTPException(status_code=429, detail="Service is busy, please try again later")
+                    
+                elif response.status_code >= 500:
+                    if attempt < max_retries:
+                        delay = base_delay * (2 ** attempt)
+                        logger.warning(f"[{request_id}] Server error {response.status_code}, retrying in {delay}s")
+                        await asyncio.sleep(delay)
+                        continue
+                    logger.error(f"[{request_id}] Server error {response.status_code} after retries")
+                    raise HTTPException(status_code=502, detail="Processing service encountered an error")
                 else:
-                    response_text = response.text
-                    raise HTTPException(status_code=response.status_code, detail=f"Service error: {response_text}")
+                    response_text = response.text[:200] if response.text else "No response text"
+                    logger.error(f"[{request_id}] Unexpected status {response.status_code}: {response_text}")
+                    raise HTTPException(
+                        status_code=response.status_code, 
+                        detail=f"Service returned unexpected status: {response.status_code}"
+                    )
                     
             except httpx.TimeoutException:
                 if attempt < max_retries:
-                    await asyncio.sleep(1)
+                    delay = base_delay * (2 ** attempt)
+                    logger.warning(f"[{request_id}] Request timeout, retrying in {delay}s")
+                    await asyncio.sleep(delay)
                     continue
-                raise HTTPException(status_code=504, detail="Processing timeout - file might be too large or complex")
+                logger.error(f"[{request_id}] Final timeout after {max_retries} retries")
+                raise HTTPException(
+                    status_code=504, 
+                    detail="Processing timeout - file might be too large or complex"
+                )
+                
             except httpx.NetworkError as e:
                 if attempt < max_retries:
-                    await asyncio.sleep(1)
+                    delay = base_delay * (2 ** attempt)
+                    logger.warning(f"[{request_id}] Network error, retrying in {delay}s: {str(e)}")
+                    await asyncio.sleep(delay)
                     continue
-                raise HTTPException(status_code=502, detail=f"Network error connecting to service: {str(e)}")
-            except json.JSONDecodeError:
-                raise HTTPException(status_code=502, detail="Invalid response from processing service")
+                logger.error(f"[{request_id}] Network error after retries: {str(e)}")
+                raise HTTPException(
+                    status_code=502, 
+                    detail=f"Network error connecting to processing service"
+                )
+                
+            except HTTPException:
+                raise
+                
             except Exception as e:
                 if attempt < max_retries:
-                    await asyncio.sleep(1)
+                    delay = base_delay * (2 ** attempt)
+                    logger.warning(f"[{request_id}] Unexpected error, retrying in {delay}s: {str(e)}")
+                    await asyncio.sleep(delay)
                     continue
-                raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
+                logger.error(f"[{request_id}] Unexpected error after retries: {str(e)}")
+                raise HTTPException(status_code=500, detail="An unexpected error occurred during processing")
 
 @app.get("/api/download/{filename}")
 async def download_file(filename: str):
