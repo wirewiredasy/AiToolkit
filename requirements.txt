@@ -95,3 +95,7 @@ python-dotenv
 python-multipart
 reportlab
 uvicorn
+numpy
+opencv-python
+scikit-learn
+scipy
