@@ -25,9 +25,13 @@ app.add_middleware(
 os.makedirs("../../static", exist_ok=True)
 os.makedirs("../../static", exist_ok=True)
 
+@app.get("/")
+async def root():
+    return {"service": "Media Processing Microservice", "status": "active", "version": "1.0.0"}
+
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "service": "media-tools"}
+    return {"status": "healthy", "service": "media-tools", "microservice": "FastAPI"}
 
 @app.post("/process/{tool_name}")
 async def process_media_tool(

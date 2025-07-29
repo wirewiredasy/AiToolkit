@@ -50,12 +50,17 @@ app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 print(f"📁 Static files served from: {static_dir}")
 
-@app.get("/api/")
+@app.get("/")
 async def root():
+    """Root endpoint for health check"""
+    return {"message": "Suntyn AI - FastAPI Gateway", "status": "active", "version": "2.0.0", "services": len(MICROSERVICES)}
+
+@app.get("/api/")
+async def api_root():
     return {"message": "Suntyn AI - TinyWow Clone API Gateway", "status": "active", "version": "2.0.0"}
 
 @app.get("/api")
-async def api_root():
+async def api_endpoint():
     return {"message": "Suntyn AI API Gateway", "status": "active", "endpoints": ["/api/health", "/api/process"]}
 
 @app.get("/api/health")
