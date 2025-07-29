@@ -115,3 +115,12 @@ args = "chmod +x auto-update.sh"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "./auto-update.sh"
+
+[[workflows.workflow]]
+name = "Frontend Only"
+author = 45708357
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd client && npm run dev"
