@@ -57,7 +57,8 @@ async function startServer() {
   try {
     // Check if build exists, if not create it
     const distPath = path.join(process.cwd(), 'dist', 'public');
-    if (!require('fs').existsSync(distPath)) {
+    const fs = await import('fs');
+    if (!fs.existsSync(distPath)) {
       console.log('🔨 Building React app first...');
       const buildProcess = spawn('npm', ['run', 'build'], {
         cwd: process.cwd(),
