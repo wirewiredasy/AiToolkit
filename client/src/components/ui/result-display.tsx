@@ -79,8 +79,12 @@ export function ResultDisplay({
         isValidFile = firstText.startsWith('%PDF');
       } else if (result.filename?.endsWith('.png')) {
         isValidFile = uint8Array[0] === 0x89 && uint8Array[1] === 0x50 && uint8Array[2] === 0x4E && uint8Array[3] === 0x47;
+      } else if (result.filename?.endsWith('.jpg') || result.filename?.endsWith('.jpeg')) {
+        isValidFile = uint8Array[0] === 0xFF && uint8Array[1] === 0xD8 && uint8Array[2] === 0xFF;
       } else if (result.filename?.endsWith('.mp3')) {
-        isValidFile = firstText.includes('ID3') || uint8Array[0] === 0xFF;
+        isValidFile = firstText.includes('ID3') || uint8Array[0] === 0xFF || uint8Array[0] === 0x49;
+      } else if (result.filename?.endsWith('.mp4')) {
+        isValidFile = firstText.includes('ftyp') || uint8Array[4] === 0x66;
       } else if (result.filename?.endsWith('.json')) {
         try {
           JSON.parse(firstText);
@@ -88,6 +92,10 @@ export function ResultDisplay({
         } catch {
           isValidFile = false;
         }
+      } else if (result.filename?.endsWith('.svg')) {
+        isValidFile = firstText.includes('<svg') || firstText.includes('<?xml');
+      } else if (result.filename?.endsWith('.txt') || result.filename?.endsWith('.csv')) {
+        isValidFile = true; // Text files are always valid
       } else {
         isValidFile = true; // Assume other formats are OK
       }
@@ -119,9 +127,16 @@ export function ResultDisplay({
 
     } catch (error) {
       console.error('Download error:', error);
+      
+      // Check if it's a timeout or network issue
+      const isNetworkError = error instanceof TypeError && error.message.includes('fetch');
+      const isTimeoutError = error instanceof Error && error.message.includes('timeout');
+      
       toast({
         title: "Download Failed",
-        description: error instanceof Error ? error.message : "Please try again or contact support",
+        description: isNetworkError ? "Network connection issue. Please check your internet." :
+                    isTimeoutError ? "Download timeout. File might be too large." :
+                    error instanceof Error ? error.message : "Please try again or contact support",
         variant: "destructive",
       });
     } finally {
