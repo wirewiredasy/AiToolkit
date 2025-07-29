@@ -35,14 +35,27 @@ export function ResultDisplay({
   const [isDownloading, setIsDownloading] = useState(false);
   const { toast } = useToast();
 
-  const downloadFile = async () => {
+  const downloadFile = async (retryCount = 0) => {
     if (!result.downloadUrl) return;
 
     setIsDownloading(true);
     try {
       console.log('Starting download from:', result.downloadUrl);
 
-      const response = await fetch(result.downloadUrl);
+      // Add timeout and abort controller
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+      const response = await fetch(result.downloadUrl, {
+        signal: controller.signal,
+        headers: {
+          'Accept': '*/*',
+          'Cache-Control': 'no-cache'
+        }
+      });
+
+      clearTimeout(timeoutId);
+
       console.log('Download response status:', response.status);
       console.log('Download response headers:');
       response.headers.forEach((value, key) => {
@@ -50,7 +63,12 @@ export function ResultDisplay({
       });
 
       if (!response.ok) {
-        throw new Error(`Download failed with status: ${response.status}`);
+        if (response.status === 404 && retryCount < 2) {
+          // Retry after 2 seconds for 404 errors
+          setTimeout(() => downloadFile(retryCount + 1), 2000);
+          return;
+        }
+        throw new Error(`Download failed with status: ${response.status} - ${response.statusText}`);
       }
 
       const blob = await response.blob();
@@ -128,16 +146,37 @@ export function ResultDisplay({
     } catch (error) {
       console.error('Download error:', error);
       
-      // Check if it's a timeout or network issue
-      const isNetworkError = error instanceof TypeError && error.message.includes('fetch');
-      const isTimeoutError = error instanceof Error && error.message.includes('timeout');
+      // Detailed error handling
+      let errorMessage = "Unknown error occurred";
+      let errorTitle = "Download Failed";
+      
+      if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          errorTitle = "Download Timeout";
+          errorMessage = "Download took too long. File might be too large or server is slow.";
+        } else if (error.message.includes('NetworkError') || error.message.includes('fetch')) {
+          errorTitle = "Network Error";
+          errorMessage = "Please check your internet connection and try again.";
+        } else if (error.message.includes('404')) {
+          errorTitle = "File Not Found";
+          errorMessage = "The processed file could not be found. Please process again.";
+        } else if (error.message.includes('500')) {
+          errorTitle = "Server Error";
+          errorMessage = "Server processing error. Please try again in a moment.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
       
       toast({
-        title: "Download Failed",
-        description: isNetworkError ? "Network connection issue. Please check your internet." :
-                    isTimeoutError ? "Download timeout. File might be too large." :
-                    error instanceof Error ? error.message : "Please try again or contact support",
+        title: errorTitle,
+        description: errorMessage,
         variant: "destructive",
+        action: retryCount < 2 ? (
+          <Button variant="outline" size="sm" onClick={() => downloadFile(retryCount + 1)}>
+            Retry
+          </Button>
+        ) : undefined
       });
     } finally {
       setIsDownloading(false);

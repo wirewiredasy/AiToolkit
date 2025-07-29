@@ -89,21 +89,40 @@ export function ToolTemplate({
       // Use the correct endpoint format
       const processEndpoint = endpoint.startsWith('/api/') ? endpoint : `/api/tools/${toolId}`;
 
-      const response = await fetch(processEndpoint, {
-        method: "POST",
-        body: formData,
-        // Don't set Content-Type - let browser handle FormData
-      });
+      try {
+        // Add timeout handling
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => {
+            controller.abort();
+        }, 60000); // 60 second timeout
 
-      clearInterval(interval);
-      setUploadProgress(100);
+        const response = await fetch(processEndpoint, {
+          method: "POST",
+          body: formData,
+          signal: controller.signal, // Add abort signal
+        });
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
-        throw new Error(errorData.message || `API request failed: ${response.status}`);
+        clearTimeout(timeoutId); // Clear timeout if request completes
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
+          throw new Error(errorData.message || `API request failed: ${response.status}`);
+        }
+
+        return await response.json();
+      } catch (error: any) {
+        // Handle timeout error
+        if (error.name === 'AbortError') {
+          throw new Error('Request timed out. Please try again.');
+        }
+
+        // Handle other errors
+        console.error('API request error:', error);
+        throw new Error(error.message || 'An unexpected error occurred.');
+      } finally {
+        clearInterval(interval);
+        setUploadProgress(100);
       }
-
-      return await response.json();
     },
     onSuccess: (data) => {
       toast({

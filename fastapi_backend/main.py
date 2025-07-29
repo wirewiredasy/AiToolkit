@@ -79,12 +79,37 @@ async def process_pdf_tool(
 @app.get("/api/tools/download/{filename}")
 async def download_processed_file(filename: str):
     """Download processed files from any microservice"""
+    # Security validation
+    if '..' in filename or '/' in filename or '\\' in filename:
+        raise HTTPException(status_code=400, detail="Invalid filename")
+    
     static_dir = os.path.abspath("../static")
     file_path = os.path.join(static_dir, filename)
     
     print(f"🔍 Searching for file: {file_path}")
     
-    if os.path.exists(file_path):
+    try:
+        if not os.path.exists(file_path):
+            # Check if file is being processed (wait up to 5 seconds)
+            for i in range(10):
+                if os.path.exists(file_path):
+                    break
+                await asyncio.sleep(0.5)
+            
+            if not os.path.exists(file_path):
+                print(f"❌ File not found: {file_path}")
+                available_files = os.listdir(static_dir) if os.path.exists(static_dir) else []
+                print(f"📁 Files in static directory: {available_files}")
+                raise HTTPException(
+                    status_code=404, 
+                    detail=f"File not found: {filename}. Available files: {len(available_files)}"
+                )
+        
+        # Validate file is not corrupted
+        file_size = os.path.getsize(file_path)
+        if file_size == 0:
+            raise HTTPException(status_code=422, detail="File is empty or corrupted")
+        
         # Determine media type based on file extension
         media_types = {
             '.pdf': 'application/pdf',
@@ -94,28 +119,41 @@ async def download_processed_file(filename: str):
             '.mp3': 'audio/mpeg',
             '.mp4': 'video/mp4',
             '.json': 'application/json',
-            '.txt': 'text/plain'
+            '.txt': 'text/plain',
+            '.svg': 'image/svg+xml',
+            '.csv': 'text/csv',
+            '.html': 'text/html'
         }
         
         file_ext = os.path.splitext(filename)[1].lower()
         media_type = media_types.get(file_ext, 'application/octet-stream')
         
-        file_size = os.path.getsize(file_path)
         print(f"✅ Serving file: {filename} ({file_size} bytes) as {media_type}")
-            
+        
+        # Additional security headers
+        headers = {
+            "Content-Disposition": f"attachment; filename={filename}",
+            "Content-Length": str(file_size),
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0",
+            "X-Content-Type-Options": "nosniff"
+        }
+        
         return FileResponse(
             path=file_path,
             media_type=media_type,
             filename=filename,
-            headers={
-                "Content-Disposition": f"attachment; filename={filename}",
-                "Content-Length": str(file_size)
-            }
+            headers=headers
         )
-    
-    print(f"❌ File not found: {file_path}")
-    print(f"📁 Files in static directory: {os.listdir(static_dir) if os.path.exists(static_dir) else 'Directory not found'}")
-    raise HTTPException(status_code=404, detail=f"File not found: {filename}")
+        
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Permission denied accessing file")
+    except OSError as e:
+        raise HTTPException(status_code=500, detail=f"File system error: {str(e)}")
+    except Exception as e:
+        print(f"❌ Unexpected error serving file: {str(e)}")
+        raise HTTPException(status_code=500, detail="Internal server error while serving file")
 
 # Image Tools Endpoints  
 @app.post("/api/tools/{tool_name}")
@@ -165,32 +203,85 @@ async def route_to_microservice(service: str, tool_name: str, files: List[Upload
     """Route request to appropriate microservice"""
     service_url = MICROSERVICES.get(service)
     if not service_url:
-        raise HTTPException(status_code=500, detail=f"Service {service} not available")
+        raise HTTPException(status_code=503, detail=f"Service {service} is currently unavailable")
     
-    # Prepare files for forwarding
+    # Validate file size and type
+    total_size = 0
     files_data = []
+    
     for file in files:
+        if file.size and file.size > 50 * 1024 * 1024:  # 50MB limit
+            raise HTTPException(status_code=413, detail=f"File {file.filename} is too large (max 50MB)")
+        
         content = await file.read()
+        total_size += len(content)
+        
+        if total_size > 100 * 1024 * 1024:  # 100MB total limit
+            raise HTTPException(status_code=413, detail="Total file size exceeds 100MB limit")
+            
         files_data.append(("files", (file.filename, content, file.content_type)))
     
-    # Prepare form data
+    # Prepare form data with validation
     form_data = {}
     if metadata:
-        form_data["metadata"] = metadata
+        try:
+            # Validate JSON if metadata is provided
+            if metadata.strip().startswith('{'):
+                json.loads(metadata)
+            form_data["metadata"] = metadata
+        except json.JSONDecodeError:
+            raise HTTPException(status_code=400, detail="Invalid metadata format")
     
+    # Health check for service
     async with httpx.AsyncClient() as client:
         try:
-            response = await client.post(
-                f"{service_url}/process/{tool_name}",
-                files=files_data,
-                data=form_data,
-                timeout=30.0
-            )
-            return response.json()
-        except httpx.TimeoutException:
-            raise HTTPException(status_code=504, detail="Processing timeout")
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Service error: {str(e)}")
+            health_check = await client.get(f"{service_url}/health", timeout=5.0)
+            if health_check.status_code != 200:
+                raise HTTPException(status_code=503, detail=f"Service {service} is unhealthy")
+        except:
+            raise HTTPException(status_code=503, detail=f"Service {service} is not responding")
+        
+        # Process request with retries
+        max_retries = 2
+        for attempt in range(max_retries + 1):
+            try:
+                response = await client.post(
+                    f"{service_url}/process/{tool_name}",
+                    files=files_data,
+                    data=form_data,
+                    timeout=45.0  # Increased timeout
+                )
+                
+                if response.status_code == 200:
+                    return response.json()
+                elif response.status_code == 422:
+                    raise HTTPException(status_code=422, detail="Invalid input parameters")
+                elif response.status_code == 429:
+                    if attempt < max_retries:
+                        await asyncio.sleep(2 ** attempt)  # Exponential backoff
+                        continue
+                    raise HTTPException(status_code=429, detail="Service is busy, please try again later")
+                else:
+                    response_text = response.text
+                    raise HTTPException(status_code=response.status_code, detail=f"Service error: {response_text}")
+                    
+            except httpx.TimeoutException:
+                if attempt < max_retries:
+                    await asyncio.sleep(1)
+                    continue
+                raise HTTPException(status_code=504, detail="Processing timeout - file might be too large or complex")
+            except httpx.NetworkError as e:
+                if attempt < max_retries:
+                    await asyncio.sleep(1)
+                    continue
+                raise HTTPException(status_code=502, detail=f"Network error connecting to service: {str(e)}")
+            except json.JSONDecodeError:
+                raise HTTPException(status_code=502, detail="Invalid response from processing service")
+            except Exception as e:
+                if attempt < max_retries:
+                    await asyncio.sleep(1)
+                    continue
+                raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
 
 @app.get("/api/download/{filename}")
 async def download_file(filename: str):
