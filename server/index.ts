@@ -55,6 +55,28 @@ async function startServer() {
   await new Promise(resolve => setTimeout(resolve, 3000));
 
   try {
+    // Check if build exists, if not create it
+    const distPath = path.join(process.cwd(), 'dist', 'public');
+    if (!require('fs').existsSync(distPath)) {
+      console.log('🔨 Building React app first...');
+      const buildProcess = spawn('npm', ['run', 'build'], {
+        cwd: process.cwd(),
+        stdio: 'inherit'
+      });
+      
+      await new Promise((resolve, reject) => {
+        buildProcess.on('close', (code) => {
+          if (code === 0) {
+            console.log('✅ Build completed successfully!');
+            resolve(true);
+          } else {
+            console.error('❌ Build failed!');
+            reject(new Error('Build failed'));
+          }
+        });
+      });
+    }
+    
     // Start the preview server for built React app
     console.log('🖥️  Starting Preview server for built React app...');
     

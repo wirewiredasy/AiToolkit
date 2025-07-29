@@ -71,17 +71,94 @@ app.use(express.static(distPath, {
 
 // Handle React Router routes - serve index.html for all routes
 app.get('*', (req, res) => {
-  const indexPath = path.join(distPath, 'index.html');
-  console.log(`🔗 Serving React app for route: ${req.url}`);
+  // Skip API and static routes
+  if (req.url.startsWith('/api') || req.url.startsWith('/static')) {
+    return;
+  }
   
-  res.sendFile(indexPath, (err) => {
-    if (err) {
-      console.error('Error serving index.html:', err);
+  const indexPath = path.join(distPath, 'index.html');
+  console.log(`🔗 Serving React app for route: ${req.url} from ${indexPath}`);
+  
+  // Check if index.html exists
+  import('fs').then(fs => {
+    if (!fs.existsSync(indexPath)) {
+      console.error(`❌ index.html not found at: ${indexPath}`);
       res.status(500).send(`
         <!DOCTYPE html>
         <html>
           <head>
-            <title>Suntyn AI - Loading...</title>
+            <title>Suntyn AI - Build Required</title>
+            <style>
+              body { 
+                font-family: Arial, sans-serif; 
+                text-align: center; 
+                padding: 50px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                margin: 0;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+              }
+              .spinner {
+                border: 4px solid rgba(255,255,255,0.3);
+                border-top: 4px solid white;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                animation: spin 1s linear infinite;
+                margin: 20px auto;
+              }
+              @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+              }
+              button {
+                background: white;
+                color: #667eea;
+                border: none;
+                padding: 15px 30px;
+                border-radius: 8px;
+                cursor: pointer;
+                margin: 10px;
+                font-size: 16px;
+                font-weight: bold;
+              }
+              button:hover { background: #f0f0f0; }
+              .info { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin: 20px 0; }
+            </style>
+          </head>
+          <body>
+            <h1>🚀 Suntyn AI</h1>
+            <div class="spinner"></div>
+            <h2>Frontend Build Required</h2>
+            <div class="info">
+              <p><strong>Missing:</strong> ${indexPath}</p>
+              <p><strong>Status:</strong> React app needs to be built</p>
+            </div>
+            <button onclick="window.location.href='/api/health'">Check Backend API</button>
+            <button onclick="buildApp()">Build Frontend</button>
+            <script>
+              function buildApp() {
+                alert('Please run: npm run build');
+              }
+            </script>
+          </body>
+        </html>
+      `);
+      return;
+    }
+    
+    res.sendFile(indexPath, (err) => {
+      if (err) {
+        console.error('❌ Error serving index.html:', err);
+        res.status(500).send(`
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <title>Suntyn AI - Loading...</title>
             <style>
               body { 
                 font-family: Arial, sans-serif; 
