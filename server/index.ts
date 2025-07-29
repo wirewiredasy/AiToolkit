@@ -1,7 +1,13 @@
-// Direct Vite + FastAPI integration server
+
 import { spawn } from 'child_process';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
+
+// ES module equivalent of __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 async function startServer() {
   console.log('🚀 Starting Suntyn AI Full-Stack Application...');
@@ -57,7 +63,7 @@ async function startServer() {
   try {
     // Check if build exists, if not create it
     const distPath = path.join(process.cwd(), 'dist', 'public');
-    const fs = await import('fs');
+    
     if (!fs.existsSync(distPath)) {
       console.log('🔨 Building React app first...');
       const buildProcess = spawn('npm', ['run', 'build'], {
@@ -114,7 +120,7 @@ async function startServer() {
     });
 
   } catch (error) {
-    console.error('❌ Error starting Vite server:', error);
+    console.error('❌ Error starting server:', error);
     process.exit(1);
   }
 }
