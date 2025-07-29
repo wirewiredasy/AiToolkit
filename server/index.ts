@@ -55,33 +55,16 @@ async function startServer() {
   await new Promise(resolve => setTimeout(resolve, 3000));
 
   try {
-    // Create Vite server directly on port 5000
-    console.log('🖥️  Starting Vite development server...');
+    // Start the preview server for built React app
+    console.log('🖥️  Starting Preview server for built React app...');
     
-    const vite = await createViteServer({
-      server: { 
-        port: 5000,
-        host: '0.0.0.0',
-        allowedHosts: 'any',
-        proxy: {
-          '/api': {
-            target: 'http://localhost:5001',
-            changeOrigin: true,
-            rewrite: (path) => path.replace(/^\/api/, '/api')
-          },
-          '/static': {
-            target: 'http://localhost:3001',
-            changeOrigin: true,
-            rewrite: (path) => path.replace(/^\/static/, '/static')
-          }
-        }
-      },
-      appType: 'spa',
-      root: path.join(process.cwd(), 'client'),
-      configFile: path.join(process.cwd(), 'vite.config.ts')
+    const previewProcess = spawn('node', ['preview_server.js'], {
+      cwd: process.cwd(),
+      stdio: 'inherit'
     });
 
-    await vite.listen();
+    // Wait for preview server to start
+    await new Promise(resolve => setTimeout(resolve, 2000));
     
     console.log(`🎯 Suntyn AI running on http://localhost:5000`);
     console.log(`🖥️  Frontend: React + Vite (Development server)`);
@@ -103,7 +86,7 @@ async function startServer() {
       mediaProcess.kill();
       govProcess.kill();
       staticProcess.kill();
-      vite.close();
+      previewProcess.kill();
       process.exit(0);
     });
 
