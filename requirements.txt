@@ -87,3 +87,11 @@ python-docx
 python-jose
 requests
 sqlalchemy
+fastapi
+httpx
+pypdf
+pypdf2
+python-dotenv
+python-multipart
+reportlab
+uvicorn
