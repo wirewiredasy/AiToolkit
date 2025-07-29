@@ -46,44 +46,86 @@ async def process_government_tool(
     start_time = datetime.now()
     print(f"🏛️ Government Service: Processing {tool_name} with {len(files)} files")
     
-    # Parse metadata
-    meta_data = {}
-    if metadata:
-        try:
-            meta_data = json.loads(metadata)
-        except:
-            meta_data = {"text": metadata}
-    
-    # Heavy processing simulation like TinyWow
-    await simulate_heavy_processing(tool_name, len(files))
-    
-    # Generate professional government document
-    gov_content = await generate_government_document(tool_name, files, meta_data)
-    
-    # Save processed file
-    output_filename = f"processed-{tool_name}.pdf"
-    output_path = f"../../static/{output_filename}"
-    
-    with open(output_path, "wb") as f:
-        f.write(gov_content)
-    
-    processing_time = (datetime.now() - start_time).total_seconds() * 1000
-    
-    return {
-        "success": True,
-        "message": f"{tool_name.replace('-', ' ').title()} completed successfully",
-        "downloadUrl": f"/api/download/{output_filename}",
-        "filename": output_filename,
-        "processingTime": int(processing_time),
-        "toolId": tool_name,
-        "metadata": {
-            "processed": True,
-            "timestamp": datetime.now().isoformat(),
-            "category": "Government",
-            "service": "government-microservice",
-            **meta_data
+    try:
+        # Validate tool name
+        supported_tools = [
+            "pan-validator", "gst-validator", "aadhaar-validator", "aadhaar-masker",
+            "pan-masker", "bank-validator", "ifsc-validator", "pincode-validator",
+            "voter-id-validator", "passport-validator", "driving-license-validator",
+            "income-certificate", "caste-certificate", "domicile-certificate", 
+            "character-certificate", "birth-certificate", "death-certificate",
+            "ration-card-status", "shop-act-licence-validator"
+        ]
+        
+        if tool_name not in supported_tools:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Tool '{tool_name}' not supported. Available tools: {', '.join(supported_tools)}"
+            )
+        
+        # Parse metadata with better error handling
+        meta_data = {}
+        document_number = "SAMPLE123456789"
+        
+        if metadata:
+            try:
+                meta_data = json.loads(metadata)
+                document_number = meta_data.get('documentNumber', meta_data.get('text', document_number))
+            except json.JSONDecodeError:
+                meta_data = {"text": metadata}
+                document_number = metadata if metadata else document_number
+        
+        print(f"📄 Processing {tool_name} for document: {document_number}")
+        
+        # Heavy processing simulation like TinyWow
+        await simulate_heavy_processing(tool_name, max(1, len(files)))
+        
+        # Generate professional government document
+        gov_content = await generate_government_document(tool_name, files, meta_data, document_number)
+        
+        # Ensure static directory exists
+        static_dir = "../../static"
+        os.makedirs(static_dir, exist_ok=True)
+        
+        # Save processed file with unique timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_filename = f"processed-{tool_name}-{timestamp}.pdf"
+        output_path = os.path.join(static_dir, output_filename)
+        
+        with open(output_path, "wb") as f:
+            f.write(gov_content)
+        
+        processing_time = (datetime.now() - start_time).total_seconds() * 1000
+        
+        print(f"✅ {tool_name} completed in {processing_time:.0f}ms - File: {output_filename}")
+        
+        return {
+            "success": True,
+            "message": f"{tool_name.replace('-', ' ').title()} validation completed successfully",
+            "downloadUrl": f"/api/tools/download/{output_filename}",
+            "filename": output_filename,
+            "processingTime": int(processing_time),
+            "toolId": tool_name,
+            "fileSize": len(gov_content),
+            "metadata": {
+                "processed": True,
+                "timestamp": datetime.now().isoformat(),
+                "category": "Government",
+                "service": "government-microservice",
+                "documentNumber": document_number,
+                "validationStatus": "completed",
+                **meta_data
+            }
         }
-    }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"❌ Error processing {tool_name}: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error processing {tool_name}: {str(e)}"
+        )
 
 async def simulate_heavy_processing(tool_name: str, file_count: int):
     """Simulate heavy processing like TinyWow"""
@@ -105,11 +147,11 @@ async def simulate_heavy_processing(tool_name: str, file_count: int):
         print(f"📊 {step}")
         await asyncio.sleep(processing_time / len(steps))
 
-async def generate_government_document(tool_name: str, files: List[UploadFile], metadata: dict) -> bytes:
+async def generate_government_document(tool_name: str, files: List[UploadFile], metadata: dict, document_number: str) -> bytes:
     """Generate professional government validation document"""
     
-    # Extract document number from metadata
-    doc_number = metadata.get('documentNumber') or metadata.get('text') or 'SAMPLE123456789'
+    # Use provided document number or fallback
+    doc_number = document_number if document_number != "SAMPLE123456789" else metadata.get('documentNumber', metadata.get('text', 'SAMPLE123456789'))
     
     # Perform validation based on tool type
     validation_result = perform_document_validation(tool_name, doc_number)

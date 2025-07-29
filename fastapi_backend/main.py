@@ -241,7 +241,9 @@ async def process_image_tool(
     government_tools = ["pan-validator", "gst-validator", "aadhaar-validator", "aadhaar-masker",
                        "pan-masker", "bank-validator", "ifsc-validator", "pincode-validator",
                        "voter-id-validator", "passport-validator", "driving-license-validator",
-                       "income-certificate", "caste-certificate", "domicile-certificate", "character-certificate"]
+                       "income-certificate", "caste-certificate", "domicile-certificate", 
+                       "character-certificate", "birth-certificate", "death-certificate",
+                       "ration-card-status", "shop-act-licence-validator"]
     
     if tool_name in government_tools:
         return await route_to_microservice("government", tool_name, files, metadata)
