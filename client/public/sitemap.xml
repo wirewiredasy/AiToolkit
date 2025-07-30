@@ -8,9 +8,13 @@
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <url>
     <loc>https://suntyn-ai.com/</loc>
-    <lastmod>2025-07-28</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://suntyn-ai.com/suntyn-ai-homepage.jpg</image:loc>
+      <image:caption>Suntyn AI - Professional AI Tools Platform Homepage</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://suntyn-ai.com/about</loc>

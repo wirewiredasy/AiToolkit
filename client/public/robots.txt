@@ -1,0 +1,57 @@
+
+# Robots.txt for Suntyn AI - Professional AI Tools Platform
+# https://suntyn-ai.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Priority pages for crawling
+Allow: /all-tools
+Allow: /toolkit/
+Allow: /about
+Allow: /contact
+Allow: /help
+
+# Prevent crawling of user-specific or dynamic content
+Disallow: /api/
+Disallow: /auth/
+Disallow: /dashboard/
+Disallow: /admin/
+Disallow: /uploads/
+Disallow: /temp/
+Disallow: /private/
+
+# Allow important assets
+Allow: /favicon.ico
+Allow: /sitemap.xml
+Allow: /sitemap-index.xml
+Allow: /sitemap-tools.xml
+Allow: /*.css
+Allow: /*.js
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.png
+Allow: /*.gif
+Allow: /*.svg
+Allow: /*.webp
+
+# Special instructions for search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 2
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
+
+# Sitemap location
+Sitemap: https://suntyn-ai.com/sitemap-index.xml
+Sitemap: https://suntyn-ai.com/sitemap.xml
+Sitemap: https://suntyn-ai.com/sitemap-tools.xml
+
+# Host preference
+Host: suntyn-ai.com
