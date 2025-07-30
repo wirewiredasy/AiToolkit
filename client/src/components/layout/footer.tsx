@@ -39,17 +39,8 @@ export default function Footer() {
     <footer className="bg-gray-900 dark:bg-gray-950 border-t border-gray-800 dark:border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid lg:grid-cols-5 md:grid-cols-3 gap-8">
-          {/* Brand Section */}
+          {/* Newsletter Section */}
           <div className="lg:col-span-2">
-            <div className="mb-6">
-              <GeometricLogo size="lg" showText={true} />
-            </div>
-            <p className="text-gray-400 mb-8 leading-relaxed">
-              Professional AI-powered tools for document processing, image editing, 
-              and data validation. Fast, secure, and completely free.
-            </p>
-
-            {/* Newsletter Signup */}
             <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
               <h3 className="text-white font-semibold mb-3">Stay Updated</h3>
               <p className="text-gray-400 text-sm mb-4">
