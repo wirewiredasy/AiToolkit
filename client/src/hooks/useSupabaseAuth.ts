@@ -27,7 +27,7 @@ export const useSupabaseAuth = () => {
       try {
         // Get current session
         const { session, error: sessionError } = await authHelpers.getCurrentSession()
-        
+
         if (sessionError) {
           console.error('Session error:', sessionError)
           if (mounted) {
@@ -39,14 +39,14 @@ export const useSupabaseAuth = () => {
         if (session?.user && mounted) {
           // Get user profile
           const { data: profile, error: profileError } = await dbHelpers.getUserProfile(session.user.id)
-          
+
           if (profileError) {
             console.error('Profile error:', profileError)
           }
 
           setAuthState({
             user: session.user,
-            profile: profile,
+            profile: profile || null,
             session: session,
             loading: false,
             initialized: true
@@ -72,7 +72,7 @@ export const useSupabaseAuth = () => {
         if (event === 'SIGNED_IN' && session?.user) {
           // Get user profile
           const { data: profile } = await dbHelpers.getUserProfile(session.user.id)
-          
+
           setAuthState({
             user: session.user,
             profile: profile,
@@ -98,115 +98,69 @@ export const useSupabaseAuth = () => {
     }
   }, [])
 
-  // Sign up function
+  // Auth actions
   const signUp = async (email: string, password: string, userData?: { full_name?: string }) => {
-    try {
-      setAuthState(prev => ({ ...prev, loading: true }))
-      
-      const { data, error } = await authHelpers.signUp(email, password, userData)
-      
-      if (error) {
-        setAuthState(prev => ({ ...prev, loading: false }))
-        return { data: null, error }
-      }
-
-      return { data, error: null }
-    } catch (error) {
-      setAuthState(prev => ({ ...prev, loading: false }))
-      return { data: null, error }
-    }
+    const result = await authHelpers.signUp(email, password, userData)
+    return result
   }
 
-  // Sign in function
   const signIn = async (email: string, password: string) => {
-    try {
-      setAuthState(prev => ({ ...prev, loading: true }))
-      
-      const { data, error } = await authHelpers.signIn(email, password)
-      
-      if (error) {
-        setAuthState(prev => ({ ...prev, loading: false }))
-        return { data: null, error }
-      }
-
-      // Profile will be loaded by auth state change listener
-      return { data, error: null }
-    } catch (error) {
-      setAuthState(prev => ({ ...prev, loading: false }))
-      return { data: null, error }
-    }
+    const result = await authHelpers.signIn(email, password)
+    return result
   }
 
-  // Sign out function
   const signOut = async () => {
-    try {
-      setAuthState(prev => ({ ...prev, loading: true }))
-      
-      const { error } = await authHelpers.signOut()
-      
-      if (error) {
-        setAuthState(prev => ({ ...prev, loading: false }))
-        return { error }
-      }
-
-      // State will be cleared by auth state change listener
-      return { error: null }
-    } catch (error) {
-      setAuthState(prev => ({ ...prev, loading: false }))
-      return { error }
-    }
+    const result = await authHelpers.signOut()
+    return result
   }
 
-  // Update profile function
   const updateProfile = async (updates: Partial<UserProfile>) => {
-    if (!authState.user) {
-      return { data: null, error: new Error('No authenticated user') }
-    }
+    if (!authState.user) return { data: null, error: 'Not authenticated' }
 
-    try {
-      const { data, error } = await dbHelpers.updateUserProfile(authState.user.id, updates)
-      
-      if (!error && data) {
-        setAuthState(prev => ({ ...prev, profile: data }))
-      }
-
-      return { data, error }
-    } catch (error) {
-      return { data: null, error }
+    const result = await dbHelpers.updateUserProfile(authState.user.id, updates)
+    if (result.data) {
+      setAuthState(prev => ({ ...prev, profile: result.data }))
     }
+    return result
   }
 
-  // Track tool usage
   const trackToolUsage = async (toolId: string, metadata: any) => {
-    if (!authState.user) return { data: null, error: new Error('No authenticated user') }
+    if (!authState.user) return { data: null, error: 'Not authenticated' }
 
-    try {
-      const toolCategory = getToolCategory(toolId)
-      
-      const { data, error } = await dbHelpers.trackToolUsage({
-        user_id: authState.user.id,
-        tool_id: toolId,
-        tool_category: toolCategory,
-        processing_time: metadata.processingTime,
-        success: metadata.success,
-        file_size: metadata.fileSize,
-        input_format: metadata.inputFormat,
-        output_format: metadata.outputFormat,
-        metadata: metadata
-      })
-
-      return { data, error }
-    } catch (error) {
-      return { data: null, error }
+    const usage = {
+      user_id: authState.user.id,
+      tool_id: toolId,
+      tool_category: getToolCategory(toolId),
+      success: true,
+      ...metadata
     }
+
+    const result = await dbHelpers.trackToolUsage(usage)
+
+    // Update user credits and tool count
+    if (result.data && authState.profile) {
+      const updatedProfile = {
+        ...authState.profile,
+        credits_remaining: Math.max(0, authState.profile.credits_remaining - 1),
+        total_tools_used: authState.profile.total_tools_used + 1
+      }
+      setAuthState(prev => ({ ...prev, profile: updatedProfile }))
+
+      // Update in database
+      await dbHelpers.updateUserProfile(authState.user.id, {
+        credits_remaining: updatedProfile.credits_remaining,
+        total_tools_used: updatedProfile.total_tools_used
+      })
+    }
+
+    return result
   }
 
-  // Helper function to determine tool category
   const getToolCategory = (toolId: string): 'pdf' | 'image' | 'media' | 'government' | 'developer' => {
     if (toolId.includes('pdf')) return 'pdf'
-    if (toolId.includes('image') || toolId.includes('bg-remover') || toolId.includes('resize')) return 'image'
-    if (toolId.includes('audio') || toolId.includes('video') || toolId.includes('vocal')) return 'media'
-    if (toolId.includes('pan') || toolId.includes('gst') || toolId.includes('aadhaar')) return 'government'
+    if (toolId.includes('image') || toolId.includes('photo') || toolId.includes('bg-remover')) return 'image'
+    if (toolId.includes('audio') || toolId.includes('video') || toolId.includes('media')) return 'media'
+    if (toolId.includes('aadhaar') || toolId.includes('pan') || toolId.includes('gst') || toolId.includes('certificate')) return 'government'
     return 'developer'
   }
 
