@@ -30,6 +30,20 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'Suntyn AI Preview', port: PORT });
 });
 
+// Tools proxy to FastAPI gateway  
+app.use('/tools', createProxyMiddleware({
+  target: 'http://localhost:5001',
+  changeOrigin: true,
+  timeout: 90000,
+  onError: (err, req, res) => {
+    console.error('Tools Proxy error:', err.message);
+    res.status(502).json({ error: 'Tools service unavailable' });
+  },
+  onProxyReq: (proxyReq, req, res) => {
+    console.log(`TOOLS: ${req.method} ${req.url} -> http://localhost:5001${req.url}`);
+  }
+}));
+
 // API proxy to FastAPI gateway
 app.use('/api', createProxyMiddleware({
   target: 'http://localhost:5001',

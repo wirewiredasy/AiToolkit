@@ -211,9 +211,18 @@ async def download_processed_file(filename: str):
         print(f"❌ Unexpected error serving file: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal server error while serving file")
 
-# Image Tools Endpoints  
+# All Tools Endpoints (Fixed routing)
+@app.post("/tools/{tool_name}")
+async def route_tool_request(
+    tool_name: str,
+    files: List[UploadFile] = File([]),
+    metadata: Optional[str] = Form(None)
+):
+    """Route tool requests to appropriate microservice"""
+    return await process_tool_routing(tool_name, files, metadata)
+
 @app.post("/api/tools/{tool_name}")
-async def process_image_tool(
+async def process_tool_routing(
     tool_name: str,
     files: List[UploadFile] = File([]),
     metadata: Optional[str] = Form(None)
@@ -233,7 +242,9 @@ async def process_image_tool(
                    "audio-extractor", "video-extractor", "audio-merger", "video-merger",
                    "volume-changer", "speed-changer", "pitch-changer", "audio-reverser",
                    "video-reverser", "noise-reducer", "echo-remover", "audio-normalizer",
-                   "video-resizer", "video-cropper", "subtitle-extractor", "gif-maker"]
+                   "video-resizer", "video-cropper", "subtitle-extractor", "gif-maker",
+                   "vocal-remover", "audio-compressor", "video-compressor", "gif-to-video",
+                   "video-to-gif", "video-stabilizer", "audio-enhancer"]
     
     if tool_name in media_tools:
         return await route_to_microservice("media", tool_name, files, metadata)
