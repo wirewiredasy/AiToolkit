@@ -167,17 +167,8 @@ export default function Footer() {
 
         {/* Bottom Section */}
         <div className="border-t border-gray-700 pt-8 mt-12">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-            <div className="mb-8 md:mb-0">
-              <div className="mb-4">
-                <GeometricLogo size="md" showText={true} />
-              </div>
-              <p className="text-slate-400 max-w-md">
-                Professional AI-powered tools for document processing, image editing, 
-                and data validation. Fast, secure, and completely free.
-              </p>
-            </div>
-            <div className="text-gray-400 text-sm text-center">
+          <div className="text-center">
+            <div className="text-gray-400 text-sm">
               © 2025 Suntyn AI. All rights reserved.
             </div>
           </div>
