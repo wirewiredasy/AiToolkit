@@ -1,10 +1,10 @@
-modules = ["nodejs-20", "python-3.12", "web", "python3"]
+modules = ["nodejs-20", "python-3.12", "web", "python3", "postgresql-16"]
 run = "npm run dev"
 hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
 
 [nix]
 channel = "stable-25_05"
-packages = ["cairo", "cargo", "ffmpeg-full", "file", "freetype", "ghostscript", "glibcLocales", "gobject-introspection", "gtk3", "imagemagickBig", "lcms2", "libGL", "libGLU", "libiconv", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "pkg-config", "python3", "qhull", "rustc", "tcl", "tk", "xcodebuild", "xsimd", "zlib", "firebase-tools"]
+packages = ["cairo", "cargo", "ffmpeg-full", "file", "firebase-tools", "freetype", "ghostscript", "glibcLocales", "gobject-introspection", "gtk3", "imagemagickBig", "lcms2", "libGL", "libGLU", "libiconv", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "pkg-config", "python3", "qhull", "rustc", "tcl", "tk", "xcodebuild", "xsimd", "zlib"]
 
 [env]
 REPLIT_KEEP_PACKAGE_DEV_DEPENDENCIES = "1"
@@ -132,3 +132,6 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "cd client && npm run dev"
+
+[agent]
+integrations = ["javascript_supabase==1.0.0"]

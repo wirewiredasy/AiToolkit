@@ -14,6 +14,17 @@ from datetime import datetime
 import json
 from PIL import Image, ImageFilter, ImageEnhance, ImageDraw, ImageFont
 import asyncio
+import cloudinary
+import cloudinary.uploader
+from cloudinary.utils import cloudinary_url
+
+# Configure Cloudinary
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME", "dimyd0tdl"),
+    api_key=os.getenv("CLOUDINARY_API_KEY", "559832996883783"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET", "92dxr3N-B4Q6_8_inYLbQo3xu3Q"),
+    secure=True
+)
 
 app = FastAPI(title="Image Tools Microservice", version="1.0.0")
 
