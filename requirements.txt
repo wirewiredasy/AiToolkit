@@ -99,3 +99,11 @@ numpy
 opencv-python
 scikit-learn
 scipy
+fastapi
+httpx
+pypdf
+pypdf2
+python-dotenv
+python-multipart
+reportlab
+uvicorn
