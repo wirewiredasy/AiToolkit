@@ -44,11 +44,13 @@ export default function NoiseReducerPage() {
     setIsProcessing(true);
     try {
       const formData = new FormData();
-      formData.append('file', file);
-      formData.append('noiseType', noiseType);
-      formData.append('intensity', intensity[0].toString());
+      formData.append('files', file);
+      formData.append('metadata', JSON.stringify({
+        noiseType: noiseType,
+        intensity: intensity[0].toString()
+      }));
 
-      const response = await fetch('/api/tools/noise-reducer', {
+      const response = await fetch('/tools/noise-reducer', {
         method: 'POST',
         body: formData,
       });

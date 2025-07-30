@@ -62,7 +62,7 @@ export default function AudioConverterPage() {
           description: "Strip ID3 tags and metadata"
         }
       ]}
-      endpoint="/api/tools/audio-converter"
+      endpoint="/tools/audio-converter"
       gradientFrom="from-green-500"
       gradientTo="to-blue-600"
     />

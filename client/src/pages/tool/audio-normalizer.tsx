@@ -33,10 +33,12 @@ export default function AudioNormalizerPage() {
     setIsProcessing(true);
     try {
       const formData = new FormData();
-      formData.append('file', file);
-      formData.append('targetLevel', targetLevel[0].toString());
+      formData.append('files', file);
+      formData.append('metadata', JSON.stringify({
+        targetLevel: targetLevel[0].toString()
+      }));
 
-      const response = await fetch('/api/tools/audio-normalizer', {
+      const response = await fetch('/tools/audio-normalizer', {
         method: 'POST',
         body: formData,
       });

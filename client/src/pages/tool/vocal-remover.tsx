@@ -38,9 +38,10 @@ export default function VocalRemoverPage() {
     setIsProcessing(true);
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('files', file);
+      formData.append('metadata', JSON.stringify({}));
 
-      const response = await fetch('/api/tools/vocal-remover', {
+      const response = await fetch('/tools/vocal-remover', {
         method: 'POST',
         body: formData,
       });
