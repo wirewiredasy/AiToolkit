@@ -120,7 +120,7 @@ async def generate_professional_media(tool_name: str, files: List[UploadFile], m
         }
     
     # Determine output format based on tool
-    if any(audio_keyword in tool_name for audio_keyword in ["audio", "sound", "music", "voice"]):
+    if any(audio_keyword in tool_name for audio_keyword in ["audio", "sound", "music", "voice", "vocal", "noise", "echo"]):
         return generate_professional_audio(tool_name, original_media, metadata), "mp3"
     else:
         return generate_professional_video(tool_name, original_media, metadata), "mp4"
