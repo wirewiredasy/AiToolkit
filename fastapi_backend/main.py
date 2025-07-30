@@ -6,6 +6,7 @@ from fastapi import FastAPI, HTTPException, UploadFile, File, Form, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import httpx
 import os
@@ -620,7 +621,8 @@ async def upload_file(file: UploadFile = File(...)):
         uploads_dir = Path("uploads")
         uploads_dir.mkdir(exist_ok=True)
 
-        file_path = uploads_dir / file.filename
+        filename = file.filename or "unknown_file"
+        file_path = uploads_dir / filename
         with open(file_path, "wb") as f:
             while content := await file.read(1024 * 1024):
                 f.write(content)

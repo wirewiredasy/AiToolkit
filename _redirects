@@ -1,0 +1,11 @@
+# Single Page Application routing for Netlify/Vercel/static hosting
+# This file ensures all routes are handled by the frontend React app
+
+# API routes should be handled by backend (if deployed separately)
+/api/*  https://your-backend-url.render.com/api/:splat  200
+
+# Static assets should be served directly
+/static/*  /static/:splat  200
+
+# All other routes should serve the main index.html for React Router
+/*  /index.html  200
