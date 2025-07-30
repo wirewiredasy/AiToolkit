@@ -67,3 +67,14 @@ cloudinary==1.36.0
 pydantic==2.5.0
 pydantic-settings==2.1.0
 pathlib
+cloudinary
+fastapi
+httpx
+Pillow
+pydantic
+PyPDF2
+python-dotenv
+python-multipart
+rembg
+reportlab
+uvicorn[standard]
