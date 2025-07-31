@@ -200,7 +200,9 @@ function Router() {
     <Suspense fallback={<PageLoadingFallback />}>
       <ScrollToTop />
       <Switch>
-      <Route path="/" component={Home} />
+      <Route path="/">
+        <Home />
+      </Route>
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <Route path="/auth/login" component={Login} />
