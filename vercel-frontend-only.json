@@ -1,0 +1,15 @@
+{
+  "buildCommand": "vite build",
+  "outputDirectory": "dist/public",
+  "installCommand": "npm install",
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "https://suntynai-ut2i.onrender.com/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}

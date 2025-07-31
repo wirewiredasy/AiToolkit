@@ -19,7 +19,7 @@
 2. **Import GitHub repo:** Select your Suntyn AI repository
 3. **Configure settings:**
    - Framework: **Vite** (auto-detected)
-   - Build Command: `npm run build`
+   - Build Command: `npm run vercel-build`
    - Output Directory: `dist/public`
    - Install Command: `npm install`
 
