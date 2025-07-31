@@ -1,91 +1,63 @@
-import { pgTable, text, serial, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, integer, boolean, timestamp, serial } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+// Users table for authentication
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   email: text("email").notNull().unique(),
   password: text("password").notNull(),
   name: text("name").notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const toolUsage = pgTable("tool_usage", {
+// Tool processing history
+export const toolHistory = pgTable("tool_history", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").references(() => users.id),
   toolName: text("tool_name").notNull(),
-  toolCategory: text("tool_category").notNull(),
-  fileName: text("file_name"),
-  fileSize: integer("file_size"),
+  inputData: text("input_data"), // JSON string
+  outputData: text("output_data"), // JSON string
+  status: text("status").notNull(), // 'pending', 'completed', 'failed'
   processingTime: integer("processing_time"), // in milliseconds
-  success: boolean("success").notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
-  metadata: jsonb("metadata"), // additional tool-specific data
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const userFiles = pgTable("user_files", {
+// File uploads table
+export const fileUploads = pgTable("file_uploads", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").references(() => users.id),
+  fileName: text("file_name").notNull(),
   originalName: text("original_name").notNull(),
-  storedName: text("stored_name").notNull(),
-  filePath: text("file_path").notNull(),
-  fileSize: integer("file_size").notNull(),
   mimeType: text("mime_type").notNull(),
-  toolUsageId: integer("tool_usage_id").references(() => toolUsage.id),
-  expiresAt: timestamp("expires_at").notNull(), // auto-delete after 1 hour
-  createdAt: timestamp("created_at").defaultNow(),
+  fileSize: integer("file_size").notNull(),
+  filePath: text("file_path").notNull(),
+  expiresAt: timestamp("expires_at").notNull(), // 1 hour TTL
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 // Insert schemas
-export const insertUserSchema = createInsertSchema(users).pick({
-  email: true,
-  password: true,
-  name: true,
+export const insertUserSchema = createInsertSchema(users).omit({
+  id: true,
+  createdAt: true,
 });
 
-export const insertToolUsageSchema = createInsertSchema(toolUsage).pick({
-  userId: true,
-  toolName: true,
-  toolCategory: true,
-  fileName: true,
-  fileSize: true,
-  processingTime: true,
-  success: true,
-  metadata: true,
+export const insertToolHistorySchema = createInsertSchema(toolHistory).omit({
+  id: true,
+  createdAt: true,
 });
 
-export const insertUserFileSchema = createInsertSchema(userFiles).pick({
-  userId: true,
-  originalName: true,
-  storedName: true,
-  filePath: true,
-  fileSize: true,
-  mimeType: true,
-  toolUsageId: true,
-  expiresAt: true,
+export const insertFileUploadSchema = createInsertSchema(fileUploads).omit({
+  id: true,
+  createdAt: true,
 });
 
 // Types
-export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
-export type InsertToolUsage = z.infer<typeof insertToolUsageSchema>;
-export type ToolUsage = typeof toolUsage.$inferSelect;
-export type InsertUserFile = z.infer<typeof insertUserFileSchema>;
-export type UserFile = typeof userFiles.$inferSelect;
+export type InsertUser = z.infer<typeof insertUserSchema>;
 
-// Auth schemas
-export const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
+export type ToolHistory = typeof toolHistory.$inferSelect;
+export type InsertToolHistory = z.infer<typeof insertToolHistorySchema>;
 
-export const signupSchema = loginSchema.extend({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
-
-export type LoginInput = z.infer<typeof loginSchema>;
-export type SignupInput = z.infer<typeof signupSchema>;
+export type FileUpload = typeof fileUploads.$inferSelect;
+export type InsertFileUpload = z.infer<typeof insertFileUploadSchema>;
