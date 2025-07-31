@@ -96,3 +96,13 @@ python-multipart
 reportlab
 requests
 uvicorn
+bcrypt
+fastapi
+passlib
+pillow
+pypdf2
+python-jose
+python-multipart
+reportlab
+requests
+uvicorn
