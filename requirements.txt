@@ -106,3 +106,15 @@ python-multipart
 reportlab
 requests
 uvicorn
+fastapi
+httpx
+pillow
+pypdf2
+python-magic
+python-multipart
+reportlab
+uvicorn
+fastapi
+httpx
+python-multipart
+uvicorn
