@@ -11,21 +11,44 @@ const __dirname = path.dirname(__filename);
 async function startServer() {
   console.log('🚀 Starting Suntyn AI Full-Stack Application...');
 
-  // Temporarily disable FastAPI services during migration
-  console.log('⚠️  FastAPI services temporarily disabled during migration');
-  console.log('🔄 Will start services after Python dependencies are resolved');
+  // Start FastAPI services - dependencies now resolved
+  console.log('🔧 Starting FastAPI microservices...');
 
-  // Create placeholder processes for cleanup
-  let gatewayProcess: any = null;
-  let pdfProcess: any = null;
-  let imageProcess: any = null;
-  let devProcess: any = null;
-  let mediaProcess: any = null;
-  let govProcess: any = null;
+  // Start main gateway
+  const gatewayProcess = spawn('python', ['-m', 'uvicorn', 'main:app', '--host', '0.0.0.0', '--port', '5001', '--reload'], {
+    cwd: path.join(process.cwd(), 'fastapi_backend'),
+    stdio: 'inherit'
+  });
 
-  // Start FastAPI services using Python directly
-  console.log('⚠️  FastAPI services temporarily disabled during migration');
-  console.log('🔄 Will start services after Python dependencies are resolved');
+  // Start PDF service
+  const pdfProcess = spawn('python', ['-m', 'uvicorn', 'pdf_service:app', '--host', '0.0.0.0', '--port', '8001', '--reload'], {
+    cwd: path.join(process.cwd(), 'fastapi_backend/services'),
+    stdio: 'inherit'
+  });
+
+  // Start Image service
+  const imageProcess = spawn('python', ['-m', 'uvicorn', 'image_service:app', '--host', '0.0.0.0', '--port', '8002', '--reload'], {
+    cwd: path.join(process.cwd(), 'fastapi_backend/services'),
+    stdio: 'inherit'
+  });
+
+  // Start Developer service
+  const devProcess = spawn('python', ['-m', 'uvicorn', 'developer_service:app', '--host', '0.0.0.0', '--port', '8005', '--reload'], {
+    cwd: path.join(process.cwd(), 'fastapi_backend/services'),
+    stdio: 'inherit'
+  });
+
+  // Start Media service
+  const mediaProcess = spawn('python', ['-m', 'uvicorn', 'media_service:app', '--host', '0.0.0.0', '--port', '8003', '--reload'], {
+    cwd: path.join(process.cwd(), 'fastapi_backend/services'),
+    stdio: 'inherit'
+  });
+
+  // Start Government service
+  const govProcess = spawn('python', ['-m', 'uvicorn', 'government_service:app', '--host', '0.0.0.0', '--port', '8004', '--reload'], {
+    cwd: path.join(process.cwd(), 'fastapi_backend/services'),
+    stdio: 'inherit'
+  });
 
   // Start static file server
   const staticProcess = spawn('node', ['static_server.js'], {
