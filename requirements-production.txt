@@ -1,0 +1,56 @@
+# FastAPI Core
+fastapi==0.116.1
+uvicorn==0.35.0
+python-multipart==0.0.20
+
+# HTTP Clients
+httpx>=0.28.1
+requests>=2.31.0
+
+# PDF Processing
+pypdf>=5.9.0
+reportlab>=4.4.3
+pdfplumber>=0.11.0
+
+# Image Processing  
+Pillow>=10.0.0
+opencv-python>=4.8.0
+scikit-image>=0.21.0
+
+# Audio/Video Processing
+pydub>=0.25.1
+moviepy>=1.0.3
+
+# Document Processing
+python-docx>=1.1.0
+openpyxl>=3.1.0
+xlsxwriter>=3.1.0
+
+# Data Processing
+pandas>=2.1.0
+numpy>=1.24.0
+
+# Configuration
+python-dotenv>=1.1.1
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# Authentication & Security
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+bcrypt>=4.0.0
+
+# Database
+sqlalchemy>=2.0.0
+
+# File Processing
+aiofiles>=23.2.0
+python-magic>=0.4.27
+
+# ML & Image Processing
+rembg
+cloudinary
+
+# Scientific Computing
+scikit-learn>=1.3.0
+scipy>=1.11.0
