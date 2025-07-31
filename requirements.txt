@@ -73,3 +73,15 @@ uvicorn
 uvicorn
 httpx
 python-multipart
+bcrypt
+fastapi
+httpx
+moviepy
+passlib
+pillow
+pydub
+pypdf2
+python-jose
+python-multipart
+reportlab
+uvicorn
