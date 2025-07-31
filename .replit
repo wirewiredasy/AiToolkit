@@ -1,9 +1,9 @@
-modules = ["nodejs-20", "web", "python-3.11"]
-run = "npm run dev"
+modules = ["python-3.11"]
+run = "cd fastapi_backend && python3 start_all_services.py"
 hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
 
 [nix]
-channel = "stable-25_05"
+channel = "stable-24_05"
 packages = ["cairo", "cargo", "ffmpeg-full", "file", "firebase-tools", "freetype", "ghostscript", "glibcLocales", "gobject-introspection", "gtk3", "imagemagickBig", "lcms2", "libGL", "libGLU", "libiconv", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "pkg-config", "python3", "qhull", "rustc", "tcl", "tk", "xcodebuild", "xsimd", "zlib"]
 
 [env]
@@ -13,71 +13,35 @@ PORT = "5000"
 
 [deployment]
 deploymentTarget = "autoscale"
-run = ["npm", "run", "start"]
-build = ["npm", "run", "build"]
-
-[[ports]]
-localPort = 3001
-externalPort = 6000
+run = ["sh", "-c", "cd fastapi_backend && python3 start_all_services.py"]
+build = []
 
 [[ports]]
 localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 5001
-externalPort = 3000
-
-[[ports]]
-localPort = 5002
-externalPort = 5000
-
-[[ports]]
-localPort = 5003
-externalPort = 5173
-
-[[ports]]
-localPort = 8000
-externalPort = 8000
-
-[[ports]]
 localPort = 8001
-externalPort = 3001
+externalPort = 8001
 
 [[ports]]
 localPort = 8002
-externalPort = 3003
+externalPort = 8002
 
 [[ports]]
 localPort = 8003
-externalPort = 6800
+externalPort = 8003
 
 [[ports]]
 localPort = 8004
-externalPort = 8008
+externalPort = 8004
 
 [[ports]]
 localPort = 8005
-externalPort = 3002
-
-[[ports]]
-localPort = 9005
-externalPort = 8080
-
-[[ports]]
-localPort = 9006
-externalPort = 8081
-
-[[ports]]
-localPort = 9999
-externalPort = 8099
-
-[[ports]]
-localPort = 24678
-externalPort = 4200
+externalPort = 8005
 
 [workflows]
-runButton = "Project"
+runButton = "FastAPI Only"
 
 [[workflows.workflow]]
 name = "Project"
@@ -157,6 +121,15 @@ args = "cd fastapi_backend && python3 start_all_services.py"
 
 [[workflows.workflow]]
 name = "Start All Microservices"
+author = 45814692
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd fastapi_backend && python3 start_all_services.py"
+
+[[workflows.workflow]]
+name = "FastAPI Only"
 author = 45814692
 mode = "sequential"
 
