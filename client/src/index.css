@@ -42,25 +42,25 @@
 }
 
 .dark {
-  --background: hsl(240, 10%, 3.9%);
-  --foreground: hsl(0, 0%, 98%);
-  --muted: hsl(240, 3.7%, 15.9%);
-  --muted-foreground: hsl(240, 5%, 64.9%);
-  --popover: hsl(240, 10%, 3.9%);
-  --popover-foreground: hsl(0, 0%, 98%);
-  --card: hsl(240, 10%, 3.9%);
-  --card-foreground: hsl(0, 0%, 98%);
-  --border: hsl(240, 3.7%, 15.9%);
-  --input: hsl(240, 3.7%, 15.9%);
-  --primary: hsl(221, 83%, 53%);
+  --background: hsl(240, 10%, 8%);
+  --foreground: hsl(0, 0%, 95%);
+  --muted: hsl(240, 5%, 18%);
+  --muted-foreground: hsl(240, 5%, 75%);
+  --popover: hsl(240, 8%, 12%);
+  --popover-foreground: hsl(0, 0%, 95%);
+  --card: hsl(240, 8%, 10%);
+  --card-foreground: hsl(0, 0%, 95%);
+  --border: hsl(240, 5%, 25%);
+  --input: hsl(240, 5%, 20%);
+  --primary: hsl(221, 83%, 58%);
   --primary-foreground: hsl(210, 40%, 98%);
-  --secondary: hsl(240, 3.7%, 15.9%);
-  --secondary-foreground: hsl(0, 0%, 98%);
-  --accent: hsl(240, 3.7%, 15.9%);
-  --accent-foreground: hsl(0, 0%, 98%);
-  --destructive: hsl(0, 62.8%, 30.6%);
+  --secondary: hsl(240, 5%, 20%);
+  --secondary-foreground: hsl(0, 0%, 95%);
+  --accent: hsl(240, 5%, 20%);
+  --accent-foreground: hsl(0, 0%, 95%);
+  --destructive: hsl(0, 62.8%, 45%);
   --destructive-foreground: hsl(0, 0%, 98%);
-  --ring: hsl(240, 4.9%, 83.9%);
+  --ring: hsl(240, 5%, 85%);
   --radius: 0.5rem;
 }
 
@@ -241,29 +241,36 @@
     color: hsl(224, 71%, 4%) !important;
   }
 
-  /* Enhanced dark theme toggle styling - Replit-like */
+  /* Enhanced dark theme toggle styling - Better visibility */
   .dark .theme-toggle-button {
-    background: rgba(30, 30, 30, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: hsl(240, 8%, 15%);
+    border: 1px solid hsl(240, 5%, 30%);
+    color: hsl(0, 0%, 95%) !important;
     box-shadow: 
       0 1px 2px rgba(0, 0, 0, 0.2), 
-      0 0 0 1px rgba(255, 255, 255, 0.05),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      0 0 0 1px rgba(255, 255, 255, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
   }
 
   .dark .theme-toggle-button::before {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
   }
 
   .dark .theme-toggle-button:hover {
-    background: rgba(20, 20, 20, 1);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: hsl(240, 8%, 20%);
+    border-color: hsl(240, 5%, 40%);
+    color: hsl(0, 0%, 98%) !important;
     box-shadow: 
       0 2px 8px rgba(0, 0, 0, 0.3), 
       0 1px 3px rgba(0, 0, 0, 0.15),
-      0 0 0 1px rgba(255, 255, 255, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      0 0 0 1px rgba(255, 255, 255, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
     transform: translateY(-0.5px);
+  }
+
+  /* Dark mode icon visibility */
+  .dark .theme-toggle-button svg {
+    color: hsl(0, 0%, 95%) !important;
   }
 
   .dark .theme-toggle-button:hover::before {
@@ -280,11 +287,55 @@
   }
 
   .dark .theme-dropdown {
-    @apply bg-gray-900 border-gray-700;
+    background: hsl(240, 8%, 12%) !important;
+    border: 1px solid hsl(240, 5%, 25%) !important;
+    color: hsl(0, 0%, 95%) !important;
     box-shadow: 
       0 10px 25px rgba(0, 0, 0, 0.4), 
       0 4px 10px rgba(0, 0, 0, 0.2),
-      0 0 0 1px rgba(255, 255, 255, 0.1);
+      0 0 0 1px rgba(255, 255, 255, 0.15);
+  }
+
+  /* Dark mode text and component visibility fixes */
+  .dark * {
+    color: hsl(0, 0%, 95%) !important;
+  }
+
+  .dark .text-muted-foreground,
+  .dark .text-gray-500,
+  .dark .text-gray-600 {
+    color: hsl(240, 5%, 75%) !important;
+  }
+
+  .dark .bg-card,
+  .dark .bg-background {
+    background-color: hsl(240, 8%, 10%) !important;
+    color: hsl(0, 0%, 95%) !important;
+  }
+
+  .dark .bg-muted {
+    background-color: hsl(240, 5%, 18%) !important;
+    color: hsl(0, 0%, 95%) !important;
+  }
+
+  /* Dark mode border improvements */
+  .dark .border,
+  .dark .border-border {
+    border-color: hsl(240, 5%, 25%) !important;
+  }
+
+  /* Dark mode button improvements */
+  .dark .btn, 
+  .dark button:not(.btn-gradient) {
+    background-color: hsl(240, 8%, 15%) !important;
+    color: hsl(0, 0%, 95%) !important;
+    border: 1px solid hsl(240, 5%, 25%) !important;
+  }
+
+  .dark .btn:hover,
+  .dark button:hover:not(.btn-gradient) {
+    background-color: hsl(240, 8%, 20%) !important;
+    color: hsl(0, 0%, 98%) !important;
   }
 
   .floating-3d:nth-child(2) {
