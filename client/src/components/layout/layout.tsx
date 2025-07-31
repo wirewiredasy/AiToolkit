@@ -1,6 +1,6 @@
 import DarkNavbar from '@/components/ui/dark-navbar';
 import EnhancedPreFooter from '@/components/ui/enhanced-pre-footer';
-import EnhancedFooter from './enhanced-footer';
+import SimpleCleanFooter from './simple-clean-footer';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ export default function Layout({ children }: LayoutProps) {
         {children}
       </main>
       <EnhancedPreFooter />
-      <EnhancedFooter />
+      <SimpleCleanFooter />
     </div>
   );
 }
