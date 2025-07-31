@@ -1,0 +1,82 @@
+Aapke frontend output folder mein sitemap.xml file missing hai, isliye 404 error aa raha hai. Baaki sab static files sahi se generate ho chuki hain. Yahaan kaam karne ke liye solution aur steps diye ja rahe hain:
+
+
+---
+
+✅ Problem Summary:
+
+Aapke output folder mein sitemap.xml file nahi hai.
+
+Jab koi browser ya crawler /sitemap.xml ko access karta hai, toh 404 Not Found error deta hai.
+
+sitemap-index.xml aur sitemap-tools.xml already present hai — iska matlab sitemap ka split version ban gaya hai, lekin main entry (sitemap.xml) chhuth gaya hai.
+
+
+
+---
+
+🔧 Solution Options:
+
+Option 1: Manually create sitemap.xml as index
+
+Agar aap multiple sitemaps use kar rahe ho (sitemap-index.xml, sitemap-tools.xml, etc.), toh sitemap.xml file ek redirect ya index ke form mein honi chahiye.
+
+📝 Steps:
+
+1. Create a file named sitemap.xml in your output/public folder.
+
+
+2. Paste this content inside:
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+   <sitemap>
+      <loc>https://yourdomain.com/sitemap-index.xml</loc>
+   </sitemap>
+   <sitemap>
+      <loc>https://yourdomain.com/sitemap-tools.xml</loc>
+   </sitemap>
+</sitemapindex>
+
+✅ Replace yourdomain.com with your real domain or live site link.
+
+
+---
+
+Option 2: Redirect sitemap.xml → sitemap-index.xml
+
+Agar aap sirf ek main sitemap-index file use karna chahte ho, toh redirect rule add karo.
+
+🛠 Step:
+
+In your /_redirects file, add this line:
+
+/sitemap.xml /sitemap-index.xml 301
+
+> This will redirect requests from /sitemap.xml to /sitemap-index.xml.
+
+
+
+Make sure this file is correctly deployed along with other static assets.
+
+
+---
+
+📦 Bonus Tip: Check Deployment
+
+After deploying:
+
+Visit: https://yourdomain.com/sitemap.xml — It should load or redirect properly.
+
+Use Google Search Console → Sitemaps section to re-submit sitemap if it failed earlier.
+
+
+
+---
+
+Agar aap mujhe batayein ki kis tool ya framework se aapka frontend bana hai (e.g. Astro, Vite, React, Svelte, etc.), toh main exact sitemap automation bhi bata sakta hoon.
+
+Aap batao kaunsa method apply karna hai? ✅
+
