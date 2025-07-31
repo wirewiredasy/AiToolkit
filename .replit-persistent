@@ -1,0 +1,39 @@
+# Suntyn AI - Persistent Configuration
+# This file ensures settings persist across imports/resets
+
+# Migration Status
+MIGRATION_COMPLETE=true
+EXPRESS_REMOVED=true
+MIGRATION_DATE=2025-07-31
+
+# Server Configuration
+SERVER_TYPE=nodejs_lightweight
+PORT=5000
+STATIC_DIR=dist/public
+UPLOADS_DIR=static
+DOWNLOADS_DIR=static
+
+# Build Configuration
+FRONTEND_BUILD_PATH=dist/public
+BACKEND_REMOVED=express
+API_ENDPOINTS=/api/health,/api/tools,/api/upload,/api/download
+
+# Dependencies Status
+FASTAPI_READY=true
+PYTHON_ISSUES=pydantic_core_conflict
+MICROSERVICES=pdf,image,media,government,developer
+
+# UI Fixes Applied
+DARK_MODE_FIXED=true
+CSS_CLEANED=true
+DUPLICATE_CORS_REMOVED=true
+
+# Processing Configuration
+MAX_FILE_SIZE=50MB
+SUPPORTED_FORMATS=pdf,png,jpg,mp3,mp4,json,txt,svg
+SECURITY_VALIDATION=enabled
+
+# Error Tracking
+LAST_ERROR=ERR_HTTP_HEADERS_SENT
+LAST_FIX=safe_header_handling
+LAST_UPDATE=2025-07-31T22:11:00Z

@@ -31,6 +31,9 @@ Preferred communication style: Simple, everyday language.
 - **Authentication**: JWT token-based authentication with bcryptjs for hashing
 - **Session Storage**: In-memory with PostgreSQL fallback
 - **Migration Status**: Express.js completely removed (July 31, 2025). Frontend builds properly to dist/public and served correctly.
+- **Persistence System**: Added .replit-persistent configuration to maintain settings across imports/resets
+- **Upload/Download**: Robust file handling with security validation, 50MB limit, proper error handling
+- **Error Resolution**: Fixed ERR_HTTP_HEADERS_SENT issue with safe header handling
 
 ### Data Storage Solutions
 - **ORM**: Drizzle ORM
