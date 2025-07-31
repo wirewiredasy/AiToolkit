@@ -1,5 +1,5 @@
 import DarkNavbar from '@/components/ui/dark-navbar';
-import EnhancedPreFooter from '@/components/ui/enhanced-pre-footer';
+import FramerStylePreFooter from '@/components/ui/framer-style-prefooter';
 import SimpleCleanFooter from './simple-clean-footer';
 
 interface LayoutProps {
@@ -13,7 +13,7 @@ export default function Layout({ children }: LayoutProps) {
       <main className="flex-1 pt-16">
         {children}
       </main>
-      <EnhancedPreFooter />
+      <FramerStylePreFooter />
       <SimpleCleanFooter />
     </div>
   );
