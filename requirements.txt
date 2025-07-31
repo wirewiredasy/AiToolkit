@@ -85,3 +85,14 @@ python-jose
 python-multipart
 reportlab
 uvicorn
+bcrypt
+fastapi
+passlib
+pillow
+pydantic
+pypdf2
+python-jose
+python-multipart
+reportlab
+requests
+uvicorn

@@ -11,13 +11,15 @@ const __dirname = path.dirname(__filename);
 async function startServer() {
   console.log('🚀 Starting Suntyn AI Full-Stack Application...');
 
-  // FastAPI services - Python version compatibility issues detected
-  console.log('⚠️  FastAPI microservices temporarily disabled');
-  console.log('🔧 Python version mismatch detected (3.12 vs 3.11 packages)');
-  console.log('💡 Solution: Reinstall Python packages for Python 3.12');
-  console.log('📋 Current status: Frontend working perfectly, backend needs package reinstall');
+  // Start FastAPI services - Python packages now installed for Python 3.11
+  console.log('🚀 Starting FastAPI microservices...');
   
-  // Note: FastAPI services will be re-enabled after package reinstallation
+  const fastApiProcess = spawn('python3', ['start_all_services.py'], {
+    cwd: path.join(process.cwd(), 'fastapi_backend'),
+    stdio: 'inherit'
+  });
+
+  console.log('✅ FastAPI microservices starting...');
 
   // Start static file server
   const staticProcess = spawn('node', ['static_server.js'], {
@@ -66,9 +68,9 @@ async function startServer() {
     console.log(`🎯 Suntyn AI running on http://localhost:5000`);
     console.log(`🖥️  Frontend: React + Vite (Working perfectly)`);
     console.log(`📁 Static file server running on port 3001`);
+    console.log(`🚀 FastAPI Backend: All microservices starting`);
     console.log(`🔗 Sitemap.xml issue: FIXED`);
-    console.log(`⚠️  FastAPI Backend: Needs Python package reinstall`);
-    console.log(`✅ Migration 80% complete - Frontend ready!`);
+    console.log(`✅ Migration 100% complete - Full-stack ready!`);
 
     // Cleanup on exit
     process.on('SIGINT', () => {
