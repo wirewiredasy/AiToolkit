@@ -134,10 +134,12 @@ static_dir = os.path.abspath("../static")
 os.makedirs(static_dir, exist_ok=True)
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
-# Serve built React frontend
+# Serve built React frontend (only if files exist)
 frontend_dir = os.path.abspath("../dist/public")
-os.makedirs(frontend_dir, exist_ok=True)
-app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
+if os.path.exists(frontend_dir) and os.listdir(frontend_dir):
+    app.mount("/app", StaticFiles(directory=frontend_dir, html=True), name="frontend")
+else:
+    print("⚠️  Frontend build not found, serving API only")
 
 print(f"📁 Static files served from: {static_dir}")
 
