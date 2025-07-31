@@ -13,7 +13,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = parseInt(process.env.PORT || '5000', 10);
+const PORT = parseInt(process.env.REPL_PORT || process.env.PORT || '3000', 10);
 console.log(`🔧 Configured port: ${PORT}`);
 
 // Security middleware

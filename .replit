@@ -1,4 +1,4 @@
-modules = ["python-3.11"]
+modules = ["python-3.11", "nodejs-20"]
 run = "cd fastapi_backend && python3 start_all_services.py"
 hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
 
