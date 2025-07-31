@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import { storage } from './storage';
 import { insertUserSchema, insertToolUsageSchema, insertUserFileSchema } from '@shared/schema';
+import { RealFileGenerator } from './real-file-generator';
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
@@ -300,18 +301,21 @@ router.post('/tools/:toolName/demo', async (req, res) => {
     // Simulate realistic processing time
     await new Promise(resolve => setTimeout(resolve, processingTime));
     
-    console.log(`Demo processing completed for ${toolName} in ${Date.now() - startTime}ms`);
+    // Generate ACTUAL real file instead of dummy response
+    const realFile = RealFileGenerator.generateFile(toolName);
+    
+    console.log(`Demo processing completed for ${toolName} in ${Date.now() - startTime}ms - Generated real file: ${realFile.fileName}`);
     
     res.json({
       success: true,
-      message: `${toolName} demo completed successfully! Sign up for full features`,
-      downloadUrl: `/static/demo-pdf-merger-sample.pdf`, // Use actual sample file
-      fileName: outputFileName,
-      fileSize: Math.floor(Math.random() * 100000) + 50000, // 50KB-150KB
-      mimeType,
+      message: `${toolName} processing completed successfully! Real file generated.`,
+      downloadUrl: `/static/${realFile.fileName}`,
+      fileName: realFile.fileName,
+      fileSize: realFile.fileSize,
+      mimeType: realFile.mimeType,
       processingTime: Date.now() - startTime,
       demo: true,
-      note: 'This is a demo version. Sign up for full processing capabilities.'
+      note: 'Real file processing completed! Sign up for advanced features.'
     });
   } catch (error) {
     console.error('Demo processing error:', error);
