@@ -41,7 +41,7 @@ localPort = 8005
 externalPort = 8005
 
 [workflows]
-runButton = "Project"
+runButton = "Start FastAPI Production"
 
 [[workflows.workflow]]
 name = "Project"
@@ -131,6 +131,15 @@ args = "cd fastapi_backend && python3 start_all_services.py"
 [[workflows.workflow]]
 name = "FastAPI Only"
 author = 45814692
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd fastapi_backend && python3 start_all_services.py"
+
+[[workflows.workflow]]
+name = "Start FastAPI Production"
+author = 45816267
 mode = "sequential"
 
 [[workflows.workflow.tasks]]
