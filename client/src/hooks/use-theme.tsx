@@ -32,6 +32,10 @@ export function ThemeProvider({
 
   useEffect(() => {
     const root = window.document.documentElement;
+    
+    // Add smooth transition for theme switching
+    root.style.transition = 'background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease';
+    
     root.classList.remove('light', 'dark');
 
     let effectiveTheme: 'dark' | 'light';
@@ -46,6 +50,11 @@ export function ThemeProvider({
 
     root.classList.add(effectiveTheme);
     setActualTheme(effectiveTheme);
+    
+    // Remove transition after theme change to avoid affecting other animations
+    setTimeout(() => {
+      root.style.transition = '';
+    }, 300);
   }, [theme]);
 
   useEffect(() => {
@@ -67,9 +76,9 @@ export function ThemeProvider({
 
   const value = {
     theme,
-    setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme);
-      setTheme(theme);
+    setTheme: (newTheme: Theme) => {
+      localStorage.setItem(storageKey, newTheme);
+      setTheme(newTheme);
     },
     actualTheme,
   };

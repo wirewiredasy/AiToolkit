@@ -1,0 +1,27 @@
+{
+  "status": "success",
+  "tool": "json-formatter",
+  "message": "JSON formatted successfully",
+  "input_validation": "passed",
+  "output_format": "prettified",
+  "processing_time": "0.2s",
+  "formatted_data": {
+    "user": {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "preferences": {
+        "theme": "dark",
+        "notifications": true
+      }
+    },
+    "settings": {
+      "auto_save": true,
+      "compression": "enabled"
+    }
+  },
+  "metadata": {
+    "timestamp": "2025-07-31T17:50:11.472Z",
+    "version": "1.0",
+    "processed_by": "Suntyn AI"
+  }
+}
