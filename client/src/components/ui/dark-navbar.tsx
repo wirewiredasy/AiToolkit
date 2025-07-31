@@ -3,7 +3,6 @@ import { Link, useLocation } from 'wouter';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import GeometricLogo from '@/components/ui/geometric-logo';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 const navigationItems = [
   { href: '/', label: 'HOME' },
@@ -74,12 +73,11 @@ export default function DarkNavbar() {
             </Button>
           </div>
 
-          {/* Mobile theme toggle and menu button */}
-          <div className="lg:hidden flex items-center space-x-2">
-            <ThemeToggle />
+          {/* Mobile menu button */}
+          <div className="lg:hidden flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-gray-800 dark:text-white hover:text-cyan-400 transition-colors duration-200"
+              className="text-gray-800 hover:text-cyan-400 transition-colors duration-200"
             >
               {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>

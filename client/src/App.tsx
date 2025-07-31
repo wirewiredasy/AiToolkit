@@ -9,7 +9,6 @@ import { LoadingScreen, useAppLoading } from "@/components/ui/loading-screen";
 import { PageLoadingFallback } from "@/components/ui/loading-fallback";
 import Layout from "@/components/layout/layout";
 import ErrorBoundary from "@/components/ui/error-boundary";
-import { ThemeProvider } from "@/hooks/use-theme";
 
 // Lazy load components for better performance
 const Home = lazy(() => import("@/pages/home"));
@@ -236,7 +235,7 @@ function Router() {
       <Route path="/tool/pdf-to-powerpoint" component={PDFToPowerPointPage} />
       <Route path="/tool/pdf-page-extractor" component={PDFPageExtractorPage} />
       <Route path="/tool/pdf-page-numberer" component={PDFPageNumbererPage} />
-      
+
       {/* Missing PDF Tools */}
       <Route path="/tool/powerpoint-to-pdf" component={PowerPointToPDFPage} />
       <Route path="/tool/pdf-bookmark-manager" component={PDFBookmarkManagerPage} />
@@ -263,7 +262,7 @@ function Router() {
       <Route path="/tool/image-blur" component={ImageBlurPage} />
       <Route path="/tool/image-sharpen" component={ImageSharpenPage} />
       <Route path="/tool/meme-generator" component={MemeGeneratorPage} />
-      
+
       {/* Missing Image Tools */}
       <Route path="/tool/collage-maker" component={CollageMakerPage} />
 
@@ -280,7 +279,7 @@ function Router() {
       <Route path="/tool/speed-changer" component={SpeedChangerPage} />
       <Route path="/tool/audio-normalizer" component={AudioNormalizerPage} />
       <Route path="/tool/noise-reducer" component={NoiseReducerPage} />
-      
+
       {/* Missing Audio Tools */}
       <Route path="/tool/volume-adjuster" component={VolumeAdjusterPage} />
       <Route path="/tool/audio-equalizer" component={AudioEqualizerPage} />
@@ -290,7 +289,7 @@ function Router() {
       <Route path="/tool/video-resizer" component={VideoResizerPage} />
       <Route path="/tool/video-to-gif" component={VideoToGifPage} />
       <Route path="/tool/gif-to-video" component={GifToVideoPage} />
-      
+
       {/* Missing Video Tools */}
       <Route path="/tool/subtitle-adder" component={SubtitleAdderPage} />
       <Route path="/tool/video-watermark" component={VideoWatermarkPage} />
@@ -313,7 +312,7 @@ function Router() {
 
       <Route path="/tool/driving-license-validator" component={DrivingLicenseValidatorPage} />
       <Route path="/tool/ifsc-validator" component={IFSCValidatorPage} />
-      
+
       {/* Missing Government Validators */}
       <Route path="/tool/uan-validator" component={UANValidatorPage} />
       <Route path="/tool/vs-sau-licence-validator" component={VSSAULicenceValidatorPage} />
@@ -389,7 +388,6 @@ function Router() {
 
 function App() {
   return (
-    <ThemeProvider>
       <ErrorBoundary>
         <QueryClientProvider client={queryClient}>
           <TooltipProvider>
@@ -402,7 +400,6 @@ function App() {
           </TooltipProvider>
         </QueryClientProvider>
       </ErrorBoundary>
-    </ThemeProvider>
   );
 }
 
