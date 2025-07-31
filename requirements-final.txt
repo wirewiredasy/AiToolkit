@@ -1,0 +1,16 @@
+# Essential FastAPI dependencies - Single versions only
+fastapi==0.116.1
+uvicorn==0.35.0
+python-multipart==0.0.20
+
+# PDF Processing - Essential only
+pypdf==5.9.0
+reportlab==4.4.3
+
+# Image Processing - Essential only  
+Pillow==11.3.0
+
+# Basic utilities
+python-dotenv==1.1.1
+pydantic==2.11.7
+requests==2.32.4

@@ -11,8 +11,17 @@ const __dirname = path.dirname(__filename);
 async function startServer() {
   console.log('🚀 Starting Suntyn AI Full-Stack Application...');
 
-  // Start FastAPI services in the background
-  console.log('🔧 Starting FastAPI microservices...');
+  // Temporarily disable FastAPI services during migration
+  console.log('⚠️  FastAPI services temporarily disabled during migration');
+  console.log('🔄 Will start services after Python dependencies are resolved');
+
+  // Create placeholder processes for cleanup
+  let gatewayProcess: any = null;
+  let pdfProcess: any = null;
+  let imageProcess: any = null;
+  let devProcess: any = null;
+  let mediaProcess: any = null;
+  let govProcess: any = null;
 
   // Start FastAPI services using Python directly
   console.log('⚠️  FastAPI services temporarily disabled during migration');
@@ -75,12 +84,12 @@ async function startServer() {
     // Cleanup on exit
     process.on('SIGINT', () => {
       console.log('\n🛑 Stopping all services...');
-      gatewayProcess.kill();
-      pdfProcess.kill();
-      imageProcess.kill();
-      devProcess.kill();
-      mediaProcess.kill();
-      govProcess.kill();
+      if (gatewayProcess) gatewayProcess.kill();
+      if (pdfProcess) pdfProcess.kill();
+      if (imageProcess) imageProcess.kill();
+      if (devProcess) devProcess.kill();
+      if (mediaProcess) mediaProcess.kill();
+      if (govProcess) govProcess.kill();
       staticProcess.kill();
       previewProcess.kill();
       process.exit(0);
