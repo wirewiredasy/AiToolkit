@@ -20,6 +20,8 @@ export default function FileUpload({
   const [isDragOver, setIsDragOver] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [isProcessed, setIsProcessed] = useState(false);
+  const [persistentFiles, setPersistentFiles] = useState<File[]>([]);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -55,18 +57,28 @@ export default function FileUpload({
     if (validFiles.length !== fileList.length) {
       // Show error for files that are too large
       console.warn(`Some files exceed the ${maxSize}MB limit`);
-        setUploadError(`Some files exceed the ${maxSize}MB limit`);
+      setUploadError(`Some files exceed the ${maxSize}MB limit`);
+    } else {
+      setUploadError(null);
     }
 
+    // Maintain persistent state
     setFiles(validFiles);
+    setPersistentFiles(validFiles);
+    setIsProcessed(false);
     onFileSelect(validFiles);
   };
 
   const removeFile = (index: number) => {
     const newFiles = files.filter((_, i) => i !== index);
     setFiles(newFiles);
+    setPersistentFiles(newFiles);
+    setIsProcessed(false);
     onFileSelect(newFiles);
   };
+
+  // Keep files available even after processing
+  const displayFiles = files.length > 0 ? files : persistentFiles;
 
   return (
     <div className={className}>
@@ -112,14 +124,14 @@ export default function FileUpload({
             <div className="text-red-500 mt-2">{uploadError}</div>
         )}
 
-      {files.length > 0 && (
+      {displayFiles.length > 0 && (
         <Card className="mt-4">
           <CardContent className="p-6">
             <h3 className="font-semibold text-neutral-800 mb-4">
-              Selected Files ({files.length})
+              Selected Files ({displayFiles.length}) {isProcessed && <span className="text-green-600">✓ Processed</span>}
             </h3>
             <div className="space-y-3">
-              {files.map((file, index) => (
+              {displayFiles.map((file, index) => (
                 <div key={index} className="flex items-center justify-between p-3 bg-neutral-50 rounded-lg">
                   <div className="flex items-center space-x-3">
                     <i className="fas fa-file text-neutral-500 text-lg"></i>

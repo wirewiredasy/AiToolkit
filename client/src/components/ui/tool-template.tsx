@@ -81,6 +81,13 @@ export function ToolTemplate({
   });
   const [uploadProgress, setUploadProgress] = useState(0);
   const { toast } = useToast();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<any>(null);
+  const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
+  const [settings, setSettings] = useState<Record<string, any>>({});
+  const [persistentFiles, setPersistentFiles] = useState<File[]>([]);
+  const [isFileProcessed, setIsFileProcessed] = useState(false);
 
   const processMutation = useMutation({
     mutationFn: async (formData: FormData) => {
@@ -170,12 +177,12 @@ export function ToolTemplate({
           } else if (response.status >= 500) {
             throw new Error('Server error. Please try again later.');
           }
-          
+
           throw new Error(errorData.message || `Processing failed: ${response.status} ${response.statusText}`);
         }
 
         const result = await response.json();
-        
+
         // Validate response structure
         if (!result || typeof result !== 'object') {
           throw new Error('Invalid response from server');
@@ -212,28 +219,26 @@ export function ToolTemplate({
     },
     onSuccess: (data) => {
       // Enhanced success handling with validation
-      if (data && data.success !== false) {
-        toast({
-          title: "Processing Complete!",
-          description: data.message || `${toolName} completed successfully`,
-        });
-      } else {
-        // Handle cases where success is false but no error was thrown
-        toast({
-          title: "Processing Issue",
-          description: data.message || "Processing completed but with warnings",
-          variant: "destructive",
-        });
+      setResult(data);
+      setIsFileProcessed(true);
+
+      if (data.download_url) {
+        setDownloadUrl(data.download_url);
       }
-      setUploadProgress(0);
+
+      toast({
+        title: "Processing Complete!",
+        description: data.message || `${toolName} completed successfully`,
+      });
+       setUploadProgress(0);
     },
     onError: (error: Error) => {
       console.error('Tool processing error:', error);
-      
+
       // Enhanced error categorization for better user experience
       let errorTitle = "Processing Failed";
       let errorDescription = error.message;
-      
+
       if (error.message.includes('timeout') || error.message.includes('timed out')) {
         errorTitle = "Processing Timeout";
         errorDescription = "Processing took too long. Try using smaller files or simpler settings.";
@@ -440,6 +445,15 @@ export function ToolTemplate({
     }
   };
 
+    const handleFileSelect = (newFiles: File[]) => {
+    setFiles(newFiles);
+    setPersistentFiles(newFiles);
+    setError(null);
+    setResult(null);
+    setDownloadUrl(null);
+    setIsFileProcessed(false);
+  };
+
   const canProcess = () => {
     if (resultType === "file" && files.length === 0) return false;
 
@@ -484,7 +498,7 @@ export function ToolTemplate({
                     accept={acceptedFiles}
                     maxSize={maxFileSize}
                     multiple={allowMultiple}
-                    onFilesChange={setFiles}
+                    onFilesChange={handleFileSelect}
                     uploadProgress={uploadProgress}
                     isUploading={processMutation.isPending}
                     success={processMutation.isSuccess}
