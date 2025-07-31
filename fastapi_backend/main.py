@@ -6,7 +6,7 @@ from fastapi import FastAPI, HTTPException, UploadFile, File, Form, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import httpx
 import os
@@ -24,11 +24,20 @@ from typing import Dict, List
 from pathlib import Path
 
 
-app = FastAPI(title="Suntyn AI - TinyWow Clone", version="2.0.0")
+app = FastAPI(title="Suntyn AI - Neural Intelligence Platform", version="2.0.0")
 
 # Configure logging for better error tracking
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# CORS middleware - must be first
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Configure with your actual domains in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Security Middleware
 app.add_middleware(
@@ -591,6 +600,33 @@ async def route_to_microservice(service: str, tool_name: str, files: List[Upload
                     continue
                 logger.error(f"[{request_id}] Unexpected error after retries: {str(e)}")
                 raise HTTPException(status_code=500, detail="An unexpected error occurred during processing")
+
+# Static files and frontend serving
+dist_path = Path("../dist/public")
+if dist_path.exists():
+    app.mount("/assets", StaticFiles(directory=str(dist_path / "assets")), name="assets")
+    app.mount("/static", StaticFiles(directory=str(dist_path)), name="static")
+
+# Serve the frontend index.html for SPA routing
+@app.get("/{full_path:path}")
+async def serve_frontend(full_path: str):
+    """Serve the frontend application for all non-API routes"""
+    if full_path.startswith("api/"):
+        raise HTTPException(status_code=404, detail="API endpoint not found")
+    
+    index_path = dist_path / "index.html"
+    if index_path.exists():
+        return FileResponse(str(index_path), media_type="text/html")
+    
+    return HTMLResponse("""
+    <html>
+        <head><title>Suntyn AI</title></head>
+        <body>
+            <h1>Suntyn AI - Building...</h1>
+            <p>Frontend is being built. Please run: npm run build</p>
+        </body>
+    </html>
+    """)
 
 @app.get("/api/download/{filename}")
 async def download_file(filename: str):

@@ -118,3 +118,13 @@ fastapi
 httpx
 python-multipart
 uvicorn
+bcrypt
+fastapi
+httpx
+jinja2
+passlib
+python-jose
+python-multipart
+uvicorn
+fastapi
+uvicorn
