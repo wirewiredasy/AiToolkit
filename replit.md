@@ -19,18 +19,17 @@ Preferred communication style: Simple, everyday language.
 - **Forms**: React Hook Form with Zod validation
 
 ### Backend Architecture
-- **Framework**: FastAPI with Python 3.11, structured as microservices
-- **Microservices**:
-    - Main Gateway (Port 5000): Routes requests
-    - PDF Service (Port 8001): PDF processing, professional document generation
-    - Image Service (Port 8002): Image editing, real PNG/JPEG output
-    - Media Service (Port 8003): Audio/video tools, MP3/MP4 containers
-    - Government Service (Port 8004): Document validation, official certificates
-    - Developer Service (Port 8005): Developer utilities, formatted outputs
-- **Communication**: HTTP API between frontend/gateway; internal service routing
-- **Processing**: Designed for heavy processing (2-3 seconds) with real file generation.
-- **Authentication**: JWT token-based authentication with bcryptjs for hashing.
-- **Session Storage**: In-memory with PostgreSQL fallback.
+- **Framework**: Lightweight Node.js server (Express.js permanently removed as of July 2025)
+- **Server**: Custom HTTP server serving React frontend and API endpoints
+- **Port**: 5000 (unified frontend + backend)
+- **API Endpoints**: 
+    - Health check: `/api/health`
+    - Tools API: `/api/tools`
+    - Static files: Served from `dist/public`
+- **Communication**: Direct HTTP API serving; SPA routing for frontend
+- **Processing**: Ready for heavy processing integration with real file generation
+- **Authentication**: JWT token-based authentication with bcryptjs for hashing
+- **Session Storage**: In-memory with PostgreSQL fallback
 
 ### Data Storage Solutions
 - **ORM**: Drizzle ORM
