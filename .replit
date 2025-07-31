@@ -146,5 +146,14 @@ mode = "sequential"
 task = "shell.exec"
 args = "cd fastapi_backend && python3 start_all_services.py"
 
+[[workflows.workflow]]
+name = "Start FastAPI Backend"
+author = 45814692
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd fastapi_backend && python3 start_all_services.py"
+
 [agent]
 integrations = ["javascript_supabase==1.0.0"]
