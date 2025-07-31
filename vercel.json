@@ -1,16 +1,18 @@
 
 {
-  "buildCommand": "npm install && npm run vercel-build",
+  "buildCommand": "cd client && npm install && npm run build",
   "outputDirectory": "dist/public",
   "installCommand": "npm install",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
   "routes": [
     {
       "src": "/api/(.*)",
       "dest": "https://suntynai-ut2i.onrender.com/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
     }
   ]
 }
