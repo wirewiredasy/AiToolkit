@@ -1,5 +1,5 @@
 import DarkNavbar from '@/components/ui/dark-navbar';
-import Footer from './footer';
+import AdvancedFooter from './advanced-footer';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ export default function Layout({ children }: LayoutProps) {
       <main className="flex-1 pt-16">
         {children}
       </main>
-      <Footer />
+      <AdvancedFooter />
     </div>
   );
 }
