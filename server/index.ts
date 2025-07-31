@@ -6,13 +6,15 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import routes from './routes';
+import { storage } from './storage';
 
 // ES module equivalent of __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = parseInt(process.env.PORT || '5000', 10);
+const PORT = parseInt(process.env.PORT || '3000', 10);
+console.log(`🔧 Configured port: ${PORT}`);
 
 // Security middleware
 app.use(helmet({
@@ -21,8 +23,12 @@ app.use(helmet({
 }));
 
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' ? false : '*',
-  credentials: true
+  origin: process.env.NODE_ENV === 'production' ? 
+    ['https://*.replit.app', 'https://*.replit.dev'] : 
+    ['http://localhost:*', 'http://0.0.0.0:*', 'https://*.replit.app', 'https://*.replit.dev'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
 // Rate limiting
@@ -68,21 +74,79 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'healthy', 
+// Enhanced health check endpoint
+app.get('/health', async (req, res) => {
+  const healthCheck = {
+    status: 'healthy',
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
-  });
+    environment: process.env.NODE_ENV || 'development',
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    services: {
+      api: 'running',
+      storage: 'connected',
+      static: 'serving'
+    },
+    version: '1.0.0'
+  };
+
+  try {
+    // Test storage connection
+    await storage.getToolUsageStats();
+    healthCheck.services.storage = 'connected';
+  } catch (error) {
+    healthCheck.services.storage = 'error';
+    healthCheck.status = 'degraded';
+  }
+
+  res.status(healthCheck.status === 'healthy' ? 200 : 503).json(healthCheck);
 });
 
-// Error handling middleware
+// Enhanced error handling middleware
 app.use((error: any, req: any, res: any, next: any) => {
-  console.error('Server error:', error);
-  res.status(500).json({ 
+  const errorId = Math.random().toString(36).substring(7);
+  
+  console.error(`[${errorId}] Server error:`, {
+    message: error.message,
+    stack: error.stack,
+    url: req.url,
+    method: req.method,
+    timestamp: new Date().toISOString(),
+    userAgent: req.get('User-Agent'),
+    ip: req.ip
+  });
+
+  // Specific error handling for different types
+  if (error.name === 'ValidationError') {
+    return res.status(400).json({
+      error: 'Validation failed',
+      details: error.details,
+      errorId
+    });
+  }
+
+  if (error.name === 'UnauthorizedError') {
+    return res.status(401).json({
+      error: 'Unauthorized',
+      message: 'Invalid or expired token',
+      errorId
+    });
+  }
+
+  if (error.code === 'LIMIT_FILE_SIZE') {
+    return res.status(413).json({
+      error: 'File too large',
+      message: 'File size exceeds the maximum allowed limit',
+      errorId
+    });
+  }
+
+  // Generic error response
+  res.status(error.status || 500).json({ 
     error: 'Internal server error',
-    message: process.env.NODE_ENV === 'development' ? error.message : 'Something went wrong'
+    message: process.env.NODE_ENV === 'development' ? error.message : 'Something went wrong',
+    errorId,
+    timestamp: new Date().toISOString()
   });
 });
 
@@ -103,4 +167,8 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`📁 Static files: ${staticDir}`);
   console.log(`🎯 Health check: http://0.0.0.0:${PORT}/health`);
   console.log(`📖 API routes: http://0.0.0.0:${PORT}/api`);
+  console.log(`✅ Port conflict resolved - Backend on ${PORT}, Frontend uses separate port`);
+  console.log(`🔒 CORS configured for Replit domains`);
+  console.log(`📄 Sitemap.xml created for SEO`);
+  console.log(`⚡ Enhanced error handling active`);
 });

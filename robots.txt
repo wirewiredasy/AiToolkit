@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://your-domain.replit.app/sitemap.xml
+
+# Disallow sensitive areas
+Disallow: /api/
+Disallow: /static/temp/
+Disallow: /.env
+Disallow: /server/
+
+# Allow important pages
+Allow: /
+Allow: /dashboard
+Allow: /tools/
+Allow: /auth/login
+Allow: /auth/signup
