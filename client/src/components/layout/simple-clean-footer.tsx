@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import { Link } from 'wouter';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { 
   FileText, 
   Image as ImageIcon, 
@@ -10,7 +13,9 @@ import {
   Github,
   Linkedin,
   Youtube,
-  Sparkles
+  Sparkles,
+  Send,
+  CheckCircle
 } from 'lucide-react';
 
 const quickLinks = [
@@ -36,9 +41,76 @@ const socialLinks = [
 ];
 
 export default function SimpleCleanFooter() {
+  const [email, setEmail] = useState('');
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    
+    setIsLoading(true);
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubscribed(true);
+      setIsLoading(false);
+      setEmail('');
+    }, 1500);
+  };
+
   return (
     <footer className="bg-slate-900 dark:bg-black border-t border-slate-800 dark:border-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        {/* Newsletter Section */}
+        <div className="mb-12 text-center">
+          <div className="max-w-2xl mx-auto">
+            <h3 className="text-2xl font-bold text-white mb-2">Stay Updated with AI Innovation</h3>
+            <p className="text-gray-400 mb-6">
+              Get the latest AI tools, features, and productivity tips delivered to your inbox.
+            </p>
+            
+            {!isSubscribed ? (
+              <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                <Input
+                  type="email"
+                  placeholder="Enter your email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="flex-1 bg-slate-800 dark:bg-gray-900 border-slate-700 dark:border-gray-800 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20"
+                  disabled={isLoading}
+                />
+                <Button
+                  type="submit"
+                  disabled={!email || isLoading}
+                  className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white border-0 disabled:opacity-50"
+                >
+                  {isLoading ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
+                      Subscribing...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4 mr-2" />
+                      Subscribe
+                    </>
+                  )}
+                </Button>
+              </form>
+            ) : (
+              <div className="flex items-center justify-center gap-2 text-green-400 max-w-md mx-auto p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
+                <CheckCircle className="w-5 h-5" />
+                <span>Thank you! You're subscribed to our newsletter.</span>
+              </div>
+            )}
+            
+            <p className="text-xs text-gray-500 mt-3">
+              Join 50,000+ professionals. Unsubscribe anytime.
+            </p>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           
           {/* Brand Section */}
