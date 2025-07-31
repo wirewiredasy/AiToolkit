@@ -101,19 +101,7 @@ async def security_headers_middleware(request: Request, call_next):
 
     return response
 
-# CORS Configuration (More restrictive)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5000",
-        "https://*.replit.dev",
-        "https://*.repl.co",
-        "https://suntyn.ai"
-    ],
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
-    allow_headers=["*"],
-)
+# Remove duplicate CORS - already configured above
 
 
 # Microservice URLs
@@ -134,20 +122,54 @@ static_dir = os.path.abspath("../static")
 os.makedirs(static_dir, exist_ok=True)
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
-# Serve built React frontend (only if files exist)
+# Serve built React frontend (Fix path)
 frontend_dir = os.path.abspath("../dist/public")
 if os.path.exists(frontend_dir) and os.listdir(frontend_dir):
-    app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
-    print(f"✅ Frontend served from: {frontend_dir}")
+    # Mount static assets first
+    app.mount("/assets", StaticFiles(directory=os.path.join(frontend_dir, "assets")), name="assets")
+    print(f"✅ Frontend assets served from: {frontend_dir}/assets")
 else:
     print("⚠️  Frontend build not found, serving API only")
 
 print(f"📁 Static files served from: {static_dir}")
 
 @app.get("/")
-async def root():
-    """Root endpoint for health check"""
-    return {"message": "Suntyn AI - FastAPI Gateway", "status": "active", "version": "2.0.0", "services": len(MICROSERVICES)}
+async def serve_frontend():
+    """Serve React frontend index.html"""
+    frontend_dir = os.path.abspath("../dist/public")
+    index_path = os.path.join(frontend_dir, "index.html")
+    
+    if os.path.exists(index_path):
+        return FileResponse(index_path, media_type="text/html")
+    else:
+        return HTMLResponse("""
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <title>Suntyn AI - Neural Intelligence Platform</title>
+                <style>
+                    body { font-family: 'Inter', system-ui, sans-serif; margin: 0; padding: 40px; background: #f8f9fa; }
+                    .container { max-width: 600px; margin: 0 auto; text-align: center; }
+                    h1 { color: #2563eb; margin-bottom: 20px; }
+                    .status { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+                    .success { color: #059669; }
+                    .building { color: #d97706; }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>🌟 Suntyn AI</h1>
+                    <div class="status">
+                        <h2 class="success">✅ FastAPI Server Running</h2>
+                        <p class="building">🔨 Frontend is being built...</p>
+                        <p>Express.js has been permanently removed. FastAPI is now serving the application.</p>
+                        <p><strong>Status:</strong> FastAPI server is healthy and ready</p>
+                        <p><strong>API Available:</strong> <a href="/api/health">/api/health</a></p>
+                    </div>
+                </div>
+            </body>
+        </html>
+        """)
 
 @app.get("/api/")
 async def api_root():

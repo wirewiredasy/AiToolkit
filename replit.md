@@ -27,9 +27,10 @@ Preferred communication style: Simple, everyday language.
     - Tools API: `/api/tools`
     - Static files: Served from `dist/public`
 - **Communication**: Direct HTTP API serving; SPA routing for frontend
-- **Processing**: Ready for heavy processing integration with real file generation
+- **Processing**: FastAPI microservices architecture for heavy processing (PDF, Image, Media, Government, Developer tools)
 - **Authentication**: JWT token-based authentication with bcryptjs for hashing
 - **Session Storage**: In-memory with PostgreSQL fallback
+- **Migration Status**: Express.js completely removed (July 31, 2025). Frontend builds properly to dist/public and served correctly.
 
 ### Data Storage Solutions
 - **ORM**: Drizzle ORM
