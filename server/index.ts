@@ -13,7 +13,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = parseInt(process.env.PORT || '3000', 10);
+const PORT = parseInt(process.env.PORT || '5000', 10);
 console.log(`🔧 Configured port: ${PORT}`);
 
 // Security middleware
@@ -67,26 +67,46 @@ if (process.env.NODE_ENV === 'production') {
   // Development mode - serve the built React app
   const distPath = path.join(process.cwd(), 'dist', 'public');
   
-  if (fs.existsSync(distPath)) {
-    console.log('📱 Serving built React app from:', distPath);
-    app.use(express.static(distPath));
+  console.log('📱 Checking for React build at:', distPath);
+  console.log('📁 Build exists:', fs.existsSync(distPath));
+  console.log('📂 Index.html exists:', fs.existsSync(path.join(distPath, 'index.html')));
+  
+  if (fs.existsSync(distPath) && fs.existsSync(path.join(distPath, 'index.html'))) {
+    console.log('✅ Serving built React app from:', distPath);
     
-    // SPA fallback for client-side routing
+    // Serve static files with proper headers
+    app.use(express.static(distPath, {
+      maxAge: '1d',
+      etag: true,
+      setHeaders: (res, filePath) => {
+        if (filePath.endsWith('.html')) {
+          res.setHeader('Cache-Control', 'no-cache');
+        }
+      }
+    }));
+    
+    // SPA fallback for client-side routing - this must come after API routes
     app.get('*', (req, res) => {
-      if (!req.path.startsWith('/api') && !req.path.startsWith('/static')) {
+      if (!req.path.startsWith('/api') && !req.path.startsWith('/static') && !req.path.startsWith('/health')) {
+        console.log('🔄 SPA fallback for:', req.path);
         res.sendFile(path.join(distPath, 'index.html'));
-      } else {
+      } else if (req.path.startsWith('/api')) {
         res.status(404).json({ error: 'API endpoint not found' });
+      } else {
+        res.status(404).send('Not found');
       }
     });
   } else {
     // Fallback if build doesn't exist
+    console.log('❌ React build not found, serving API only');
     app.get('/', (req, res) => {
       res.json({ 
         message: 'Suntyn AI API Server - Build frontend first', 
         status: 'running',
         environment: 'development',
-        note: 'Run `npm run build` to create the frontend build'
+        note: 'Run `npm run build` to create the frontend build',
+        distPath,
+        buildExists: fs.existsSync(distPath)
       });
     });
   }
