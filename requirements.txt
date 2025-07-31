@@ -59,11 +59,3 @@ fastapi==0.116.1
 pydantic==2.11.7
 python-multipart==0.0.20
 uvicorn==0.35.0
-fastapi
-httpx
-pillow
-pydantic
-pypdf2
-python-multipart
-reportlab
-uvicorn

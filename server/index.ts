@@ -1,130 +1,127 @@
-import express from 'express';
-import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
+import { spawn } from 'child_process';
 import path from 'path';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
-import routes from './routes';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 // ES module equivalent of __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PORT = parseInt(process.env.PORT || '5000', 10);
-const isProduction = process.env.NODE_ENV === 'production';
+async function startServer() {
+  console.log('🚀 Starting Suntyn AI Full-Stack Application...');
 
-async function createServer() {
-  const app = express();
+  // Start FastAPI services - dependencies now resolved
+  console.log('🔧 Starting FastAPI microservices...');
 
-  // Security middleware
-  app.use(helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
-        scriptSrc: ["'self'"],
-        imgSrc: ["'self'", "data:", "https:"],
-        connectSrc: ["'self'"],
-      },
-    },
-  }));
-
-  // Rate limiting
-  const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
-    message: 'Too many requests from this IP, please try again later.',
-  });
-  app.use(limiter);
-
-  // CORS
-  app.use((req, res, next) => {
-    const allowedOrigins = process.env.NODE_ENV === 'production' 
-      ? ['https://your-domain.com'] 
-      : ['http://localhost:3000', 'http://localhost:5173'];
-    
-    const origin = req.headers.origin;
-    if (origin && allowedOrigins.includes(origin)) {
-      res.setHeader('Access-Control-Allow-Origin', origin);
-    }
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    
-    if (req.method === 'OPTIONS') {
-      res.sendStatus(200);
-    } else {
-      next();
-    }
+  // Start main gateway
+  const gatewayProcess = spawn('python', ['-m', 'uvicorn', 'main:app', '--host', '0.0.0.0', '--port', '5001', '--reload'], {
+    cwd: path.join(process.cwd(), 'fastapi_backend'),
+    stdio: 'inherit'
   });
 
-  // Body parsing middleware
-  app.use(express.json({ limit: '50mb' }));
-  app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+  // Start PDF service
+  const pdfProcess = spawn('python', ['-m', 'uvicorn', 'pdf_service:app', '--host', '0.0.0.0', '--port', '8001', '--reload'], {
+    cwd: path.join(process.cwd(), 'fastapi_backend/services'),
+    stdio: 'inherit'
+  });
 
-  if (isProduction) {
-    // In production, serve static files
-    app.use(express.static(path.join(__dirname, '../dist/public')));
-  } else {
-    // In development, serve built frontend files if available
-    const frontendPath = path.join(__dirname, '../dist/public');
-    if (fs.existsSync(frontendPath)) {
-      app.use(express.static(frontendPath));
-      app.get('*', (req, res) => {
-        res.sendFile(path.join(frontendPath, 'index.html'));
+  // Start Image service
+  const imageProcess = spawn('python', ['-m', 'uvicorn', 'image_service:app', '--host', '0.0.0.0', '--port', '8002', '--reload'], {
+    cwd: path.join(process.cwd(), 'fastapi_backend/services'),
+    stdio: 'inherit'
+  });
+
+  // Start Developer service
+  const devProcess = spawn('python', ['-m', 'uvicorn', 'developer_service:app', '--host', '0.0.0.0', '--port', '8005', '--reload'], {
+    cwd: path.join(process.cwd(), 'fastapi_backend/services'),
+    stdio: 'inherit'
+  });
+
+  // Start Media service
+  const mediaProcess = spawn('python', ['-m', 'uvicorn', 'media_service:app', '--host', '0.0.0.0', '--port', '8003', '--reload'], {
+    cwd: path.join(process.cwd(), 'fastapi_backend/services'),
+    stdio: 'inherit'
+  });
+
+  // Start Government service
+  const govProcess = spawn('python', ['-m', 'uvicorn', 'government_service:app', '--host', '0.0.0.0', '--port', '8004', '--reload'], {
+    cwd: path.join(process.cwd(), 'fastapi_backend/services'),
+    stdio: 'inherit'
+  });
+
+  // Start static file server
+  const staticProcess = spawn('node', ['static_server.js'], {
+    cwd: process.cwd(),
+    stdio: 'inherit'
+  });
+
+  // Wait a moment for services to start
+  await new Promise(resolve => setTimeout(resolve, 3000));
+
+  try {
+    // Check if build exists, if not create it
+    const distPath = path.join(process.cwd(), 'dist', 'public');
+
+    if (!fs.existsSync(distPath)) {
+      console.log('🔨 Building React app first...');
+      const buildProcess = spawn('npm', ['run', 'build'], {
+        cwd: process.cwd(),
+        stdio: 'inherit'
       });
-    } else {
-      // Fallback message if frontend not built
-      app.get('/', (req, res) => {
-        res.json({ 
-          message: 'Suntyn AI Backend Running Successfully', 
-          status: 'ok',
-          environment: 'development',
-          api: 'Available at /api/*',
-          note: 'Run "npm run build" to build the frontend'
+
+      await new Promise((resolve, reject) => {
+        buildProcess.on('close', (code) => {
+          if (code === 0) {
+            console.log('✅ Build completed successfully!');
+            resolve(true);
+          } else {
+            console.error('❌ Build failed!');
+            reject(new Error('Build failed'));
+          }
         });
       });
     }
-  }
 
-  // API routes
-  app.use('/api', routes);
+    // Start the preview server for built React app
+    console.log('🖥️  Starting Preview server for built React app...');
 
-  // Health check
-  app.get('/health', (req, res) => {
-    res.json({ 
-      status: 'ok', 
-      timestamp: new Date().toISOString(),
-      env: process.env.NODE_ENV || 'development'
+    const previewProcess = spawn('node', ['preview_server.js'], {
+      cwd: process.cwd(),
+      stdio: 'inherit'
     });
-  });
 
-  if (isProduction) {
-    // Serve frontend for all other routes in production
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, '../dist/public/index.html'));
+    // Wait for preview server to start
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    console.log(`🎯 Suntyn AI running on http://localhost:5000`);
+    console.log(`🖥️  Frontend: React + Vite (Development server)`);
+    console.log(`🔗 Backend: FastAPI Gateway on port 5001`);
+    console.log(`🔧 PDF Service: http://localhost:8001`);
+    console.log(`🖼️  Image Service: http://localhost:8002`);
+    console.log(`🎵 Media Service: http://localhost:8003`);
+    console.log(`🏛️  Government Service: http://localhost:8004`);
+    console.log(`💻 Developer Service: http://localhost:8005`);
+    console.log(`✅ Full-stack application ready!`);
+
+    // Cleanup on exit
+    process.on('SIGINT', () => {
+      console.log('\n🛑 Stopping all services...');
+      if (gatewayProcess) gatewayProcess.kill();
+      if (pdfProcess) pdfProcess.kill();
+      if (imageProcess) imageProcess.kill();
+      if (devProcess) devProcess.kill();
+      if (mediaProcess) mediaProcess.kill();
+      if (govProcess) govProcess.kill();
+      staticProcess.kill();
+      previewProcess.kill();
+      process.exit(0);
     });
-  }
 
-  return app;
-}
-
-async function startServer() {
-  try {
-    const app = await createServer();
-    
-    app.listen(PORT, '0.0.0.0', () => {
-      console.log(`🚀 Suntyn AI server running on http://0.0.0.0:${PORT}`);
-      console.log(`🖥️  Environment: ${process.env.NODE_ENV || 'development'}`);
-      console.log(`📱 Frontend: ${isProduction ? 'Static files' : 'Vite dev server'}`);
-      console.log(`🔗 Backend: Express.js API on /api routes`);
-      console.log(`✅ Full-stack application ready!`);
-    });
   } catch (error) {
     console.error('❌ Error starting server:', error);
     process.exit(1);
   }
 }
 
-startServer();
+startServer().catch(console.error);

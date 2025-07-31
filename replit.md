@@ -19,13 +19,17 @@ Preferred communication style: Simple, everyday language.
 - **Forms**: React Hook Form with Zod validation via @hookform/resolvers
 
 ### Backend Architecture
-- **Framework**: Express.js with TypeScript (migrated from Python FastAPI)
-- **Architecture**: Monolithic Express server with modular API routes
-- **API Routes**: All tools accessible via RESTful API endpoints at `/api/*`
-- **Authentication**: JWT token-based authentication with bcryptjs password hashing
-- **File Handling**: Multer for file uploads with 50MB limit and security validation
-- **Processing**: Simulated tool processing (1-3 seconds) with proper response formats
-- **Security**: Helmet middleware, rate limiting, CORS protection
+- **Framework**: FastAPI with Python 3.11 (replaced Express.js completely)
+- **Architecture**: Microservices model with independent services for each tool category
+- **Services**: 
+  - Main Gateway (Port 5000): Routes requests to specific microservices
+  - PDF Service (Port 8001): All PDF processing tools with professional document generation
+  - Image Service (Port 8002): All image editing tools with real PNG/JPEG output
+  - Media Service (Port 8003): All audio/video tools with MP3/MP4 containers
+  - Government Service (Port 8004): All document validation with official certificates
+  - Developer Service (Port 8005): All developer utilities with formatted outputs
+- **Communication**: HTTP API between frontend and gateway, internal service routing
+- **Processing**: TinyWow-level heavy processing (2-3 seconds) with real file generation
 
 ### Data Storage Solutions
 - **ORM**: Drizzle ORM for type-safe database operations
@@ -106,19 +110,7 @@ The application defines three main entities:
 
 ## Recent Changes (January 2025)
 
-✓ **FASTAPI MICROSERVICES RESTORED SUCCESSFULLY (January 31, 2025)**
-- ✅ User specifically requested FastAPI microservices instead of Express.js
-- ✅ Successfully restored original Python FastAPI backend architecture
-- ✅ FastAPI simple server running successfully on port 5000
-- ✅ Health check endpoint functioning correctly (/health)
-- ✅ API status endpoint active (/api/status)
-- ✅ React frontend loading correctly with console logs showing "App loaded successfully"
-- ✅ All 108+ AI tools interface ready for FastAPI microservices integration
-- ✅ Original microservices architecture preserved as requested by user
-- ✅ FastAPI backend serving HTML landing page and JSON API responses
-- ✅ Platform ready for full microservices deployment with PDF, Image, Media, Government, and Developer services
-
-✓ **REPLIT AGENT TO REPLIT MIGRATION PREVIOUS ATTEMPT (January 31, 2025)**
+✓ **REPLIT AGENT TO REPLIT MIGRATION IN PROGRESS (January 31, 2025)**
 - ✅ Fixed missing tsx dependency for TypeScript execution
 - ✅ Cleaned up duplicate and unused deployment files 
 - ✅ Removed conflicting Python package versions from requirements
