@@ -49,13 +49,13 @@ const GeometricLogo: React.FC<GeometricLogoProps> = ({
       {showText && (
         <div className="flex flex-col">
           <h1 className={cn(
-            'font-bold text-white',
+            'font-bold text-gray-900 dark:text-white',
             typeof size === 'string' ? textSizeClasses[size] : 'text-xl'
           )}>
             SUNTYN AI
           </h1>
           {size !== 'sm' && (
-            <p className="text-xs text-gray-400 uppercase tracking-wider font-medium">
+            <p className="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wider font-medium">
               Neural Intelligence
             </p>
           )}

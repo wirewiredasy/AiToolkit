@@ -1,101 +1,76 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 type Theme = 'dark' | 'light' | 'system';
 
-interface ThemeProviderContextProps {
+type ThemeContextType = {
   theme: Theme;
-  setTheme: (theme: Theme) => void;
   actualTheme: 'dark' | 'light';
-}
+  setTheme: (theme: Theme) => void;
+};
 
-const ThemeProviderContext = createContext<ThemeProviderContextProps | undefined>(undefined);
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-interface ThemeProviderProps {
-  children: ReactNode;
-  defaultTheme?: Theme;
-  storageKey?: string;
-}
-
-export function ThemeProvider({
-  children,
-  defaultTheme = 'system',
-  storageKey = 'suntyn-ui-theme',
-}: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(() => {
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [theme, setThemeState] = useState<Theme>(() => {
     if (typeof window !== 'undefined') {
-      return (localStorage.getItem(storageKey) as Theme) || defaultTheme;
+      return (localStorage.getItem('suntyn-theme') as Theme) || 'system';
     }
-    return defaultTheme;
+    return 'system';
   });
 
   const [actualTheme, setActualTheme] = useState<'dark' | 'light'>('light');
 
   useEffect(() => {
     const root = window.document.documentElement;
-    
-    // Add smooth transition for theme switching
-    root.style.transition = 'background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease';
-    
     root.classList.remove('light', 'dark');
 
-    let effectiveTheme: 'dark' | 'light';
-
+    let resolvedTheme: 'dark' | 'light' = 'light';
+    
     if (theme === 'system') {
-      effectiveTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'light';
+      resolvedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     } else {
-      effectiveTheme = theme;
+      resolvedTheme = theme;
     }
 
-    root.classList.add(effectiveTheme);
-    setActualTheme(effectiveTheme);
-    
-    // Remove transition after theme change to avoid affecting other animations
-    setTimeout(() => {
-      root.style.transition = '';
-    }, 300);
+    root.classList.add(resolvedTheme);
+    setActualTheme(resolvedTheme);
   }, [theme]);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
-    const handleChange = () => {
-      if (theme === 'system') {
-        const newTheme = mediaQuery.matches ? 'dark' : 'light';
+    if (theme === 'system') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      
+      const handleChange = () => {
+        const resolvedTheme = mediaQuery.matches ? 'dark' : 'light';
         const root = window.document.documentElement;
         root.classList.remove('light', 'dark');
-        root.classList.add(newTheme);
-        setActualTheme(newTheme);
-      }
-    };
+        root.classList.add(resolvedTheme);
+        setActualTheme(resolvedTheme);
+      };
 
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
+      mediaQuery.addEventListener('change', handleChange);
+      return () => mediaQuery.removeEventListener('change', handleChange);
+    }
   }, [theme]);
 
-  const value = {
-    theme,
-    setTheme: (newTheme: Theme) => {
-      localStorage.setItem(storageKey, newTheme);
-      setTheme(newTheme);
-    },
-    actualTheme,
+  const setTheme = (newTheme: Theme) => {
+    localStorage.setItem('suntyn-theme', newTheme);
+    setThemeState(newTheme);
   };
 
+  const value = { theme, actualTheme, setTheme };
+  
   return (
-    <ThemeProviderContext.Provider value={value}>
+    <ThemeContext.Provider value={value}>
       {children}
-    </ThemeProviderContext.Provider>
+    </ThemeContext.Provider>
   );
 }
 
 export const useTheme = () => {
-  const context = useContext(ThemeProviderContext);
-
+  const context = useContext(ThemeContext);
   if (context === undefined) {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
-
   return context;
 };

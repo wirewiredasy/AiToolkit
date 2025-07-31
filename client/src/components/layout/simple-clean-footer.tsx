@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import GeometricLogo from '@/components/ui/geometric-logo';
 import { 
   FileText, 
   Image as ImageIcon, 
@@ -115,15 +116,11 @@ export default function SimpleCleanFooter() {
           
           {/* Brand Section */}
           <div className="col-span-1 md:col-span-1">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-white" />
+            <Link to="/">
+              <div className="flex items-center gap-3 mb-4 hover:opacity-80 transition-opacity duration-200">
+                <GeometricLogo size="md" showText={true} />
               </div>
-              <div>
-                <h3 className="text-xl font-bold text-white">Suntyn AI</h3>
-                <p className="text-sm text-gray-400">Neural Intelligence Tools</p>
-              </div>
-            </div>
+            </Link>
             <p className="text-gray-400 text-sm mb-6">
               Professional AI-powered tools for productivity and workflow automation.
             </p>
