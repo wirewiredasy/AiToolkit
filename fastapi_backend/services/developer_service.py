@@ -26,6 +26,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_headers=["*"],
     allow_methods=["*"],
+    expose_headers=["*"]
 )
 
 # Ensure directories exist

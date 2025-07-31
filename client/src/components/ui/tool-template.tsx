@@ -90,8 +90,21 @@ export function ToolTemplate({
         });
       }, 300);
 
-      // Use the correct endpoint format
-      const processEndpoint = endpoint.startsWith('/api/') ? endpoint : `/api/tools/${toolId}`;
+      // Route directly to FastAPI microservices
+      let servicePort = 8005; // Default to developer service
+      
+      // Determine the correct microservice port based on tool type
+      if (toolId.includes('pdf') || toolId.includes('PDF')) {
+        servicePort = 8001; // PDF service
+      } else if (toolId.includes('image') || toolId === 'bg-remover' || toolId.includes('resize')) {
+        servicePort = 8002; // Image service
+      } else if (toolId.includes('audio') || toolId.includes('video') || toolId.includes('media')) {
+        servicePort = 8003; // Media service
+      } else if (toolId.includes('pan') || toolId.includes('gst') || toolId.includes('aadhaar') || toolId.includes('government')) {
+        servicePort = 8004; // Government service
+      }
+      
+      const processEndpoint = `http://localhost:${servicePort}/process/${toolId}`;
 
       try {
         // Enhanced timeout handling with progress feedback
