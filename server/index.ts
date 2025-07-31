@@ -11,44 +11,9 @@ const __dirname = path.dirname(__filename);
 async function startServer() {
   console.log('🚀 Starting Suntyn AI Full-Stack Application...');
 
-  // Start FastAPI services - dependencies now resolved
-  console.log('🔧 Starting FastAPI microservices...');
-
-  // Start main gateway
-  const gatewayProcess = spawn('python', ['-m', 'uvicorn', 'main:app', '--host', '0.0.0.0', '--port', '5001', '--reload'], {
-    cwd: path.join(process.cwd(), 'fastapi_backend'),
-    stdio: 'inherit'
-  });
-
-  // Start PDF service
-  const pdfProcess = spawn('python', ['-m', 'uvicorn', 'pdf_service:app', '--host', '0.0.0.0', '--port', '8001', '--reload'], {
-    cwd: path.join(process.cwd(), 'fastapi_backend/services'),
-    stdio: 'inherit'
-  });
-
-  // Start Image service
-  const imageProcess = spawn('python', ['-m', 'uvicorn', 'image_service:app', '--host', '0.0.0.0', '--port', '8002', '--reload'], {
-    cwd: path.join(process.cwd(), 'fastapi_backend/services'),
-    stdio: 'inherit'
-  });
-
-  // Start Developer service
-  const devProcess = spawn('python', ['-m', 'uvicorn', 'developer_service:app', '--host', '0.0.0.0', '--port', '8005', '--reload'], {
-    cwd: path.join(process.cwd(), 'fastapi_backend/services'),
-    stdio: 'inherit'
-  });
-
-  // Start Media service
-  const mediaProcess = spawn('python', ['-m', 'uvicorn', 'media_service:app', '--host', '0.0.0.0', '--port', '8003', '--reload'], {
-    cwd: path.join(process.cwd(), 'fastapi_backend/services'),
-    stdio: 'inherit'
-  });
-
-  // Start Government service
-  const govProcess = spawn('python', ['-m', 'uvicorn', 'government_service:app', '--host', '0.0.0.0', '--port', '8004', '--reload'], {
-    cwd: path.join(process.cwd(), 'fastapi_backend/services'),
-    stdio: 'inherit'
-  });
+  // FastAPI services temporarily disabled during migration - Python version issues
+  console.log('⚠️  FastAPI services temporarily disabled during migration');
+  console.log('🔧 Focusing on frontend-first approach for Replit compatibility');
 
   // Start static file server
   const staticProcess = spawn('node', ['static_server.js'], {
@@ -96,23 +61,12 @@ async function startServer() {
 
     console.log(`🎯 Suntyn AI running on http://localhost:5000`);
     console.log(`🖥️  Frontend: React + Vite (Development server)`);
-    console.log(`🔗 Backend: FastAPI Gateway on port 5001`);
-    console.log(`🔧 PDF Service: http://localhost:8001`);
-    console.log(`🖼️  Image Service: http://localhost:8002`);
-    console.log(`🎵 Media Service: http://localhost:8003`);
-    console.log(`🏛️  Government Service: http://localhost:8004`);
-    console.log(`💻 Developer Service: http://localhost:8005`);
-    console.log(`✅ Full-stack application ready!`);
+    console.log(`📁 Static file server running on port 3001`);
+    console.log(`✅ Application ready for Replit!`);
 
     // Cleanup on exit
     process.on('SIGINT', () => {
       console.log('\n🛑 Stopping all services...');
-      if (gatewayProcess) gatewayProcess.kill();
-      if (pdfProcess) pdfProcess.kill();
-      if (imageProcess) imageProcess.kill();
-      if (devProcess) devProcess.kill();
-      if (mediaProcess) mediaProcess.kill();
-      if (govProcess) govProcess.kill();
       staticProcess.kill();
       previewProcess.kill();
       process.exit(0);
