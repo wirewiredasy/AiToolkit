@@ -60,9 +60,8 @@ export default function DarkNavbar() {
             })}
           </div>
 
-          {/* Theme Toggle and Sign Up Button */}
+          {/* Sign Up Button */}
           <div className="hidden lg:flex items-center space-x-4">
-            <ThemeToggle />
             <Button 
               className="bg-cyan-500 hover:bg-cyan-600 text-black font-semibold px-6 py-2 rounded-full transition-all duration-300"
               asChild

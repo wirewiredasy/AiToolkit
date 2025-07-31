@@ -125,6 +125,11 @@ static_dir = os.path.abspath("../static")
 os.makedirs(static_dir, exist_ok=True)
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
+# Serve built React frontend
+frontend_dir = os.path.abspath("../dist/public")
+os.makedirs(frontend_dir, exist_ok=True)
+app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
+
 print(f"📁 Static files served from: {static_dir}")
 
 @app.get("/")

@@ -41,28 +41,7 @@
   --neutral-900: hsl(222, 84%, 5%);
 }
 
-.dark {
-  --background: hsl(240, 10%, 8%);
-  --foreground: hsl(0, 0%, 95%);
-  --muted: hsl(240, 5%, 18%);
-  --muted-foreground: hsl(240, 5%, 75%);
-  --popover: hsl(240, 8%, 12%);
-  --popover-foreground: hsl(0, 0%, 95%);
-  --card: hsl(240, 8%, 10%);
-  --card-foreground: hsl(0, 0%, 95%);
-  --border: hsl(240, 5%, 25%);
-  --input: hsl(240, 5%, 20%);
-  --primary: hsl(221, 83%, 58%);
-  --primary-foreground: hsl(210, 40%, 98%);
-  --secondary: hsl(240, 5%, 20%);
-  --secondary-foreground: hsl(0, 0%, 95%);
-  --accent: hsl(240, 5%, 20%);
-  --accent-foreground: hsl(0, 0%, 95%);
-  --destructive: hsl(0, 62.8%, 45%);
-  --destructive-foreground: hsl(0, 0%, 98%);
-  --ring: hsl(240, 5%, 85%);
-  --radius: 0.5rem;
-}
+/* Light mode only - Dark mode removed */
 
 @layer base {
   * {
@@ -76,13 +55,9 @@
     min-height: 100vh;
   }
 
-  /* Force light mode text visibility */
+  /* Force light mode only */
   :root {
     color-scheme: light;
-  }
-
-  .dark {
-    color-scheme: dark;
   }
 
   /* Ensure all text is visible in light mode */
@@ -129,13 +104,10 @@
     color: hsl(var(--foreground));
   }
 
-  .dark .glass-navbar {
-    background: rgba(15, 23, 42, 0.95);
-    color: hsl(var(--foreground));
-  }
+  /* Dark mode removed - light mode only */
 
-  /* Enhanced light mode visibility fixes */
-  :not(.dark) {
+  /* Light mode only styling */
+  * {
     --text-primary: hsl(224, 71%, 4%);
     --text-secondary: hsl(220, 9%, 32%);
     --bg-primary: hsl(0, 0%, 100%);
@@ -143,23 +115,21 @@
   }
 
   /* Perfect light mode text visibility */
-  :not(.dark) * {
+  * {
     color: hsl(224, 71%, 4%) !important;
   }
 
-  :not(.dark) .text-muted-foreground,
-  :not(.dark) .text-gray-500,
-  :not(.dark) .text-gray-600 {
+  .text-muted-foreground,
+  .text-gray-500,
+  .text-gray-600 {
     color: hsl(220, 9%, 32%) !important;
   }
 
-  :not(.dark) .text-gray-700,
-  :not(.dark) .text-gray-800,
-  :not(.dark) .text-gray-900,
-  :not(.dark) h1, :not(.dark) h2, :not(.dark) h3, 
-  :not(.dark) h4, :not(.dark) h5, :not(.dark) h6,
-  :not(.dark) p, :not(.dark) span, :not(.dark) div,
-  :not(.dark) button, :not(.dark) a {
+  .text-gray-700,
+  .text-gray-800,
+  .text-gray-900,
+  h1, h2, h3, h4, h5, h6,
+  p, span, div, button, a {
     color: hsl(224, 71%, 4%) !important;
   }
 
