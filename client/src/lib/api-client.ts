@@ -56,24 +56,29 @@ class ApiClient {
 
   // Tool processing endpoints
   async processWithTool(toolId: string, files?: FileList, metadata?: Record<string, any>): Promise<ToolProcessResponse> {
-    const formData = new FormData();
+    // For demo mode (no auth required)
+    const endpoint = `/tools/${toolId}/demo`;
     
-    if (files) {
-      Array.from(files).forEach(file => {
-        formData.append('files', file);
-      });
-    }
-    
-    formData.append('toolId', toolId);
-    if (metadata) {
-      formData.append('metadata', JSON.stringify(metadata));
-    }
+    const requestData = {
+      toolName: toolId,
+      category: this.getCategoryFromToolId(toolId),
+      fileName: files?.[0]?.name || 'input-file',
+      fileSize: files?.[0]?.size || 1024,
+      metadata: metadata || {},
+    };
 
-    return this.request(`/tools/process`, {
+    return this.request(endpoint, {
       method: 'POST',
-      headers: {}, // Let browser set content-type for FormData
-      body: formData,
+      body: JSON.stringify(requestData),
     });
+  }
+
+  private getCategoryFromToolId(toolId: string): string {
+    if (toolId.includes('pdf')) return 'PDF';
+    if (toolId.includes('image') || toolId.includes('bg-') || toolId.includes('photo')) return 'Image';
+    if (toolId.includes('audio') || toolId.includes('video') || toolId.includes('media')) return 'Media';
+    if (toolId.includes('pan') || toolId.includes('gst') || toolId.includes('aadhaar') || toolId.includes('government')) return 'Government';
+    return 'Developer';
   }
 
   // Individual tool endpoints

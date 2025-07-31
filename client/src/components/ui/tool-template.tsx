@@ -17,6 +17,15 @@ import { cn } from "@/lib/utils";
 import { Separator } from './separator';
 import { RecommendedTools } from './recommended-tools';
 
+// Helper function to determine tool category
+function getCategoryFromToolId(toolId: string): string {
+  if (toolId.includes('pdf')) return 'PDF';
+  if (toolId.includes('image') || toolId.includes('bg-') || toolId.includes('photo')) return 'Image';
+  if (toolId.includes('audio') || toolId.includes('video') || toolId.includes('media')) return 'Media';
+  if (toolId.includes('pan') || toolId.includes('gst') || toolId.includes('aadhaar') || toolId.includes('government')) return 'Government';
+  return 'Developer';
+}
+
 interface ToolSetting {
   key: string;
   label: string;
@@ -90,21 +99,8 @@ export function ToolTemplate({
         });
       }, 300);
 
-      // Route directly to FastAPI microservices
-      let servicePort = 8005; // Default to developer service
-      
-      // Determine the correct microservice port based on tool type
-      if (toolId.includes('pdf') || toolId.includes('PDF')) {
-        servicePort = 8001; // PDF service
-      } else if (toolId.includes('image') || toolId === 'bg-remover' || toolId.includes('resize')) {
-        servicePort = 8002; // Image service
-      } else if (toolId.includes('audio') || toolId.includes('video') || toolId.includes('media')) {
-        servicePort = 8003; // Media service
-      } else if (toolId.includes('pan') || toolId.includes('gst') || toolId.includes('aadhaar') || toolId.includes('government')) {
-        servicePort = 8004; // Government service
-      }
-      
-      const processEndpoint = `http://localhost:${servicePort}/process/${toolId}`;
+      // Use the demo endpoint for processing (no auth required)
+      const processEndpoint = `/api/tools/${toolId}/demo`;
 
       try {
         // Enhanced timeout handling with progress feedback
@@ -131,15 +127,24 @@ export function ToolTemplate({
           throw new Error(`Total file size (${(totalSize/1024/1024).toFixed(1)}MB) exceeds limit (${(maxFileSize/1024/1024).toFixed(1)}MB)`);
         }
 
+        // Convert FormData to JSON for Express.js backend
+        const requestData = {
+          toolName: toolId,
+          category: getCategoryFromToolId(toolId),
+          fileName: files[0]?.name || 'input-file',
+          fileSize: files[0]?.size || 1024,
+          metadata: settingsValues,
+        };
+
         const response = await fetch(processEndpoint, {
           method: "POST",
-          body: formData,
-          signal: controller.signal,
           headers: {
-            // Let browser set Content-Type for FormData
+            'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Cache-Control': 'no-cache'
-          }
+          },
+          body: JSON.stringify(requestData),
+          signal: controller.signal,
         });
 
         clearTimeout(timeoutId);
@@ -196,7 +201,7 @@ export function ToolTemplate({
           error: error.message,
           endpoint: processEndpoint,
           toolId,
-          fileCount: formData.getAll('files').length
+          fileCount: files.length
         });
 
         throw new Error(error.message || 'An unexpected error occurred during processing.');

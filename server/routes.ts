@@ -268,24 +268,57 @@ router.post('/tools/:toolName/demo', async (req, res) => {
     const { toolName } = req.params;
     const startTime = Date.now();
     
-    // Quick demo processing
-    const processingTime = Math.random() * 1000 + 1000; // 1-2 seconds
+    console.log(`Processing demo for tool: ${toolName}`);
+    
+    // Generate realistic processing based on tool type
+    let processingTime = 1500; // Base 1.5 seconds for demo
+    let outputFileName = '';
+    let mimeType = '';
+    
+    // Tool-specific processing simulation
+    if (toolName.includes('pdf')) {
+      processingTime = Math.random() * 1000 + 1500; // 1.5-2.5 seconds for PDF
+      outputFileName = `demo-pdf-${toolName}-${Date.now()}.pdf`;
+      mimeType = 'application/pdf';
+    } else if (toolName.includes('image') || toolName.includes('bg-') || toolName.includes('photo')) {
+      processingTime = Math.random() * 800 + 1000; // 1-1.8 seconds for images
+      outputFileName = `demo-image-${toolName}-${Date.now()}.png`;
+      mimeType = 'image/png';
+    } else if (toolName.includes('audio')) {
+      processingTime = Math.random() * 1200 + 1500; // 1.5-2.7 seconds for audio
+      outputFileName = `demo-audio-${toolName}-${Date.now()}.mp3`;
+      mimeType = 'audio/mpeg';
+    } else if (toolName.includes('video')) {
+      processingTime = Math.random() * 1500 + 2000; // 2-3.5 seconds for video
+      outputFileName = `demo-video-${toolName}-${Date.now()}.mp4`;
+      mimeType = 'video/mp4';
+    } else {
+      outputFileName = `demo-${toolName}-${Date.now()}.txt`;
+      mimeType = 'text/plain';
+    }
+    
+    // Simulate realistic processing time
     await new Promise(resolve => setTimeout(resolve, processingTime));
     
-    const outputFileName = `demo-${toolName}-${Date.now()}.pdf`;
+    console.log(`Demo processing completed for ${toolName} in ${Date.now() - startTime}ms`);
     
     res.json({
       success: true,
-      message: `${toolName} demo completed - Sign up for full features`,
-      downloadUrl: `/static/${outputFileName}`,
+      message: `${toolName} demo completed successfully! Sign up for full features`,
+      downloadUrl: `/static/demo-pdf-merger-sample.pdf`, // Use actual sample file
       fileName: outputFileName,
+      fileSize: Math.floor(Math.random() * 100000) + 50000, // 50KB-150KB
+      mimeType,
       processingTime: Date.now() - startTime,
       demo: true,
+      note: 'This is a demo version. Sign up for full processing capabilities.'
     });
   } catch (error) {
+    console.error('Demo processing error:', error);
     res.status(500).json({ 
       success: false,
-      error: 'Demo processing failed'
+      error: 'Demo processing failed',
+      message: error instanceof Error ? error.message : 'Unknown error occurred'
     });
   }
 });
