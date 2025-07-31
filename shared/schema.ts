@@ -52,6 +52,19 @@ export const insertFileUploadSchema = createInsertSchema(fileUploads).omit({
   createdAt: true,
 });
 
+// Auth specific schemas
+export const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+});
+
+export const signupSchema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+  password: z.string().min(6),
+  confirmPassword: z.string().optional(),
+});
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -61,3 +74,6 @@ export type InsertToolHistory = z.infer<typeof insertToolHistorySchema>;
 
 export type FileUpload = typeof fileUploads.$inferSelect;
 export type InsertFileUpload = z.infer<typeof insertFileUploadSchema>;
+
+export type LoginInput = z.infer<typeof loginSchema>;
+export type SignupInput = z.infer<typeof signupSchema>;

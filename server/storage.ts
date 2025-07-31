@@ -48,7 +48,12 @@ export class MemStorage implements IStorage {
   async createToolHistory(history: InsertToolHistory): Promise<ToolHistory> {
     const newHistory: ToolHistory = {
       id: this.nextToolHistoryId++,
-      ...history,
+      userId: history.userId || null,
+      toolName: history.toolName,
+      inputData: history.inputData || null,
+      outputData: history.outputData || null,
+      status: history.status,
+      processingTime: history.processingTime || null,
       createdAt: new Date(),
     };
     this.toolHistory.push(newHistory);
@@ -71,7 +76,13 @@ export class MemStorage implements IStorage {
   async createFileUpload(file: InsertFileUpload): Promise<FileUpload> {
     const newFile: FileUpload = {
       id: this.nextFileUploadId++,
-      ...file,
+      userId: file.userId || null,
+      fileName: file.fileName,
+      originalName: file.originalName,
+      mimeType: file.mimeType,
+      fileSize: file.fileSize,
+      filePath: file.filePath,
+      expiresAt: file.expiresAt,
       createdAt: new Date(),
     };
     this.fileUploads.push(newFile);
