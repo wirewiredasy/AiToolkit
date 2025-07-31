@@ -1,18 +1,26 @@
 
 {
-  "buildCommand": "cd client && npm install && npm run build",
-  "outputDirectory": "dist/public",
-  "installCommand": "npm install",
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "client/package.json",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "https://suntynai-ut2i.onrender.com/api/$1"
+      "dest": "/server/index.ts"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/client/index.html"
     }
+  ],
+  "rewrites": [
+    { "source": "/((?!api).*)", "destination": "/index.html" }
   ]
 }
