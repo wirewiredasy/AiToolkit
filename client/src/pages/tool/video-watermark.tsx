@@ -31,18 +31,28 @@ export default function VideoWatermarkPage() {
 
     setProcessing(true);
     try {
-      const formData = new FormData();
-      formData.append('video', videoFile);
-      formData.append('watermark', watermarkFile);
-      formData.append('position', position);
-      formData.append('opacity', opacity.toString());
+      const requestData = {
+        toolName: 'video-watermark',
+        category: 'Media',
+        fileName: videoFile.name,
+        fileSize: videoFile.size + watermarkFile.size,
+        metadata: { position, opacity }
+      };
 
-      const response = await apiRequest('/api/tools/video-watermark', {
+      const response = await fetch('/api/tools/video-watermark/demo', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
       });
 
-      setResult(response.downloadUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const result = await response.json();
+      setResult(result.downloadUrl);
     } catch (error) {
       console.error('Error processing file:', error);
     } finally {

@@ -24,12 +24,28 @@ export default function FormatInfoPage() {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await apiRequest('/api/tools/format-info', {
+      const requestData = {
+        toolName: 'format-info',
+        category: 'Developer',
+        fileName: file.name,
+        fileSize: file.size,
+        metadata: {}
+      };
+
+      const response = await fetch('/api/tools/format-info/demo', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
       });
 
-      setFileInfo(response.fileInfo);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const result = await response.json();
+      setFileInfo(result.fileInfo || { message: 'File analyzed successfully' });
     } catch (error) {
       console.error('Error analyzing file:', error);
     } finally {

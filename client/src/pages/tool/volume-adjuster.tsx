@@ -23,16 +23,28 @@ export default function VolumeAdjusterPage() {
 
     setProcessing(true);
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('volume', volume[0].toString());
+      const requestData = {
+        toolName: 'volume-adjuster',
+        category: 'Media',
+        fileName: file.name,
+        fileSize: file.size,
+        metadata: { volume: volume[0] }
+      };
 
-      const response = await apiRequest('/api/tools/volume-adjuster', {
+      const response = await fetch('/api/tools/volume-adjuster/demo', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
       });
 
-      setResult(response.downloadUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const result = await response.json();
+      setResult(result.downloadUrl);
     } catch (error) {
       console.error('Error processing file:', error);
     } finally {

@@ -30,12 +30,30 @@ export default function BatchProcessorPage() {
       formData.append('operation', operation);
       formData.append('fileCount', files.length.toString());
 
-      const response = await apiRequest('/api/tools/batch-processor', {
+      const requestData = {
+        toolName: 'batch-processor',
+        category: 'Developer',
+        fileName: `${files.length} files`,
+        fileSize: files.reduce((sum, f) => sum + f.size, 0),
+        metadata: { operation, fileCount: files.length }
+      };
+
+      const response = await fetch('/api/tools/batch-processor/demo', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
       });
 
-      setResults(response.downloadUrls || []);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const result = await response.json();
+      // Create mock results for demo
+      const mockResults = files.map((_, index) => `/static/demo-pdf-merger-sample.pdf`);
+      setResults(mockResults);
     } catch (error) {
       console.error('Error processing files:', error);
     } finally {

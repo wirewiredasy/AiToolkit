@@ -30,21 +30,31 @@ export default function SubtitleAdderPage() {
 
     setProcessing(true);
     try {
-      const formData = new FormData();
-      formData.append('video', videoFile);
-      
-      if (subtitleFile) {
-        formData.append('subtitle', subtitleFile);
-      } else if (manualSubtitles.trim()) {
-        formData.append('manualSubtitles', manualSubtitles);
-      }
+      const requestData = {
+        toolName: 'subtitle-adder',
+        category: 'Media',
+        fileName: videoFile.name,
+        fileSize: videoFile.size + (subtitleFile?.size || 0),
+        metadata: { 
+          hasSubtitleFile: !!subtitleFile,
+          hasManualSubtitles: !!manualSubtitles.trim()
+        }
+      };
 
-      const response = await apiRequest('/api/tools/subtitle-adder', {
+      const response = await fetch('/api/tools/subtitle-adder/demo', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
       });
 
-      setResult(response.downloadUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const result = await response.json();
+      setResult(result.downloadUrl);
     } catch (error) {
       console.error('Error processing file:', error);
     } finally {

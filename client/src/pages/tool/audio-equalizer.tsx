@@ -53,16 +53,28 @@ export default function AudioEqualizerPage() {
 
     setProcessing(true);
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('eq_settings', JSON.stringify(frequencies));
+      const requestData = {
+        toolName: 'audio-equalizer',
+        category: 'Media',
+        fileName: file.name,
+        fileSize: file.size,
+        metadata: { frequencies }
+      };
 
-      const response = await apiRequest('/api/tools/audio-equalizer', {
+      const response = await fetch('/api/tools/audio-equalizer/demo', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
       });
 
-      setResult(response.downloadUrl || '/placeholder-result.mp3');
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const result = await response.json();
+      setResult(result.downloadUrl || '/static/demo-pdf-merger-sample.pdf');
     } catch (error) {
       console.error('Error processing file:', error);
     } finally {
