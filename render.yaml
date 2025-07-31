@@ -2,7 +2,7 @@ services:
   - type: web
     name: suntyn-ai-backend
     env: python
-    buildCommand: "pip install -r requirements-clean.txt"
+    buildCommand: "chmod +x deploy-clean.sh && pip install -r requirements-deployment.txt"
     startCommand: "uvicorn main:app --host=0.0.0.0 --port=10000"
     plan: free
     region: oregon

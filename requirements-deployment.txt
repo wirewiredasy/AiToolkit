@@ -1,0 +1,28 @@
+# DEPLOYMENT REQUIREMENTS - NO CONFLICTS
+# Use this file for Render.com deployment to avoid uvicorn conflicts
+
+# Core FastAPI - EXACT VERSIONS ONLY
+fastapi==0.116.1
+uvicorn[standard]==0.35.0
+python-multipart==0.0.20
+
+# Essential packages
+httpx==0.28.1
+requests==2.32.4
+python-dotenv==1.1.1
+pydantic==2.11.7
+
+# PDF Processing
+pypdf==5.9.0 
+pypdf2==3.0.1
+reportlab==4.4.3
+
+# Image Processing
+Pillow==11.3.0
+
+# Background processing
+cloudinary==1.44.1
+rembg==2.0.67
+
+# File handling
+aiofiles==24.1.0
