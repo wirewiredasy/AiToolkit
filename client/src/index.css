@@ -124,6 +124,63 @@
     animation: float3d 6s ease-in-out infinite;
   }
 
+  /* Replit-style Theme Toggle */
+  .theme-toggle-button {
+    @apply relative w-10 h-10 rounded-lg transition-all duration-200;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1.5px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 
+      0 1px 3px rgba(0, 0, 0, 0.1), 
+      0 1px 2px rgba(0, 0, 0, 0.06),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  }
+
+  .theme-toggle-button:hover {
+    background: rgba(255, 255, 255, 1);
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: 
+      0 4px 12px rgba(0, 0, 0, 0.15), 
+      0 2px 4px rgba(0, 0, 0, 0.1),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+    transform: translateY(-1px);
+  }
+
+  .dark .theme-toggle-button {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+      0 1px 3px rgba(0, 0, 0, 0.3), 
+      0 1px 2px rgba(0, 0, 0, 0.2),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  .dark .theme-toggle-button:hover {
+    background: rgba(0, 0, 0, 0.8);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 
+      0 4px 12px rgba(0, 0, 0, 0.4), 
+      0 2px 4px rgba(0, 0, 0, 0.25),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+  }
+
+  /* Theme dropdown styling */
+  .theme-dropdown {
+    @apply bg-white border border-gray-200 shadow-lg rounded-lg;
+    box-shadow: 
+      0 10px 25px rgba(0, 0, 0, 0.1), 
+      0 4px 10px rgba(0, 0, 0, 0.05),
+      0 0 0 1px rgba(0, 0, 0, 0.05);
+  }
+
+  .dark .theme-dropdown {
+    @apply bg-gray-900 border-gray-700;
+    box-shadow: 
+      0 10px 25px rgba(0, 0, 0, 0.4), 
+      0 4px 10px rgba(0, 0, 0, 0.2),
+      0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
   .floating-3d:nth-child(2) {
     animation-delay: -2s;
   }
