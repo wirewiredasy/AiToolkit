@@ -64,14 +64,32 @@ if (process.env.NODE_ENV === 'production') {
     }
   });
 } else {
-  // Development mode - let Vite handle the frontend
-  app.get('/', (req, res) => {
-    res.json({ 
-      message: 'Suntyn AI API Server', 
-      status: 'running',
-      environment: 'development'
+  // Development mode - serve the built React app
+  const distPath = path.join(process.cwd(), 'dist', 'public');
+  
+  if (fs.existsSync(distPath)) {
+    console.log('📱 Serving built React app from:', distPath);
+    app.use(express.static(distPath));
+    
+    // SPA fallback for client-side routing
+    app.get('*', (req, res) => {
+      if (!req.path.startsWith('/api') && !req.path.startsWith('/static')) {
+        res.sendFile(path.join(distPath, 'index.html'));
+      } else {
+        res.status(404).json({ error: 'API endpoint not found' });
+      }
     });
-  });
+  } else {
+    // Fallback if build doesn't exist
+    app.get('/', (req, res) => {
+      res.json({ 
+        message: 'Suntyn AI API Server - Build frontend first', 
+        status: 'running',
+        environment: 'development',
+        note: 'Run `npm run build` to create the frontend build'
+      });
+    });
+  }
 }
 
 // Enhanced health check endpoint
