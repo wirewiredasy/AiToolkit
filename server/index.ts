@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 import { MemStorage } from './storage.js';
 import { createRoutes } from './routes.js';
 import * as fs from 'fs';
@@ -18,15 +19,17 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'"],
       scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
       imgSrc: ["'self'", "data:", "blob:", "https:"],
-      connectSrc: ["'self'", "ws:", "wss:"],
+      connectSrc: ["'self'", "ws:", "wss:", "http://localhost:*", "ws://localhost:*"],
+      fontSrc: ["'self'", "data:", "https:"],
     },
   },
+  crossOriginEmbedderPolicy: false,
 }));
 
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-domain.com'] 
-    : ['http://localhost:5173', 'http://localhost:5000'],
+    ? true 
+    : ['http://localhost:5173', 'http://localhost:5000', 'http://localhost:3000'],
   credentials: true,
 }));
 
@@ -47,17 +50,44 @@ const storage = new MemStorage();
 // API routes
 app.use('/api', createRoutes(storage));
 
-// Serve static files
-const publicPath = path.join(process.cwd(), 'client/public');
+// Setup static file serving and SPA routing
 const clientDistPath = path.join(process.cwd(), 'dist/public');
+const publicPath = path.join(process.cwd(), 'client/public');
 
-// In development, serve from client/public and fallback to dist if available
-if (process.env.NODE_ENV === 'development') {
-  // Serve client public files
-  app.use(express.static(publicPath));
+if (process.env.NODE_ENV === 'production') {
+  // In production, serve static files from dist
+  app.use(express.static(clientDistPath, {
+    setHeaders: (res, path) => {
+      if (path.endsWith('.js')) {
+        res.setHeader('Content-Type', 'application/javascript');
+      } else if (path.endsWith('.css')) {
+        res.setHeader('Content-Type', 'text/css');
+      }
+    }
+  }));
   
-  // Also serve built files if they exist
-  app.use(express.static(clientDistPath));
+  // Handle client-side routing
+  app.get('*', (req, res) => {
+    if (!req.path.startsWith('/api')) {
+      res.sendFile(path.join(clientDistPath, 'index.html'));
+    }
+  });
+} else {
+  // In development, serve static files if they exist
+  if (fs.existsSync(clientDistPath)) {
+    app.use(express.static(clientDistPath, {
+      setHeaders: (res, path) => {
+        if (path.endsWith('.js')) {
+          res.setHeader('Content-Type', 'application/javascript');
+        } else if (path.endsWith('.css')) {
+          res.setHeader('Content-Type', 'text/css');
+        }
+      }
+    }));
+  }
+  
+  // Also serve client public files
+  app.use(express.static(publicPath));
   
   // For SPA routing, serve index.html for non-API routes
   app.get('*', (req, res) => {
@@ -65,22 +95,13 @@ if (process.env.NODE_ENV === 'development') {
       const indexPath = path.join(clientDistPath, 'index.html');
       const fallbackPath = path.join(process.cwd(), 'client/index.html');
       
-      // Try dist first, then fallback to client directory
       if (fs.existsSync(indexPath)) {
         res.sendFile(indexPath);
-      } else {
+      } else if (fs.existsSync(fallbackPath)) {
         res.sendFile(fallbackPath);
+      } else {
+        res.status(404).send('Client not built yet. Please run npm run build first.');
       }
-    }
-  });
-} else {
-  // In production, serve static files from dist
-  app.use(express.static(clientDistPath));
-  
-  // Handle client-side routing
-  app.get('*', (req, res) => {
-    if (!req.path.startsWith('/api')) {
-      res.sendFile(path.join(clientDistPath, 'index.html'));
     }
   });
 }
