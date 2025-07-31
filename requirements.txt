@@ -77,3 +77,10 @@ reportlab
 uvicorn[standard]
 fastapi==0.116.1
 uvicorn[standard]==0.35.0
+fastapi
+pillow
+pypdf
+pypdf2
+python-multipart
+reportlab
+uvicorn
