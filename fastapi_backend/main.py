@@ -636,10 +636,38 @@ async def upload_file(file: UploadFile = File(...)):
         return {"error": str(e)}
 
 if __name__ == "__main__":
-    uvicorn.run(
-        "main:app",
-        host="0.0.0.0",
-        port=5000,
-        reload=True,
-        log_level="info"
-    )
+    import uvicorn
+    import sys
+    try:
+        print("🚀 Starting Suntyn AI Main Gateway...")
+        print("📊 Checking port 5000 availability...")
+        
+        uvicorn.run(
+            "main:app",
+            host="0.0.0.0",
+            port=5000,
+            reload=False,  # Disable reload to prevent crashes
+            log_level="info",
+            access_log=True,
+            workers=1
+        )
+    except OSError as e:
+        if "Address already in use" in str(e):
+            print("❌ Port 5000 is busy! Trying port 5001...")
+            try:
+                uvicorn.run(
+                    "main:app",
+                    host="0.0.0.0",
+                    port=5001,
+                    reload=False,
+                    log_level="info"
+                )
+            except Exception as fallback_error:
+                print(f"❌ Fallback port also failed: {fallback_error}")
+                sys.exit(1)
+        else:
+            print(f"❌ Gateway startup error: {e}")
+            sys.exit(1)
+    except Exception as e:
+        print(f"❌ Critical error: {e}")
+        sys.exit(1)

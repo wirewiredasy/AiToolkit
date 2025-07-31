@@ -90,11 +90,37 @@ def main():
         print("\n⌨️  Press Ctrl+C to stop all services")
         
         while True:
-            time.sleep(1)
+            time.sleep(5)  # Check every 5 seconds
             # Check if all processes are still running
             for name, process in processes:
                 if process.poll() is not None:
                     print(f"⚠️  {name} has stopped unexpectedly!")
+                    print(f"🔄 Attempting to restart {name}...")
+                    
+                    # Try to restart the crashed service
+                    if "Main Gateway" in name:
+                        # Don't restart main gateway to avoid infinite loop
+                        print("❌ Main Gateway crashed - manual restart required")
+                        return
+                    else:
+                        # Restart other services
+                        service_info = None
+                        for sname, port, script in services:
+                            if sname == name:
+                                service_info = (sname, port, script)
+                                break
+                        
+                        if service_info:
+                            new_process = start_service(service_info[0], service_info[1], service_info[2])
+                            if new_process:
+                                # Replace the old process with new one
+                                for i, (pname, proc) in enumerate(processes):
+                                    if pname == name:
+                                        processes[i] = (name, new_process)
+                                        break
+                                print(f"✅ {name} restarted successfully")
+                            else:
+                                print(f"❌ Failed to restart {name}")
                     
     except KeyboardInterrupt:
         print("\n🛑 Stopping all services...")
