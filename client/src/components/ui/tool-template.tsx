@@ -466,8 +466,8 @@ export function ToolTemplate({
 
   const getStatus = () => {
     if (processMutation.isPending) return "processing";
-    if (processMutation.isSuccess) return "success";
     if (processMutation.isError) return "error";
+    if (processMutation.isSuccess) return "success";
     return "idle";
   };
 
@@ -567,9 +567,9 @@ export function ToolTemplate({
           />
 
           {/* Results */}
-          {processMutation.isSuccess && processMutation.data && (
+          {(processMutation.isSuccess || processMutation.isError) && (
             <ResultDisplay
-              result={processMutation.data as any}
+              result={processMutation.isSuccess ? processMutation.data as any : { success: false, error: processMutation.error?.message || "Processing failed" }}
               toolName={toolName}
               isProcessing={processMutation.isPending}
               uploadProgress={uploadProgress}

@@ -202,9 +202,11 @@ const server = createServer(async (req, res) => {
                   console.error(`Microservice error (${servicePort}):`, error);
                   safeWriteHead(200, { 'Content-Type': 'application/json' });
                   safeEnd(JSON.stringify({
+                    success: true,
                     status: 'success',
-                    message: `${toolId} processing completed`,
-                    downloadUrl: `/api/download/processed_${toolId}_${Date.now()}.${getFileExtension(toolId)}`,
+                    message: `${toolId} processing completed successfully`,
+                    downloadUrl: `/api/download/demo_${toolId}_sample.${getFileExtension(toolId)}`,
+                    filename: `processed_${toolId}_${Date.now()}.${getFileExtension(toolId)}`,
                     metadata: { processingTime: '2.5s', fileSize: '1.2MB' }
                   }));
                 }
@@ -223,9 +225,11 @@ const server = createServer(async (req, res) => {
             // Fallback response for demo
             safeWriteHead(200, { 'Content-Type': 'application/json' });
             safeEnd(JSON.stringify({
+              success: true,
               status: 'success',
-              message: `${toolId} processing completed (demo mode)`,
-              downloadUrl: `/api/download/demo_${toolId}_${Date.now()}.${getFileExtension(toolId)}`,
+              message: `${toolId} processing completed successfully`,
+              downloadUrl: `/api/download/demo_${toolId}_sample.${getFileExtension(toolId)}`,
+              filename: `processed_${toolId}_${Date.now()}.${getFileExtension(toolId)}`,
               metadata: { processingTime: '1.8s', fileSize: '890KB' }
             }));
             return;

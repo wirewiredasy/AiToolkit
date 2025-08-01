@@ -35,7 +35,10 @@ export function ResultDisplay({
   const [isDownloading, setIsDownloading] = useState(false);
   const { toast } = useToast();
 
-  const downloadFile = async (retryCount = 0) => {
+  // Determine if processing was actually successful
+  const isActuallySuccessful = result?.success !== false && (result?.downloadUrl || result?.message?.includes('success'));
+
+  const downloadFile = async (retryCount: number = 0) => {
     if (!result.downloadUrl) return;
 
     setIsDownloading(true);
@@ -260,99 +263,28 @@ export function ResultDisplay({
     }
   };
 
-  // Show processing state
+  // Don't show anything if still processing
   if (isProcessing) {
+    return null;
+  }
+
+  // Show error state clearly
+  if (result?.success === false || result?.error) {
     return (
-      <Card className="bg-gray-800 border-gray-700">
+      <Card className="bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800 border-2">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-white">
-            <Clock className="h-5 w-5 animate-spin text-teal-400" />
-            Processing...
+          <CardTitle className="flex items-center gap-2 text-red-700 dark:text-red-400">
+            <AlertTriangle className="h-5 w-5" />
+            Processing Failed
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
-            <Progress value={uploadProgress} className="h-2" />
-            <p className="text-gray-400 text-sm">
-              {uploadProgress < 50 ? 'Uploading files...' : 
-               uploadProgress < 95 ? 'Processing with AI...' : 
-               'Finalizing output...'}
-            </p>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  // Show result
-  if (result) {
-    return (
-      <Card className={`border-2 transition-all duration-300 ${
-        result.success 
-          ? 'bg-gray-800 border-green-500/30 shadow-green-500/10' 
-          : 'bg-gray-800 border-red-500/30 shadow-red-500/10'
-      }`}>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-white">
-            {result.success ? (
-              <CheckCircle className="h-5 w-5 text-green-400" />
-            ) : (
-              <AlertTriangle className="h-5 w-5 text-red-400" />
-            )}
-            {result.success ? 'Processing Complete!' : 'Processing Failed'}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className={`text-sm ${result.success ? 'text-gray-300' : 'text-red-300'}`}>
-            {result.message}
+          <p className="text-red-600 dark:text-red-400 mb-4">
+            {result?.error || result?.message || "An error occurred during processing"}
           </p>
-
-          {result.success && result.downloadUrl && (
-            <div className="space-y-3">
-              <div className="flex flex-wrap gap-2">
-                <Badge variant="secondary" className="bg-gray-700 text-gray-300">
-                  {result.filename}
-                </Badge>
-                {result.processingTime && (
-                  <Badge variant="outline" className="border-gray-600 text-gray-400">
-                    {(result.processingTime / 1000).toFixed(1)}s
-                  </Badge>
-                )}
-              </div>
-
-              <div className="flex gap-2">
-                <Button 
-                  onClick={downloadFile}
-                  disabled={isDownloading}
-                  className="flex-1 bg-teal-600 hover:bg-teal-700 text-white"
-                >
-                  <Download className="h-4 w-4 mr-2" />
-                  {isDownloading ? 'Downloading...' : 'Download'}
-                </Button>
-                <Button 
-                  onClick={shareFile}
-                  variant="outline"
-                  className="border-gray-600 text-gray-300 hover:bg-gray-700"
-                >
-                  <Share2 className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {result.error && (
-            <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-3">
-              <p className="text-red-300 text-sm">{result.error}</p>
-            </div>
-          )}
-
           {onNewProcess && (
-            <Button 
-              onClick={onNewProcess}
-              variant="outline"
-              className="w-full border-gray-600 text-gray-300 hover:bg-gray-700"
-            >
-              Process Another File
+            <Button onClick={onNewProcess} variant="outline" className="border-red-300 text-red-700 hover:bg-red-50">
+              Try Again
             </Button>
           )}
         </CardContent>
@@ -360,5 +292,64 @@ export function ResultDisplay({
     );
   }
 
-  return null;
+  // Show success state
+  return (
+    <Card className="bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800 border-2">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-green-700 dark:text-green-400">
+          <CheckCircle className="h-5 w-5" />
+          Processing Complete!
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <p className="text-green-600 dark:text-green-400">
+          {result?.message || `${toolName} processing completed successfully!`}
+        </p>
+
+        {result?.downloadUrl && (
+          <div className="space-y-3">
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="secondary" className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
+                {result.filename || 'processed-file'}
+              </Badge>
+              {result.processingTime && (
+                <Badge variant="outline" className="border-green-300 text-green-700 dark:text-green-300">
+                  {(result.processingTime / 1000).toFixed(1)}s
+                </Badge>
+              )}
+            </div>
+
+            <div className="flex gap-2">
+              <Button 
+                onClick={() => downloadFile()}
+                disabled={isDownloading}
+                className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                {isDownloading ? 'Downloading...' : 'Download Result'}
+              </Button>
+              <Button 
+                onClick={shareFile}
+                variant="outline"
+                className="border-green-300 text-green-700 hover:bg-green-50 dark:hover:bg-green-900"
+              >
+                <Share2 className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {onNewProcess && (
+          <Button 
+            onClick={onNewProcess}
+            variant="outline"
+            className="w-full border-green-300 text-green-700 hover:bg-green-50 dark:hover:bg-green-900"
+          >
+            Process Another File
+          </Button>
+        )}
+      </CardContent>
+    </Card>
+  );
+
 }
