@@ -321,7 +321,7 @@ export function ToolTemplate({
               onChange={(e) => handleSettingChange(setting.key, e.target.value)}
             />
             {setting.description && (
-              <p className="text-xs text-white opacity-90">{setting.description}</p>
+              <p className="text-xs text-gray-300 font-medium">{setting.description}</p>
             )}
           </div>
         );
@@ -344,7 +344,7 @@ export function ToolTemplate({
               onChange={(e) => handleSettingChange(setting.key, parseInt(e.target.value) || "")}
             />
             {setting.description && (
-              <p className="text-xs text-white opacity-90">{setting.description}</p>
+              <p className="text-xs text-gray-300 font-medium">{setting.description}</p>
             )}
           </div>
         );
@@ -369,7 +369,7 @@ export function ToolTemplate({
               </SelectContent>
             </Select>
             {setting.description && (
-              <p className="text-xs text-white opacity-90">{setting.description}</p>
+              <p className="text-xs text-gray-300 font-medium">{setting.description}</p>
             )}
           </div>
         );
@@ -394,7 +394,7 @@ export function ToolTemplate({
               className="w-full"
             />
             {setting.description && (
-              <p className="text-xs text-white opacity-90">{setting.description}</p>
+              <p className="text-xs text-gray-300 font-medium">{setting.description}</p>
             )}
           </div>
         );
@@ -408,7 +408,7 @@ export function ToolTemplate({
                 {setting.required && <span className="text-red-500 ml-1">*</span>}
               </Label>
               {setting.description && (
-                <p className="text-xs text-white opacity-90">{setting.description}</p>
+                <p className="text-xs text-gray-300 font-medium">{setting.description}</p>
               )}
             </div>
             <Switch
@@ -434,7 +434,7 @@ export function ToolTemplate({
               rows={4}
             />
             {setting.description && (
-              <p className="text-xs text-white opacity-90">{setting.description}</p>
+              <p className="text-xs text-gray-300 font-medium">{setting.description}</p>
             )}
           </div>
         );
