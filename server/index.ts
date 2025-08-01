@@ -12,19 +12,19 @@ const uploadHandler = new UploadHandler();
 // Microservice management
 const runningServices = new Set();
 
-async function ensureMicroserviceRunning(servicePort: number) {
+async function ensureMicroserviceRunning(servicePort: number, retryCount = 3): Promise<void> {
   if (runningServices.has(servicePort)) return;
-  
+
   console.log(`🚀 Starting microservice on port ${servicePort}...`);
-  
+
   const serviceMap: { [key: number]: string } = {
     8001: 'fastapi_backend/services/pdf_service.py',
-    8002: 'fastapi_backend/services/image_service.py', 
+    8002: 'fastapi_backend/services/image_service.py',
     8003: 'fastapi_backend/services/media_service.py',
     8004: 'fastapi_backend/services/government_service.py',
     8005: 'fastapi_backend/services/developer_service.py'
   };
-  
+
   const servicePath = serviceMap[servicePort];
   if (servicePath && existsSync(servicePath)) {
     try {
@@ -38,6 +38,13 @@ async function ensureMicroserviceRunning(servicePort: number) {
       console.log(`✅ Microservice started on port ${servicePort}`);
     } catch (error) {
       console.error(`❌ Failed to start microservice on port ${servicePort}:`, error);
+      if (retryCount > 0) {
+        console.log(`Retrying microservice start on port ${servicePort}, retries remaining: ${retryCount}`);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        await ensureMicroserviceRunning(servicePort, retryCount - 1);
+      } else {
+        console.error(`❌❌ Microservice failed to start after multiple retries on port ${servicePort}`);
+      }
     }
   }
 }
@@ -90,17 +97,47 @@ const server = createServer(async (req, res) => {
     // API endpoints
     if (pathname.startsWith('/api/')) {
       safeWriteHead(200, { 'Content-Type': 'application/json' });
-      
+
       if (pathname === '/api/health') {
-        safeEnd(JSON.stringify({ 
-          status: 'healthy', 
+        const services = [
+          { name: 'PDF Service', port: 8001 },
+          { name: 'Image Service', port: 8002 },
+          { name: 'Media Service', port: 8003 },
+          { name: 'Government Service', port: 8004 },
+          { name: 'Developer Service', port: 8005 }
+        ];
+
+        const healthStatus = await Promise.all(
+          services.map(async (service) => {
+            try {
+              const response = await fetch(`http://localhost:${service.port}/health`);
+              return {
+                name: service.name,
+                status: response.ok ? 'healthy' : 'unhealthy',
+                port: service.port
+              };
+            } catch (error) {
+              return {
+                name: service.name,
+                status: 'unhealthy',
+                port: service.port,
+                error: error.message
+              };
+            }
+          })
+        );
+
+        const healthyServices = healthStatus.filter(s => s.status === 'healthy').length;
+        safeEnd(JSON.stringify({
+          status: healthyServices > 0 ? 'ok' : 'degraded',
           message: 'Suntyn AI server running (Express removed)',
           timestamp: new Date().toISOString(),
-          uptime: process.uptime()
+          uptime: process.uptime(),
+          services: healthStatus
         }));
         return;
       }
-      
+
       if (pathname === '/api/tools') {
         safeEnd(JSON.stringify({
           tools: [
@@ -125,27 +162,27 @@ const server = createServer(async (req, res) => {
       // Tool processing endpoints - proxy to microservices
       if (pathname.startsWith('/api/tools/')) {
         const toolMatch = pathname.match(/^\/api\/tools\/([^\/]+)\/(.+)$/);
-        
+
         if (toolMatch && toolMatch[1] && toolMatch[2]) {
           const toolId = toolMatch[1];
           const action = toolMatch[2];
-          
+
           // Determine which microservice to route to based on tool category
           let servicePort = 8000; // default to main gateway
-          
+
           if (toolId.includes('pdf')) servicePort = 8001;
           else if (toolId.includes('image') || toolId.includes('bg-remover')) servicePort = 8002;
           else if (toolId.includes('video') || toolId.includes('audio')) servicePort = 8003;
           else if (toolId.includes('government') || toolId.includes('validator')) servicePort = 8004;
           else if (toolId.includes('json') || toolId.includes('xml') || toolId.includes('code')) servicePort = 8005;
-          
+
           try {
             // Start microservice if not running
             await ensureMicroserviceRunning(servicePort);
-            
+
             // Proxy request to microservice
             const microserviceUrl = `http://localhost:${servicePort}/process/${toolId}`;
-            
+
             if (req.method === 'POST') {
               // Handle POST requests with form data
               let body = '';
@@ -157,7 +194,7 @@ const server = createServer(async (req, res) => {
                     headers: { 'Content-Type': req.headers['content-type'] || 'application/json' },
                     body: body
                   });
-                  
+
                   const result = await response.json();
                   safeWriteHead(200, { 'Content-Type': 'application/json' });
                   safeEnd(JSON.stringify(result));
@@ -200,14 +237,14 @@ const server = createServer(async (req, res) => {
       if (pathname.startsWith('/api/download/')) {
         const filename = pathname.split('/api/download/')[1];
         const staticPath = join(process.cwd(), 'static', filename);
-        
+
         if (existsSync(staticPath)) {
           const ext = extname(filename);
           const contentType = mimeTypes[ext] || 'application/octet-stream';
-          
+
           try {
             const content = readFileSync(staticPath);
-            safeWriteHead(200, { 
+            safeWriteHead(200, {
               'Content-Type': contentType,
               'Content-Disposition': `attachment; filename="${filename}"`
             });
@@ -224,7 +261,7 @@ const server = createServer(async (req, res) => {
           return;
         }
       }
-      
+
       safeWriteHead(404, { 'Content-Type': 'application/json' });
       safeEnd(JSON.stringify({ error: 'API endpoint not found' }));
       return;
@@ -232,7 +269,7 @@ const server = createServer(async (req, res) => {
 
     // Static file serving
     let filePath = join(distPath, pathname === '/' ? 'index.html' : pathname);
-    
+
     if (!existsSync(filePath)) {
       // SPA fallback - serve index.html for all non-API routes
       filePath = join(distPath, 'index.html');

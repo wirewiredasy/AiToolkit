@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 """
 Start All Suntyn AI Microservices
@@ -52,42 +51,55 @@ def check_port_available(port: int) -> bool:
         except OSError:
             return False
 
-def start_service(name: str, port: int, script: str) -> subprocess.Popen:
-    """Start a microservice with proper error handling"""
-    print(f"🚀 Starting {name} on port {port}...")
-    
-    if not check_port_available(port):
-        print(f"⚠️ Port {port} is busy, {name} may not start properly")
-    
+import signal
+from multiprocessing import Process
+
+def start_service(service_name, port, script_path):
+    """Start a microservice on specified port"""
     try:
-        # Use proper host binding for Replit
-        env = os.environ.copy()
-        env['HOST'] = '0.0.0.0'
-        env['PORT'] = str(port)
-        
+        print(f"🚀 Starting {service_name} on port {port}...")
+
+        # Get the current directory
+        current_dir = os.getcwd()
+
+        # Start the service using uvicorn with correct module path
+        module_name = os.path.basename(script_path).replace('.py', '')
+        cmd = [
+            sys.executable, "-m", "uvicorn", 
+            f"services.{module_name}:app",
+            "--host", "0.0.0.0",
+            "--port", str(port),
+            "--reload",
+            "--log-level", "info"
+        ]
+
         process = subprocess.Popen(
-            [sys.executable, f"{script}.py"],
-            cwd=Path(__file__).parent,
-            env=env,
+            cmd,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
-            universal_newlines=True,
-            bufsize=1
+            text=True,
+            cwd=current_dir
         )
-        
-        processes.append(process)
-        
-        # Check if process started successfully
-        time.sleep(2)
-        if process.poll() is not None:
-            print(f"❌ {name} failed to start")
+
+        # Wait for the service to start
+        time.sleep(3)
+
+        # Check if process is still running
+        if process.poll() is None:
+            print(f"✅ {service_name} started successfully on port {port}")
+            return process
+        else:
+            print(f"❌ {service_name} failed to start")
+            try:
+                stdout, _ = process.communicate(timeout=1)
+                print(f"Output: {stdout[:500]}...")
+            except:
+                pass
             return None
-        
-        print(f"✅ {name} started successfully (PID: {process.pid})")
-        return process
-        
+
     except Exception as e:
-        print(f"❌ Error starting {name}: {e}")
+        print(f"❌ {service_name} failed to start")
+        print(f"Error: {str(e)}")
         return None
 
 def wait_for_service(port: int, timeout: int = 30) -> bool:
@@ -103,71 +115,84 @@ def wait_for_service(port: int, timeout: int = 30) -> bool:
     return False
 
 def main():
-    """Start all microservices with enhanced monitoring"""
     print("🌟 Suntyn AI - FastAPI Microservices Startup")
     print("=" * 50)
-    
+
     # Change to fastapi_backend directory
-    os.chdir(Path(__file__).parent)
-    
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(script_dir)
+
+    # Service configurations - use relative paths from fastapi_backend
     services = [
-        ("Main Gateway", 5000, "main"),
-        ("PDF Service", 8001, "services/pdf_service"),
-        ("Image Service", 8002, "services/image_service"), 
-        ("Media Service", 8003, "services/media_service"),
-        ("Government Service", 8004, "services/government_service"),
-        ("Developer Service", 8005, "services/developer_service")
+        ("PDF Service", 8001, "pdf_service"),
+        ("Image Service", 8002, "image_service"),
+        ("Media Service", 8003, "media_service"),
+        ("Government Service", 8004, "government_service"),
+        ("Developer Service", 8005, "developer_service"),
     ]
-    
-    started_services = []
-    
+
+    processes = []
+
+    # Start all services
+    for service_name, port, script_name in services:
+        process = start_service(service_name, port, f"{script_name}.py")
+        if process:
+            processes.append((service_name, process))
+        time.sleep(1)  # Stagger startup
+
+    print(f"\n🎯 Services Started: {len(processes)}/{len(services)}")
+    print("📊 Service Status:")
+
+    # Print active services
+    for service_name, _ in processes:
+        print(f"  ✅ {service_name}")
+
+    # Print service URLs
+    print("\n🌐 Access URLs:")
+    for service_name, port, _ in services:
+        if any(proc[0] == service_name for proc in processes):
+            print(f"  - {service_name}: http://localhost:{port}")
+
+    print("\n✨ Services ready! Main server should be running on port 5000")
+    print("Press Ctrl+C to stop all services")
+
     try:
-        # Start microservices first (except main gateway)
-        for name, port, script in services[1:]:
-            process = start_service(name, port, script)
-            if process:
-                started_services.append((name, port, process))
-                print(f"⏳ Waiting for {name} to be ready...")
-                if wait_for_service(port, 15):
-                    print(f"🟢 {name} is healthy")
-                else:
-                    print(f"🟡 {name} started but health check timeout")
-            time.sleep(2)
-        
-        # Start main gateway last
-        main_process = start_service("Main Gateway", 5000, "main")
-        if main_process:
-            started_services.append(("Main Gateway", 5000, main_process))
-        
-        print(f"\n🎯 Services Started: {len(started_services)}/{len(services)}")
-        print("📊 Service Status:")
-        for name, port, process in started_services:
-            status = "🟢 Running" if process.poll() is None else "🔴 Stopped"
-            print(f"  - {name}: {status} (Port: {port}, PID: {process.pid})")
-        
-        print("\n🌐 Access URLs:")
-        print("  - Main Gateway: http://localhost:5000")
-        print("  - API Health: http://localhost:5000/api/health")
-        print("  - Frontend: http://localhost:5000")
-        
-        print(f"\n✨ All services ready! Press Ctrl+C to stop all services")
-        
-        # Keep main process alive and monitor services
-        try:
-            while True:
-                time.sleep(5)
-                # Check if any service died
-                for name, port, process in started_services:
-                    if process.poll() is not None:
-                        print(f"⚠️ {name} stopped unexpectedly")
-                        
-        except KeyboardInterrupt:
-            print("\n👋 Shutdown requested by user")
-            
-    except Exception as e:
-        print(f"❌ Critical error: {e}")
-    finally:
-        cleanup_processes()
+        # Keep the main process running
+        while True:
+            time.sleep(5)
+
+            # Check if any process has died and restart
+            for i, (service_name, process) in enumerate(processes[:]):
+                if process.poll() is not None:
+                    print(f"⚠️  {service_name} has stopped unexpectedly. Restarting...")
+                    processes.remove((service_name, process))
+
+                    # Find the service config and restart
+                    for svc_name, port, script_name in services:
+                        if svc_name == service_name:
+                            new_process = start_service(service_name, port, f"{script_name}.py")
+                            if new_process:
+                                processes.append((service_name, new_process))
+                            break
+
+    except KeyboardInterrupt:
+        print("\n🛑 Shutting down all services...")
+
+        # Terminate all processes
+        for service_name, process in processes:
+            print(f"🔄 Stopping {service_name}...")
+            try:
+                process.terminate()
+                process.wait(timeout=5)
+                print(f"✅ {service_name} stopped")
+            except subprocess.TimeoutExpired:
+                print(f"🔪 Force killing {service_name}...")
+                process.kill()
+                process.wait()
+            except Exception as e:
+                print(f"❌ Error stopping {service_name}: {e}")
+
+        print("👋 All services stopped. Goodbye!")
 
 if __name__ == "__main__":
     main()
