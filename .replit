@@ -1,4 +1,4 @@
-modules = ["nodejs-20", "web", "python-3.11"]
+modules = ["nodejs-20", "python-3.12", "web"]
 run = "npm run dev"
 hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
 
@@ -41,7 +41,7 @@ localPort = 8005
 externalPort = 8005
 
 [workflows]
-runButton = "Start FastAPI Microservices"
+runButton = "Project"
 
 [[workflows.workflow]]
 name = "Project"
