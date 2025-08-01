@@ -41,7 +41,7 @@ localPort = 8005
 externalPort = 8005
 
 [workflows]
-runButton = "Project"
+runButton = "Start FastAPI Microservices"
 
 [[workflows.workflow]]
 name = "Project"
