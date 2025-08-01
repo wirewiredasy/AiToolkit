@@ -121,7 +121,7 @@ const server = createServer(async (req, res) => {
                 name: service.name,
                 status: 'unhealthy',
                 port: service.port,
-                error: error.message
+                error: error instanceof Error ? error.message : String(error)
               };
             }
           })
