@@ -85,7 +85,6 @@ export function ToolTemplate({
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<any>(null);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
-  const [settings, setSettings] = useState<Record<string, any>>({});
   const [persistentFiles, setPersistentFiles] = useState<File[]>([]);
   const [isFileProcessed, setIsFileProcessed] = useState(false);
 
