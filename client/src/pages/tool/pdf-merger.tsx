@@ -1,61 +1,61 @@
-import { ToolTemplate } from "@/components/ui/tool-template";
-import { Combine } from "lucide-react";
-import { Separator } from '../../components/ui/separator';
-import { Card, CardContent } from '../../components/ui/card';
-import { Alert, AlertDescription } from '../../components/ui/alert';
-import { RecommendedTools } from '../../components/ui/recommended-tools';
+import { EnhancedToolTemplate } from "@/components/ui/enhanced-tool-template";
 
 export default function PDFMergerPage() {
+  const handleProcess = async (files: File[], options: Record<string, string>) => {
+    const formData = new FormData();
+    
+    // Add all files
+    files.forEach((file, index) => {
+      formData.append(`file_${index}`, file);
+    });
+    
+    // Add options
+    Object.entries(options).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    const response = await fetch('/api/tools/pdf-merger', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const result = await response.json();
+    
+    // Return standardized response
+    return {
+      success: result.success || response.ok,
+      message: result.message || 'PDF files merged successfully',
+      downloadUrl: result.downloadUrl,
+      filename: result.filename || `merged-pdf-${Date.now()}.pdf`,
+      metadata: result.metadata
+    };
+  };
+
   return (
-    <ToolTemplate
-      toolId="pdf-merger"
-      toolName="PDF Merger"
+    <EnhancedToolTemplate
+      title="PDF Merger"
       description="Combine multiple PDF files into a single document. Merge PDFs in any order while maintaining quality and formatting."
-      icon={<Combine className="h-8 w-8 text-white" />}
-      acceptedFiles={{ "application/pdf": [".pdf"] }}
-      maxFileSize={50 * 1024 * 1024}
-      allowMultiple={true}
-      settings={[
+      acceptedFileTypes={['.pdf']}
+      allowMultipleFiles={true}
+      minFiles={2}
+      maxFiles={10}
+      toolOptions={[
         {
-          key: "mergeOrder",
+          id: "mergeOrder",
           label: "Merge Order",
           type: "select",
           options: ["Upload Order", "Alphabetical", "Date Modified", "File Size"],
-          defaultValue: "Upload Order",
-          description: "Order of merging PDF files"
+          required: false
         },
         {
-          key: "pageRange",
+          id: "pageRange",
           label: "Page Range (per file)",
-          type: "text",
+          type: "range",
           placeholder: "all, 1-5, 10-20",
-          description: "Specific pages to merge from each file (comma separated)"
-        },
-        {
-          key: "addBookmarks",
-          label: "Add Bookmarks",
-          type: "switch",
-          defaultValue: true,
-          description: "Create bookmarks for each merged file"
-        },
-        {
-          key: "preserveLinks",
-          label: "Preserve Links",
-          type: "switch",
-          defaultValue: true,
-          description: "Keep hyperlinks and internal links"
-        },
-        {
-          key: "addPageNumbers",
-          label: "Add Page Numbers",
-          type: "switch",
-          defaultValue: false,
-          description: "Add continuous page numbers to merged PDF"
+          required: false
         }
       ]}
-      endpoint="/api/tools/pdf-merger"
-      gradientFrom="from-red-500"
-      gradientTo="to-orange-600"
+      onProcess={handleProcess}
     />
   );
 }

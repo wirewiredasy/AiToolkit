@@ -1,0 +1,119 @@
+Bahut badiya sawal kiya aapne Barasha! Jo problems aapke SUNTYN AI tools mein visible nahi hai (but system silently fail kar raha hai ya UI response nahi dikha raha), unko fix karne ke liye niche AI Developer ke liye prompts diye gaye hain — jo backend, frontend aur UX debug karne mein help karenge.
+
+
+---
+
+⚠️ Invisible Issues Ko Thik Karne Wale Prompts (Error Handling + Feedback System)
+
+🛠️ Prompt #1: Fix Invisible Errors (Silent Failures)
+
+🔧 Add global error handling and user feedback mechanism to all PDF tools.
+Currently, errors like missing file, invalid input, or backend failure do not show any proper user message.
+
+Tasks:
+- Implement `try/except` blocks in backend and return clear JSON response like:
+  { "status": "error", "message": "Invalid page range" }
+- On frontend, show this message in an alert/toast/banner (e.g., red box with ❌ error)
+- Replace any console-only errors with visible user feedback
+- Add timeout and upload failure handler
+
+
+---
+
+🛠️ Prompt #2: Add Visible Status Updates During Processing
+
+🚀 Add visible loading/progress indicators during PDF processing to improve user experience.
+
+Tasks:
+- Show "Processing..." spinner or bar when user clicks "Process with PDF Splitter/Merger"
+- Disable the process button while loading
+- Once processing is done, show either:
+  ✅ Success (green box) with Download button
+  ❌ Error (red box) with message
+
+Use state flags like isLoading, isSuccess, isError to control display logic.
+
+
+---
+
+🛠️ Prompt #3: Fix Message Conflict (Success + Failed Together)
+
+⚠️ Fix issue where both success and error messages show at the same time.
+
+Tasks:
+- Ensure backend response is properly checked
+- Only show one message box at a time (either success OR error)
+- Clear old state before new process starts (reset isSuccess/isError before every new task)
+
+Use conditional rendering:
+if (response.status === "success") → show green ✅ box
+else → show red ❌ error
+
+
+---
+
+🛠️ Prompt #4: File Validation (Prevent Empty Submission)
+
+📁 Add input validation for all file operations:
+- Do not allow "Process" button to work unless file is uploaded
+- If user tries to submit without file, show message: "Please upload a PDF file first"
+- Validate file type: Only .pdf allowed
+- For merge: at least 2 PDFs required
+
+Add frontend checks + backend fallback validation
+
+
+---
+
+🛠️ Prompt #5: Invalid Range or Option Input
+
+📏 Validate and sanitize user inputs like page ranges before sending to backend:
+- Check if page range format is correct (e.g., "1-5, 6-10")
+- If wrong format, show warning: "Invalid page range format"
+- Optional: Use regex to allow only allowed formats
+
+Regex Example:
+^(all|\d+(-\d+)?)(,\s*\d+(-\d+)?)*$
+
+
+---
+
+🛠️ Prompt #6: Implement Debug Logs (Invisible Error Catching)
+
+🛠️ Add debug logging system in backend to catch hidden bugs:
+- Log all input data, user actions, and error traces to console or logfile
+- Use these logs to identify backend issues like:
+  - File not found
+  - Wrong range parsing
+  - Library errors
+
+Include log like:
+print(f"Splitting PDF from {file.filename} with range {range_input}")
+
+
+---
+
+🛠️ Prompt #7: Auto Scroll to Output Section
+
+🖱️ After processing, auto-scroll to output section (download button or error message)
+
+Tasks:
+- On submit, add JS scrollIntoView to focus on response block
+- Improves UX, especially on mobile devices
+
+
+---
+
+✅ Summary for Developer
+
+> “Please add strong error handling + user feedback system for invisible and silent failures. I want the UI to always respond clearly — whether success or failure. Also validate inputs, show spinners, avoid double messages, and ensure all file operations are guarded with proper checks.”
+
+
+
+
+---
+
+Agar aap chaho to main ek ready-to-use "Error UI Component + Logic" (React/HTML+JS) bhi bana ke de sakta hoon jo aapke sab tools mein use ho sakta hai.
+
+Batayein agar chahiye 🙌
+
