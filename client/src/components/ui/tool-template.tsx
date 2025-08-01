@@ -476,8 +476,8 @@ export function ToolTemplate({
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="bg-gradient-to-br from-orange-500/20 to-yellow-500/20 backdrop-blur-sm border-2 border-white/30 rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center shadow-2xl">
-            <div className="text-3xl">{icon}</div>
+          <div className="bg-gradient-to-br from-orange-500 to-yellow-500 border-4 border-orange-300 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center shadow-2xl">
+            <div className="text-4xl text-white">{icon}</div>
           </div>
           <h1 className="text-5xl font-bold bg-gradient-to-r from-orange-400 via-yellow-300 to-orange-500 bg-clip-text text-transparent drop-shadow-2xl mb-2">{toolName}</h1>
           <p className="text-white text-xl font-medium max-w-2xl mx-auto drop-shadow-lg">{description}</p>
@@ -488,9 +488,9 @@ export function ToolTemplate({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* File Upload Section */}
             {resultType === "file" && (
-              <Card className="bg-white/10 backdrop-blur-lg border-white/20 shadow-2xl hover:bg-white/15 transition-all duration-300">
+              <Card className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-lg border-4 border-orange-300 dark:border-orange-400 shadow-2xl hover:bg-white hover:dark:bg-gray-700 transition-all duration-300">
                 <CardHeader>
-                  <CardTitle className="text-white text-xl font-bold">Upload Files</CardTitle>
+                  <CardTitle className="text-gray-900 dark:text-white text-xl font-bold">Upload Files</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <EnhancedFileUpload
@@ -509,9 +509,9 @@ export function ToolTemplate({
 
             {/* Settings Section */}
             {settings.length > 0 && (
-              <Card className="bg-white/10 backdrop-blur-lg border-white/20 shadow-2xl hover:bg-white/15 transition-all duration-300">
+              <Card className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-lg border-4 border-orange-300 dark:border-orange-400 shadow-2xl hover:bg-white hover:dark:bg-gray-700 transition-all duration-300">
                 <CardHeader>
-                  <CardTitle className="text-white text-xl font-bold">Settings</CardTitle>
+                  <CardTitle className="text-gray-900 dark:text-white text-xl font-bold">Settings</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {settings.map(renderSetting)}
@@ -521,13 +521,13 @@ export function ToolTemplate({
 
             {/* Validation Input for Government Tools */}
             {resultType === "validation" && (
-              <Card className="bg-white/10 backdrop-blur-lg border-white/20 shadow-2xl hover:bg-white/15 transition-all duration-300">
+              <Card className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-lg border-4 border-orange-300 dark:border-orange-400 shadow-2xl hover:bg-white hover:dark:bg-gray-700 transition-all duration-300">
                 <CardHeader>
-                  <CardTitle className="text-white text-xl font-bold">Enter Details</CardTitle>
+                  <CardTitle className="text-gray-900 dark:text-white text-xl font-bold">Enter Details</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="inputValue" className="text-white text-lg font-semibold">
+                    <Label htmlFor="inputValue" className="text-gray-900 dark:text-white text-lg font-semibold">
                       Enter {toolName.replace(" Validator", "")} Number *
                     </Label>
                     <Input
@@ -535,7 +535,7 @@ export function ToolTemplate({
                       placeholder={`Enter your ${toolName.replace(" Validator", "").toLowerCase()} number`}
                       value={settingsValues.inputValue || ""}
                       onChange={(e) => handleSettingChange("inputValue", e.target.value)}
-                      className="text-lg bg-white/20 backdrop-blur-sm border-white/30 text-white placeholder-gray-300 focus:bg-white/30 focus:border-orange-400 transition-all duration-300"
+                      className="text-lg bg-white dark:bg-gray-700 border-4 border-orange-300 dark:border-orange-400 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-300 focus:bg-white focus:dark:bg-gray-600 focus:border-orange-500 transition-all duration-300 font-semibold"
                     />
                   </div>
                 </CardContent>
@@ -549,7 +549,7 @@ export function ToolTemplate({
               onClick={handleProcess}
               disabled={!canProcess() || processMutation.isPending}
               size="lg"
-              className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white font-bold text-xl px-12 py-4 rounded-xl shadow-2xl hover:shadow-orange-500/30 transition-all duration-300 transform hover:scale-105"
+              className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white font-bold text-2xl px-16 py-6 rounded-2xl shadow-2xl hover:shadow-orange-500/50 transition-all duration-300 transform hover:scale-110 border-4 border-orange-300 hover:border-orange-200"
             >
               {processMutation.isPending ? "🔄 Processing..." : `🚀 Process with ${toolName}`}
             </Button>

@@ -4,25 +4,47 @@
 
 :root {
   --background: 0 0% 100%;
-  --foreground: 224 71.4% 4.1%;
+  --foreground: 0 0% 10%;
   --card: 0 0% 100%;
-  --card-foreground: 224 71.4% 4.1%;
+  --card-foreground: 0 0% 10%;
   --popover: 0 0% 100%;
-  --popover-foreground: 224 71.4% 4.1%;
-  --primary: 221.2 83.2% 53.3%;
-  --primary-foreground: 210 40% 98%;
+  --popover-foreground: 0 0% 10%;
+  --primary: 24 95% 53%;
+  --primary-foreground: 0 0% 98%;
   --secondary: 210 40% 96%;
-  --secondary-foreground: 222.2 84% 4.9%;
+  --secondary-foreground: 0 0% 10%;
   --muted: 210 40% 96%;
-  --muted-foreground: 215.4 16.3% 46.9%;
+  --muted-foreground: 0 0% 45%;
   --accent: 210 40% 96%;
-  --accent-foreground: 222.2 84% 4.9%;
+  --accent-foreground: 0 0% 10%;
   --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
+  --destructive-foreground: 0 0% 98%;
   --border: 214.3 31.8% 91.4%;
   --input: 214.3 31.8% 91.4%;
-  --ring: 221.2 83.2% 53.3%;
+  --ring: 24 95% 53%;
   --radius: 0.5rem;
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 240 10% 8%;
+  --card-foreground: 0 0% 98%;
+  --popover: 240 10% 8%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 24 95% 53%;
+  --primary-foreground: 0 0% 10%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 0 0% 70%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --ring: 24 95% 53%;
 }
 
 @layer base {
@@ -42,17 +64,29 @@
   }
   
   .glass-effect {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 165, 0, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(255, 165, 0, 0.2);
   }
   
   .glass-card {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(8px);
+    border: 2px solid rgba(255, 165, 0, 0.25);
+    box-shadow: 0 15px 35px rgba(255, 165, 0, 0.15);
+  }
+
+  .dark .glass-effect {
+    background: rgba(30, 30, 30, 0.95) !important;
+    border: 2px solid rgba(255, 165, 0, 0.4);
+    box-shadow: 0 8px 32px 0 rgba(255, 165, 0, 0.3);
+  }
+  
+  .dark .glass-card {
+    background: rgba(40, 40, 40, 0.9) !important;
+    border: 2px solid rgba(255, 165, 0, 0.3);
+    box-shadow: 0 15px 35px rgba(255, 165, 0, 0.2);
   }
   
   .glass-navbar {
