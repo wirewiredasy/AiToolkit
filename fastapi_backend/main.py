@@ -419,7 +419,7 @@ async def route_to_microservice(service: str, tool_name: str, files: List[Upload
     service_url = MICROSERVICES.get(service)
     if not service_url:
         logger.error(f"[{request_id}] Service {service} not found in MICROSERVICES")
-        raise HTTPException(status_code=503, detail=f"Service {service} is currently unavailable")
+        raise HTTPException(status_code=503, detail=f"Service {service} is currently unavailable. Please start all microservices first.")
 
     # Enhanced file validation with detailed logging
     total_size = 0
